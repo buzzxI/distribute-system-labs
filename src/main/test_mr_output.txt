@@ -1,0 +1,1027 @@
+Running trial 1...
+*** Starting wc test.
+input files map[../pg-being_ernest.txt:0 ../pg-dorian_gray.txt:1 ../pg-frankenstein.txt:2 ../pg-grimm.txt:3 ../pg-huckleberry_finn.txt:4 ../pg-metamorphosis.txt:5 ../pg-sherlock_holmes.txt:6 ../pg-tom_sawyer.txt:7]
+initial worker id 0
+initial worker id 1
+worker 0 request task, task type 0
+first: worker 0 try to lock ../pg-being_ernest.txt
+first: worker 0 locked ../pg-being_ernest.txt
+first: worker 0 get task ../pg-being_ernest.txt
+worker 0 assign map task ../pg-being_ernest.txt
+worker 1 request task, task type 0
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 locked ../pg-dorian_gray.txt
+first: worker 1 get task ../pg-dorian_gray.txt
+worker 1 assign map task ../pg-dorian_gray.txt
+initial worker id 2
+worker 1 task type 1
+worker 2 request task, task type 0
+first: worker 2 try to lock ../pg-frankenstein.txt
+first: worker 2 locked ../pg-frankenstein.txt
+first: worker 2 get task ../pg-frankenstein.txt
+worker 2 assign map task ../pg-frankenstein.txt
+worker 2 task type 1
+worker 0 task type 1
+worker 0 request task, task type 1
+worker 0 try to finish ../pg-being_ernest.txt
+worker 0 finish ../pg-being_ernest.txt
+../pg-being_ernest.txt map[0:true]
+worker 0 return ../pg-being_ernest.txt
+first: worker 0 try to lock ../pg-being_ernest.txt
+first: worker 0 try to lock ../pg-dorian_gray.txt
+first: worker 0 locked ../pg-dorian_gray.txt
+first: worker 0 unlock ../pg-dorian_gray.txt
+first: worker 0 try to lock ../pg-frankenstein.txt
+first: worker 0 locked ../pg-frankenstein.txt
+first: worker 0 unlock ../pg-frankenstein.txt
+first: worker 0 try to lock ../pg-grimm.txt
+first: worker 0 locked ../pg-grimm.txt
+first: worker 0 get task ../pg-grimm.txt
+worker 0 assign map task ../pg-grimm.txt
+worker 0 task type 1
+worker 2 request task, task type 1
+worker 2 try to finish ../pg-frankenstein.txt
+worker 2 finish ../pg-frankenstein.txt
+../pg-frankenstein.txt map[0:true 2:true]
+worker 2 return ../pg-frankenstein.txt
+first: worker 2 try to lock ../pg-frankenstein.txt
+first: worker 2 try to lock ../pg-grimm.txt
+first: worker 2 locked ../pg-grimm.txt
+first: worker 2 unlock ../pg-grimm.txt
+first: worker 2 try to lock ../pg-huckleberry_finn.txt
+first: worker 2 locked ../pg-huckleberry_finn.txt
+first: worker 2 get task ../pg-huckleberry_finn.txt
+worker 2 assign map task ../pg-huckleberry_finn.txt
+worker 2 task type 1
+worker 1 request task, task type 1
+worker 1 try to finish ../pg-dorian_gray.txt
+worker 1 finish ../pg-dorian_gray.txt
+../pg-dorian_gray.txt map[0:true 1:true 2:true]
+worker 1 return ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-frankenstein.txt
+first: worker 1 try to lock ../pg-grimm.txt
+first: worker 1 locked ../pg-grimm.txt
+first: worker 1 unlock ../pg-grimm.txt
+first: worker 1 try to lock ../pg-huckleberry_finn.txt
+first: worker 1 locked ../pg-huckleberry_finn.txt
+first: worker 1 unlock ../pg-huckleberry_finn.txt
+first: worker 1 try to lock ../pg-metamorphosis.txt
+first: worker 1 locked ../pg-metamorphosis.txt
+first: worker 1 get task ../pg-metamorphosis.txt
+worker 1 assign map task ../pg-metamorphosis.txt
+worker 1 task type 1
+worker 1 request task, task type 1
+worker 1 try to finish ../pg-metamorphosis.txt
+worker 1 finish ../pg-metamorphosis.txt
+../pg-metamorphosis.txt map[0:true 1:true 2:true 5:true]
+worker 1 return ../pg-metamorphosis.txt
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-frankenstein.txt
+first: worker 1 try to lock ../pg-grimm.txt
+first: worker 1 locked ../pg-grimm.txt
+first: worker 1 unlock ../pg-grimm.txt
+first: worker 1 try to lock ../pg-huckleberry_finn.txt
+first: worker 1 locked ../pg-huckleberry_finn.txt
+first: worker 1 unlock ../pg-huckleberry_finn.txt
+first: worker 1 try to lock ../pg-metamorphosis.txt
+first: worker 1 try to lock ../pg-sherlock_holmes.txt
+first: worker 1 locked ../pg-sherlock_holmes.txt
+first: worker 1 get task ../pg-sherlock_holmes.txt
+worker 1 assign map task ../pg-sherlock_holmes.txt
+worker 1 task type 1
+worker 0 request task, task type 1
+worker 0 try to finish ../pg-grimm.txt
+worker 0 finish ../pg-grimm.txt
+../pg-grimm.txt map[0:true 1:true 2:true 3:true 5:true]
+worker 0 return ../pg-grimm.txt
+first: worker 0 try to lock ../pg-being_ernest.txt
+first: worker 0 try to lock ../pg-dorian_gray.txt
+first: worker 0 try to lock ../pg-frankenstein.txt
+first: worker 0 try to lock ../pg-grimm.txt
+first: worker 0 try to lock ../pg-huckleberry_finn.txt
+first: worker 0 locked ../pg-huckleberry_finn.txt
+first: worker 0 unlock ../pg-huckleberry_finn.txt
+first: worker 0 try to lock ../pg-metamorphosis.txt
+first: worker 0 try to lock ../pg-sherlock_holmes.txt
+first: worker 0 locked ../pg-sherlock_holmes.txt
+first: worker 0 unlock ../pg-sherlock_holmes.txt
+first: worker 0 try to lock ../pg-tom_sawyer.txt
+first: worker 0 locked ../pg-tom_sawyer.txt
+first: worker 0 get task ../pg-tom_sawyer.txt
+worker 0 assign map task ../pg-tom_sawyer.txt
+worker 0 task type 1
+worker 2 request task, task type 1
+worker 2 try to finish ../pg-huckleberry_finn.txt
+worker 2 finish ../pg-huckleberry_finn.txt
+../pg-huckleberry_finn.txt map[0:true 1:true 2:true 3:true 4:true 5:true]
+worker 2 return ../pg-huckleberry_finn.txt
+first: worker 2 try to lock ../pg-frankenstein.txt
+first: worker 2 try to lock ../pg-grimm.txt
+first: worker 2 try to lock ../pg-huckleberry_finn.txt
+first: worker 2 try to lock ../pg-metamorphosis.txt
+first: worker 2 try to lock ../pg-sherlock_holmes.txt
+first: worker 2 locked ../pg-sherlock_holmes.txt
+first: worker 2 unlock ../pg-sherlock_holmes.txt
+first: worker 2 try to lock ../pg-tom_sawyer.txt
+first: worker 2 locked ../pg-tom_sawyer.txt
+first: worker 2 unlock ../pg-tom_sawyer.txt
+first: worker 2 try to lock ../pg-being_ernest.txt
+first: worker 2 try to lock ../pg-dorian_gray.txt
+worker 2 try to lock ../pg-sherlock_holmes.txt
+worker 2 locked ../pg-sherlock_holmes.txt
+worker 2 wait to redo task ../pg-sherlock_holmes.txt
+worker 0 request task, task type 1
+worker 0 try to finish ../pg-tom_sawyer.txt
+worker 0 finish ../pg-tom_sawyer.txt
+../pg-tom_sawyer.txt map[0:true 1:true 2:true 3:true 4:true 5:true 7:true]
+worker 0 return ../pg-tom_sawyer.txt
+first: worker 0 try to lock ../pg-being_ernest.txt
+first: worker 0 try to lock ../pg-dorian_gray.txt
+first: worker 0 try to lock ../pg-frankenstein.txt
+first: worker 0 try to lock ../pg-grimm.txt
+first: worker 0 try to lock ../pg-huckleberry_finn.txt
+first: worker 0 try to lock ../pg-metamorphosis.txt
+first: worker 0 try to lock ../pg-sherlock_holmes.txt
+first: worker 0 locked ../pg-sherlock_holmes.txt
+first: worker 0 unlock ../pg-sherlock_holmes.txt
+first: worker 0 try to lock ../pg-tom_sawyer.txt
+worker 0 try to lock ../pg-sherlock_holmes.txt
+worker 0 locked ../pg-sherlock_holmes.txt
+worker 0 wait to redo task ../pg-sherlock_holmes.txt
+worker 1 request task, task type 1
+worker 1 try to finish ../pg-sherlock_holmes.txt
+worker 1 finish ../pg-sherlock_holmes.txt
+../pg-sherlock_holmes.txt map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true]
+worker 1 return ../pg-sherlock_holmes.txt
+first: worker 1 try to lock 1
+first: worker 1 locked 1
+first: worker 1 get task 1
+worker 1 assign reduce task 1
+worker 0 unlock ../pg-sherlock_holmes.txt
+first: worker 0 try to lock 0
+first: worker 0 locked 0
+first: worker 0 get task 0
+worker 0 assign reduce task 0
+worker 2 unlock ../pg-sherlock_holmes.txt
+first: worker 2 try to lock 2
+first: worker 2 locked 2
+first: worker 2 get task 2
+worker 2 assign reduce task 2
+worker 0 task type 2
+worker 2 task type 2
+worker 1 task type 2
+worker 1 request task, task type 2
+worker 1 try to finish 1
+worker 1 finish 1
+1 map[1:true]
+worker 1 return 1
+first: worker 1 try to lock 1
+first: worker 1 try to lock 2
+first: worker 1 locked 2
+first: worker 1 unlock 2
+first: worker 1 try to lock 3
+first: worker 1 locked 3
+first: worker 1 get task 3
+worker 1 assign reduce task 3
+worker 1 task type 2
+worker 0 request task, task type 2
+worker 0 try to finish 0
+worker 0 finish 0
+0 map[0:true 1:true]
+worker 0 return 0
+first: worker 0 try to lock 0
+first: worker 0 try to lock 1
+first: worker 0 try to lock 2
+first: worker 0 locked 2
+first: worker 0 unlock 2
+first: worker 0 try to lock 3
+first: worker 0 locked 3
+first: worker 0 unlock 3
+first: worker 0 try to lock 4
+first: worker 0 locked 4
+first: worker 0 get task 4
+worker 0 assign reduce task 4
+worker 0 task type 2
+worker 1 request task, task type 2
+worker 1 try to finish 3
+worker 1 finish 3
+3 map[0:true 1:true 3:true]
+worker 1 return 3
+first: worker 1 try to lock 1
+first: worker 1 try to lock 2
+first: worker 1 locked 2
+first: worker 1 unlock 2
+first: worker 1 try to lock 3
+first: worker 1 try to lock 4
+first: worker 1 locked 4
+first: worker 1 unlock 4
+first: worker 1 try to lock 5
+first: worker 1 locked 5
+first: worker 1 get task 5
+worker 1 assign reduce task 5
+worker 1 task type 2
+worker 2 request task, task type 2
+worker 2 try to finish 2
+worker 2 finish 2
+2 map[0:true 1:true 2:true 3:true]
+worker 2 return 2
+first: worker 2 try to lock 2
+first: worker 2 try to lock 3
+first: worker 2 try to lock 4
+first: worker 2 locked 4
+first: worker 2 unlock 4
+first: worker 2 try to lock 5
+first: worker 2 locked 5
+first: worker 2 unlock 5
+first: worker 2 try to lock 6
+first: worker 2 locked 6
+first: worker 2 get task 6
+worker 2 assign reduce task 6
+worker 2 task type 2
+worker 0 request task, task type 2
+worker 0 try to finish 4
+worker 0 finish 4
+4 map[0:true 1:true 2:true 3:true 4:true]
+worker 0 return 4
+first: worker 0 try to lock 0
+first: worker 0 try to lock 1
+first: worker 0 try to lock 2
+first: worker 0 try to lock 3
+first: worker 0 try to lock 4
+first: worker 0 try to lock 5
+first: worker 0 locked 5
+first: worker 0 unlock 5
+first: worker 0 try to lock 6
+first: worker 0 locked 6
+first: worker 0 unlock 6
+first: worker 0 try to lock 7
+first: worker 0 locked 7
+first: worker 0 get task 7
+worker 0 assign reduce task 7
+worker 0 task type 2
+worker 1 request task, task type 2
+worker 1 try to finish 5
+worker 1 finish 5
+5 map[0:true 1:true 2:true 3:true 4:true 5:true]
+worker 1 return 5
+first: worker 1 try to lock 1
+first: worker 1 try to lock 2
+first: worker 1 try to lock 3
+first: worker 1 try to lock 4
+first: worker 1 try to lock 5
+first: worker 1 try to lock 6
+first: worker 1 locked 6
+first: worker 1 unlock 6
+first: worker 1 try to lock 7
+first: worker 1 locked 7
+first: worker 1 unlock 7
+first: worker 1 try to lock 8
+first: worker 1 locked 8
+first: worker 1 get task 8
+worker 1 assign reduce task 8
+worker 1 task type 2
+worker 0 request task, task type 2
+worker 0 try to finish 7
+worker 0 finish 7
+7 map[0:true 1:true 2:true 3:true 4:true 5:true 7:true]
+worker 0 return 7
+first: worker 0 try to lock 0
+first: worker 0 try to lock 1
+first: worker 0 try to lock 2
+first: worker 0 try to lock 3
+first: worker 0 try to lock 4
+first: worker 0 try to lock 5
+first: worker 0 try to lock 6
+first: worker 0 locked 6
+first: worker 0 unlock 6
+first: worker 0 try to lock 7
+first: worker 0 try to lock 8
+first: worker 0 locked 8
+first: worker 0 unlock 8
+first: worker 0 try to lock 9
+first: worker 0 locked 9
+first: worker 0 get task 9
+worker 0 assign reduce task 9
+worker 0 task type 2
+worker 2 request task, task type 2
+worker 2 try to finish 6
+worker 2 finish 6
+6 map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true]
+worker 2 return 6
+first: worker 2 try to lock 2
+first: worker 2 try to lock 3
+first: worker 2 try to lock 4
+first: worker 2 try to lock 5
+first: worker 2 try to lock 6
+first: worker 2 try to lock 7
+first: worker 2 try to lock 8
+first: worker 2 locked 8
+first: worker 2 unlock 8
+first: worker 2 try to lock 9
+first: worker 2 locked 9
+first: worker 2 unlock 9
+first: worker 2 try to lock 0
+first: worker 2 try to lock 1
+worker 2 try to lock 8
+worker 2 locked 8
+worker 2 wait to redo task 8
+worker 1 request task, task type 2
+worker 1 try to finish 8
+worker 1 finish 8
+8 map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true 8:true]
+worker 1 return 8
+first: worker 1 try to lock 1
+first: worker 1 try to lock 2
+first: worker 1 try to lock 3
+first: worker 1 try to lock 4
+first: worker 1 try to lock 5
+first: worker 1 try to lock 6
+first: worker 1 try to lock 7
+first: worker 1 try to lock 8
+first: worker 1 try to lock 9
+first: worker 1 locked 9
+first: worker 1 unlock 9
+first: worker 1 try to lock 0
+worker 1 try to lock 9
+worker 1 locked 9
+worker 1 wait to redo task 9
+worker 2 unlock 8
+worker 2 try to lock 9
+worker 2 locked 9
+worker 2 wait to redo task 9
+worker 0 request task, task type 2
+worker 0 try to finish 9
+worker 0 finish 9
+9 map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true 8:true 9:true]
+worker 0 return 9
+worker 2 unlock 9
+worker 1 unlock 9
+worker 1 task type 0
+worker 2 task type 0
+worker 0 task type 0
+--- wc test: PASS
+*** Starting indexer test.
+--- indexer output is not the same as mr-correct-indexer.txt
+--- indexer test: FAIL
+*** Starting map parallelism test.
+--- saw 0 workers rather than 2
+--- map parallelism test: FAIL
+--- map workers did not run in parallel
+--- map parallelism test: FAIL
+*** Starting reduce parallelism test.
+--- too few parallel reduces.
+--- reduce parallelism test: FAIL
+*** Starting job count test.
+--- map jobs ran incorrect number of times ( != 8)
+--- job count test: FAIL
+*** Starting early exit test.
+Coordinator exited
+--- early exit test: PASS
+*** Starting crash test.
+input files map[../pg-being_ernest.txt:0 ../pg-dorian_gray.txt:1 ../pg-frankenstein.txt:2 ../pg-grimm.txt:3 ../pg-huckleberry_finn.txt:4 ../pg-metamorphosis.txt:5 ../pg-sherlock_holmes.txt:6 ../pg-tom_sawyer.txt:7]
+initial worker id 0
+worker 0 request task, task type 0
+first: worker 0 try to lock ../pg-being_ernest.txt
+first: worker 0 locked ../pg-being_ernest.txt
+first: worker 0 get task ../pg-being_ernest.txt
+worker 0 assign map task ../pg-being_ernest.txt
+worker 0 task type 1
+initial worker id 1
+initial worker id 2
+worker 1 request task, task type 0
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 locked ../pg-dorian_gray.txt
+first: worker 1 get task ../pg-dorian_gray.txt
+worker 1 assign map task ../pg-dorian_gray.txt
+worker 2 request task, task type 0
+worker 1 task type 1
+first: worker 2 try to lock ../pg-frankenstein.txt
+first: worker 2 locked ../pg-frankenstein.txt
+first: worker 2 get task ../pg-frankenstein.txt
+worker 2 assign map task ../pg-frankenstein.txt
+worker 2 task type 1
+initial worker id 3
+worker 3 request task, task type 0
+first: worker 3 try to lock ../pg-grimm.txt
+first: worker 3 locked ../pg-grimm.txt
+first: worker 3 get task ../pg-grimm.txt
+worker 3 assign map task ../pg-grimm.txt
+worker 1 request task, task type 1
+worker 1 try to finish ../pg-dorian_gray.txt
+worker 1 finish ../pg-dorian_gray.txt
+../pg-dorian_gray.txt map[1:true]
+worker 1 return ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-frankenstein.txt
+first: worker 1 locked ../pg-frankenstein.txt
+first: worker 1 unlock ../pg-frankenstein.txt
+first: worker 1 try to lock ../pg-grimm.txt
+first: worker 1 locked ../pg-grimm.txt
+first: worker 1 unlock ../pg-grimm.txt
+first: worker 1 try to lock ../pg-huckleberry_finn.txt
+first: worker 1 locked ../pg-huckleberry_finn.txt
+first: worker 1 get task ../pg-huckleberry_finn.txt
+worker 1 assign map task ../pg-huckleberry_finn.txt
+worker 3 task type 1
+worker 1 task type 1
+worker 3 request task, task type 1
+worker 3 try to finish ../pg-grimm.txt
+worker 3 finish ../pg-grimm.txt
+../pg-grimm.txt map[1:true 3:true]
+worker 3 return ../pg-grimm.txt
+first: worker 3 try to lock ../pg-grimm.txt
+first: worker 3 try to lock ../pg-huckleberry_finn.txt
+first: worker 3 locked ../pg-huckleberry_finn.txt
+first: worker 3 unlock ../pg-huckleberry_finn.txt
+first: worker 3 try to lock ../pg-metamorphosis.txt
+first: worker 3 locked ../pg-metamorphosis.txt
+first: worker 3 get task ../pg-metamorphosis.txt
+worker 3 assign map task ../pg-metamorphosis.txt
+worker 3 task type 1
+initial worker id 4
+worker 4 request task, task type 0
+first: worker 4 try to lock ../pg-huckleberry_finn.txt
+first: worker 4 locked ../pg-huckleberry_finn.txt
+first: worker 4 unlock ../pg-huckleberry_finn.txt
+first: worker 4 try to lock ../pg-metamorphosis.txt
+first: worker 4 locked ../pg-metamorphosis.txt
+first: worker 4 unlock ../pg-metamorphosis.txt
+first: worker 4 try to lock ../pg-sherlock_holmes.txt
+first: worker 4 locked ../pg-sherlock_holmes.txt
+first: worker 4 get task ../pg-sherlock_holmes.txt
+worker 4 assign map task ../pg-sherlock_holmes.txt
+worker 4 task type 1
+worker 1 request task, task type 1
+worker 1 try to finish ../pg-huckleberry_finn.txt
+worker 1 finish ../pg-huckleberry_finn.txt
+../pg-huckleberry_finn.txt map[1:true 3:true 4:true]
+worker 1 return ../pg-huckleberry_finn.txt
+first: worker 1 try to lock ../pg-dorian_gray.txt
+first: worker 1 try to lock ../pg-frankenstein.txt
+first: worker 1 locked ../pg-frankenstein.txt
+first: worker 1 unlock ../pg-frankenstein.txt
+first: worker 1 try to lock ../pg-grimm.txt
+first: worker 1 try to lock ../pg-huckleberry_finn.txt
+first: worker 1 try to lock ../pg-metamorphosis.txt
+first: worker 1 locked ../pg-metamorphosis.txt
+first: worker 1 unlock ../pg-metamorphosis.txt
+first: worker 1 try to lock ../pg-sherlock_holmes.txt
+first: worker 1 locked ../pg-sherlock_holmes.txt
+first: worker 1 unlock ../pg-sherlock_holmes.txt
+first: worker 1 try to lock ../pg-tom_sawyer.txt
+first: worker 1 locked ../pg-tom_sawyer.txt
+first: worker 1 get task ../pg-tom_sawyer.txt
+worker 1 assign map task ../pg-tom_sawyer.txt
+worker 1 task type 1
+initial worker id 5
+worker 5 request task, task type 0
+first: worker 5 try to lock ../pg-metamorphosis.txt
+first: worker 5 locked ../pg-metamorphosis.txt
+first: worker 5 unlock ../pg-metamorphosis.txt
+first: worker 5 try to lock ../pg-sherlock_holmes.txt
+first: worker 5 locked ../pg-sherlock_holmes.txt
+first: worker 5 unlock ../pg-sherlock_holmes.txt
+first: worker 5 try to lock ../pg-tom_sawyer.txt
+first: worker 5 locked ../pg-tom_sawyer.txt
+first: worker 5 unlock ../pg-tom_sawyer.txt
+first: worker 5 try to lock ../pg-being_ernest.txt
+first: worker 5 locked ../pg-being_ernest.txt
+first: worker 5 unlock ../pg-being_ernest.txt
+first: worker 5 try to lock ../pg-dorian_gray.txt
+first: worker 5 try to lock ../pg-frankenstein.txt
+first: worker 5 locked ../pg-frankenstein.txt
+first: worker 5 unlock ../pg-frankenstein.txt
+first: worker 5 try to lock ../pg-grimm.txt
+first: worker 5 try to lock ../pg-huckleberry_finn.txt
+worker 5 try to lock ../pg-metamorphosis.txt
+worker 5 locked ../pg-metamorphosis.txt
+worker 5 wait to redo task ../pg-metamorphosis.txt
+worker 4 request task, task type 1
+worker 4 try to finish ../pg-sherlock_holmes.txt
+worker 4 finish ../pg-sherlock_holmes.txt
+../pg-sherlock_holmes.txt map[1:true 3:true 4:true 6:true]
+worker 4 return ../pg-sherlock_holmes.txt
+first: worker 4 try to lock ../pg-huckleberry_finn.txt
+first: worker 4 try to lock ../pg-metamorphosis.txt
+first: worker 4 locked ../pg-metamorphosis.txt
+first: worker 4 unlock ../pg-metamorphosis.txt
+first: worker 4 try to lock ../pg-sherlock_holmes.txt
+first: worker 4 try to lock ../pg-tom_sawyer.txt
+first: worker 4 locked ../pg-tom_sawyer.txt
+first: worker 4 unlock ../pg-tom_sawyer.txt
+first: worker 4 try to lock ../pg-being_ernest.txt
+first: worker 4 locked ../pg-being_ernest.txt
+first: worker 4 unlock ../pg-being_ernest.txt
+first: worker 4 try to lock ../pg-dorian_gray.txt
+first: worker 4 try to lock ../pg-frankenstein.txt
+first: worker 4 locked ../pg-frankenstein.txt
+first: worker 4 unlock ../pg-frankenstein.txt
+first: worker 4 try to lock ../pg-grimm.txt
+worker 4 try to lock ../pg-metamorphosis.txt
+worker 4 locked ../pg-metamorphosis.txt
+worker 4 wait to redo task ../pg-metamorphosis.txt
+worker 3 request task, task type 1
+worker 3 try to finish ../pg-metamorphosis.txt
+worker 3 finish ../pg-metamorphosis.txt
+../pg-metamorphosis.txt map[1:true 3:true 4:true 5:true 6:true]
+worker 3 return ../pg-metamorphosis.txt
+first: worker 3 try to lock ../pg-grimm.txt
+first: worker 3 try to lock ../pg-huckleberry_finn.txt
+first: worker 3 try to lock ../pg-metamorphosis.txt
+first: worker 3 try to lock ../pg-sherlock_holmes.txt
+first: worker 3 try to lock ../pg-tom_sawyer.txt
+first: worker 3 locked ../pg-tom_sawyer.txt
+first: worker 3 unlock ../pg-tom_sawyer.txt
+first: worker 3 try to lock ../pg-being_ernest.txt
+first: worker 3 locked ../pg-being_ernest.txt
+first: worker 3 unlock ../pg-being_ernest.txt
+first: worker 3 try to lock ../pg-dorian_gray.txt
+first: worker 3 try to lock ../pg-frankenstein.txt
+first: worker 3 locked ../pg-frankenstein.txt
+first: worker 3 unlock ../pg-frankenstein.txt
+worker 3 try to lock ../pg-tom_sawyer.txt
+worker 3 locked ../pg-tom_sawyer.txt
+worker 3 wait to redo task ../pg-tom_sawyer.txt
+worker 4 unlock ../pg-metamorphosis.txt
+worker 4 try to lock ../pg-tom_sawyer.txt
+worker 4 locked ../pg-tom_sawyer.txt
+worker 4 wait to redo task ../pg-tom_sawyer.txt
+worker 5 unlock ../pg-metamorphosis.txt
+worker 5 try to lock ../pg-tom_sawyer.txt
+worker 5 locked ../pg-tom_sawyer.txt
+worker 5 wait to redo task ../pg-tom_sawyer.txt
+worker 3 unlock ../pg-tom_sawyer.txt
+worker 4 unlock ../pg-tom_sawyer.txt
+worker 4 try to lock ../pg-being_ernest.txt
+worker 4 locked ../pg-being_ernest.txt
+worker 4 redo task ../pg-being_ernest.txt
+worker 4 release the lock ../pg-being_ernest.txt
+worker 5 release the lock ../pg-tom_sawyer.txt
+worker 5 assign map task ../pg-tom_sawyer.txt
+worker 4 assign map task ../pg-being_ernest.txt
+worker 3 try to lock ../pg-being_ernest.txt
+worker 3 locked ../pg-being_ernest.txt
+worker 3 wait to redo task ../pg-being_ernest.txt
+worker 4 task type 1
+worker 5 task type 1
+initial worker id 7
+initial worker id 6
+worker 6 request task, task type 0
+first: worker 6 try to lock ../pg-sherlock_holmes.txt
+first: worker 6 try to lock ../pg-tom_sawyer.txt
+first: worker 6 locked ../pg-tom_sawyer.txt
+first: worker 6 unlock ../pg-tom_sawyer.txt
+first: worker 6 try to lock ../pg-being_ernest.txt
+first: worker 6 locked ../pg-being_ernest.txt
+first: worker 6 unlock ../pg-being_ernest.txt
+first: worker 6 try to lock ../pg-dorian_gray.txt
+first: worker 6 try to lock ../pg-frankenstein.txt
+first: worker 6 locked ../pg-frankenstein.txt
+first: worker 6 get task ../pg-frankenstein.txt
+worker 6 assign map task ../pg-frankenstein.txt
+worker 7 request task, task type 0
+first: worker 7 try to lock ../pg-tom_sawyer.txt
+first: worker 7 locked ../pg-tom_sawyer.txt
+first: worker 7 unlock ../pg-tom_sawyer.txt
+first: worker 7 try to lock ../pg-being_ernest.txt
+first: worker 7 locked ../pg-being_ernest.txt
+first: worker 7 unlock ../pg-being_ernest.txt
+first: worker 7 try to lock ../pg-dorian_gray.txt
+first: worker 7 try to lock ../pg-frankenstein.txt
+first: worker 7 locked ../pg-frankenstein.txt
+first: worker 7 unlock ../pg-frankenstein.txt
+first: worker 7 try to lock ../pg-grimm.txt
+first: worker 7 try to lock ../pg-huckleberry_finn.txt
+first: worker 7 try to lock ../pg-metamorphosis.txt
+first: worker 7 try to lock ../pg-sherlock_holmes.txt
+worker 7 try to lock ../pg-tom_sawyer.txt
+worker 7 locked ../pg-tom_sawyer.txt
+worker 7 wait to redo task ../pg-tom_sawyer.txt
+worker 6 task type 1
+worker 6 request task, task type 1
+worker 6 try to finish ../pg-frankenstein.txt
+worker 6 finish ../pg-frankenstein.txt
+../pg-frankenstein.txt map[1:true 2:true 3:true 4:true 5:true 6:true]
+worker 6 return ../pg-frankenstein.txt
+first: worker 6 try to lock ../pg-sherlock_holmes.txt
+first: worker 6 try to lock ../pg-tom_sawyer.txt
+first: worker 6 locked ../pg-tom_sawyer.txt
+first: worker 6 unlock ../pg-tom_sawyer.txt
+first: worker 6 try to lock ../pg-being_ernest.txt
+first: worker 6 locked ../pg-being_ernest.txt
+first: worker 6 unlock ../pg-being_ernest.txt
+first: worker 6 try to lock ../pg-dorian_gray.txt
+first: worker 6 try to lock ../pg-frankenstein.txt
+first: worker 6 try to lock ../pg-grimm.txt
+first: worker 6 try to lock ../pg-huckleberry_finn.txt
+first: worker 6 try to lock ../pg-metamorphosis.txt
+worker 6 try to lock ../pg-tom_sawyer.txt
+worker 6 locked ../pg-tom_sawyer.txt
+worker 6 wait to redo task ../pg-tom_sawyer.txt
+worker 6 release the lock ../pg-tom_sawyer.txt
+worker 6 assign map task ../pg-tom_sawyer.txt
+worker 3 release the lock ../pg-being_ernest.txt
+worker 3 assign map task ../pg-being_ernest.txt
+worker 7 unlock ../pg-tom_sawyer.txt
+worker 7 try to lock ../pg-being_ernest.txt
+worker 7 locked ../pg-being_ernest.txt
+worker 7 wait to redo task ../pg-being_ernest.txt
+worker 3 task type 1
+worker 6 task type 1
+initial worker id 8
+worker 8 request task, task type 0
+first: worker 8 try to lock ../pg-being_ernest.txt
+first: worker 8 locked ../pg-being_ernest.txt
+first: worker 8 unlock ../pg-being_ernest.txt
+first: worker 8 try to lock ../pg-dorian_gray.txt
+first: worker 8 try to lock ../pg-frankenstein.txt
+first: worker 8 try to lock ../pg-grimm.txt
+first: worker 8 try to lock ../pg-huckleberry_finn.txt
+first: worker 8 try to lock ../pg-metamorphosis.txt
+first: worker 8 try to lock ../pg-sherlock_holmes.txt
+first: worker 8 try to lock ../pg-tom_sawyer.txt
+first: worker 8 locked ../pg-tom_sawyer.txt
+first: worker 8 unlock ../pg-tom_sawyer.txt
+worker 8 try to lock ../pg-being_ernest.txt
+worker 8 locked ../pg-being_ernest.txt
+worker 8 wait to redo task ../pg-being_ernest.txt
+worker 3 request task, task type 1
+worker 3 try to finish ../pg-being_ernest.txt
+worker 3 finish ../pg-being_ernest.txt
+../pg-being_ernest.txt map[0:true 1:true 2:true 3:true 4:true 5:true 6:true]
+worker 3 return ../pg-being_ernest.txt
+first: worker 3 try to lock ../pg-grimm.txt
+first: worker 3 try to lock ../pg-huckleberry_finn.txt
+first: worker 3 try to lock ../pg-metamorphosis.txt
+first: worker 3 try to lock ../pg-sherlock_holmes.txt
+first: worker 3 try to lock ../pg-tom_sawyer.txt
+first: worker 3 locked ../pg-tom_sawyer.txt
+first: worker 3 unlock ../pg-tom_sawyer.txt
+first: worker 3 try to lock ../pg-being_ernest.txt
+first: worker 3 try to lock ../pg-dorian_gray.txt
+first: worker 3 try to lock ../pg-frankenstein.txt
+worker 3 try to lock ../pg-tom_sawyer.txt
+worker 3 locked ../pg-tom_sawyer.txt
+worker 3 wait to redo task ../pg-tom_sawyer.txt
+worker 8 unlock ../pg-being_ernest.txt
+worker 8 try to lock ../pg-tom_sawyer.txt
+worker 8 locked ../pg-tom_sawyer.txt
+worker 8 wait to redo task ../pg-tom_sawyer.txt
+worker 7 unlock ../pg-being_ernest.txt
+worker 7 try to lock ../pg-tom_sawyer.txt
+worker 7 locked ../pg-tom_sawyer.txt
+worker 7 wait to redo task ../pg-tom_sawyer.txt
+worker 7 release the lock ../pg-tom_sawyer.txt
+worker 7 assign map task ../pg-tom_sawyer.txt
+worker 3 unlock ../pg-tom_sawyer.txt
+worker 3 try to lock ../pg-tom_sawyer.txt
+worker 3 locked ../pg-tom_sawyer.txt
+worker 3 wait to redo task ../pg-tom_sawyer.txt
+worker 8 unlock ../pg-tom_sawyer.txt
+worker 8 try to lock ../pg-tom_sawyer.txt
+worker 8 locked ../pg-tom_sawyer.txt
+worker 8 wait to redo task ../pg-tom_sawyer.txt
+worker 7 task type 1
+worker 7 request task, task type 1
+worker 7 try to finish ../pg-tom_sawyer.txt
+worker 7 finish ../pg-tom_sawyer.txt
+../pg-tom_sawyer.txt map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true]
+worker 7 return ../pg-tom_sawyer.txt
+first: worker 7 try to lock 7
+first: worker 7 locked 7
+first: worker 7 get task 7
+worker 7 assign reduce task 7
+worker 3 unlock ../pg-tom_sawyer.txt
+first: worker 3 try to lock 3
+first: worker 3 locked 3
+first: worker 3 get task 3
+worker 3 assign reduce task 3
+worker 8 unlock ../pg-tom_sawyer.txt
+first: worker 8 try to lock 8
+first: worker 8 locked 8
+first: worker 8 get task 8
+worker 8 assign reduce task 8
+worker 7 task type 2
+worker 3 task type 2
+worker 8 task type 2
+worker 7 request task, task type 2
+worker 7 try to finish 7
+worker 7 finish 7
+7 map[7:true]
+worker 3 request task, task type 2
+worker 3 try to finish 3
+worker 3 finish 3
+3 map[3:true 7:true]
+worker 7 return 7
+first: worker 7 try to lock 7
+first: worker 7 try to lock 8
+first: worker 7 locked 8
+first: worker 7 unlock 8
+first: worker 7 try to lock 9
+first: worker 7 locked 9
+first: worker 7 get task 9
+worker 7 assign reduce task 9
+worker 3 return 3
+first: worker 3 try to lock 3
+first: worker 3 try to lock 4
+first: worker 3 locked 4
+first: worker 3 get task 4
+worker 3 assign reduce task 4
+worker 8 request task, task type 2
+worker 8 try to finish 8
+worker 8 finish 8
+8 map[3:true 7:true 8:true]
+worker 8 return 8
+first: worker 8 try to lock 8
+first: worker 8 try to lock 9
+first: worker 8 locked 9
+first: worker 8 unlock 9
+first: worker 8 try to lock 0
+first: worker 8 locked 0
+first: worker 8 get task 0
+worker 8 assign reduce task 0
+worker 7 task type 2
+worker 3 task type 2
+worker 8 task type 2
+worker 7 request task, task type 2
+worker 7 try to finish 9
+worker 7 finish 9
+9 map[3:true 7:true 8:true 9:true]
+worker 7 return 9
+first: worker 7 try to lock 7
+first: worker 7 try to lock 8
+first: worker 7 try to lock 9
+first: worker 7 try to lock 0
+first: worker 7 locked 0
+first: worker 7 unlock 0
+first: worker 7 try to lock 1
+first: worker 7 locked 1
+first: worker 7 get task 1
+worker 7 assign reduce task 1
+worker 3 request task, task type 2
+worker 3 try to finish 4
+worker 3 finish 4
+4 map[3:true 4:true 7:true 8:true 9:true]
+worker 3 return 4
+first: worker 3 try to lock 3
+first: worker 3 try to lock 4
+first: worker 3 try to lock 5
+first: worker 3 locked 5
+first: worker 3 get task 5
+worker 3 assign reduce task 5
+worker 7 task type 2
+worker 3 task type 2
+worker 7 request task, task type 2
+worker 7 try to finish 1
+worker 7 finish 1
+1 map[1:true 3:true 4:true 7:true 8:true 9:true]
+worker 7 return 1
+first: worker 7 try to lock 7
+first: worker 7 try to lock 8
+first: worker 7 try to lock 9
+first: worker 7 try to lock 0
+first: worker 7 locked 0
+first: worker 7 unlock 0
+first: worker 7 try to lock 1
+first: worker 7 try to lock 2
+first: worker 7 locked 2
+first: worker 7 get task 2
+worker 7 assign reduce task 2
+worker 7 task type 2
+worker 3 request task, task type 2
+worker 3 try to finish 5
+worker 3 finish 5
+5 map[1:true 3:true 4:true 5:true 7:true 8:true 9:true]
+worker 3 return 5
+first: worker 3 try to lock 3
+first: worker 3 try to lock 4
+first: worker 3 try to lock 5
+first: worker 3 try to lock 6
+first: worker 3 locked 6
+first: worker 3 get task 6
+worker 3 assign reduce task 6
+worker 3 task type 2
+worker 3 request task, task type 2
+worker 3 try to finish 6
+worker 3 finish 6
+6 map[1:true 3:true 4:true 5:true 6:true 7:true 8:true 9:true]
+worker 3 return 6
+first: worker 3 try to lock 3
+first: worker 3 try to lock 4
+first: worker 3 try to lock 5
+first: worker 3 try to lock 6
+first: worker 3 try to lock 7
+first: worker 3 try to lock 8
+first: worker 3 try to lock 9
+first: worker 3 try to lock 0
+first: worker 3 locked 0
+first: worker 3 unlock 0
+first: worker 3 try to lock 1
+first: worker 3 try to lock 2
+first: worker 3 locked 2
+first: worker 3 unlock 2
+worker 3 try to lock 0
+worker 3 locked 0
+worker 3 wait to redo task 0
+initial worker id 9
+worker 9 request task, task type 0
+first: worker 9 try to lock 9
+first: worker 9 try to lock 0
+first: worker 9 locked 0
+first: worker 9 unlock 0
+first: worker 9 try to lock 1
+first: worker 9 try to lock 2
+first: worker 9 locked 2
+first: worker 9 unlock 2
+first: worker 9 try to lock 3
+first: worker 9 try to lock 4
+first: worker 9 try to lock 5
+first: worker 9 try to lock 6
+first: worker 9 try to lock 7
+first: worker 9 try to lock 8
+worker 9 try to lock 0
+worker 9 locked 0
+worker 9 wait to redo task 0
+worker 7 request task, task type 2
+worker 7 try to finish 2
+worker 7 finish 2
+2 map[1:true 2:true 3:true 4:true 5:true 6:true 7:true 8:true 9:true]
+worker 7 return 2
+first: worker 7 try to lock 7
+first: worker 7 try to lock 8
+first: worker 7 try to lock 9
+first: worker 7 try to lock 0
+first: worker 7 locked 0
+first: worker 7 unlock 0
+first: worker 7 try to lock 1
+first: worker 7 try to lock 2
+first: worker 7 try to lock 3
+first: worker 7 try to lock 4
+first: worker 7 try to lock 5
+first: worker 7 try to lock 6
+worker 7 try to lock 0
+worker 7 locked 0
+worker 7 wait to redo task 0
+worker 7 release the lock 0
+worker 7 assign reduce task 0
+worker 9 unlock 0
+worker 9 try to lock 0
+worker 9 locked 0
+worker 9 wait to redo task 0
+worker 3 unlock 0
+worker 3 try to lock 0
+worker 3 locked 0
+worker 3 wait to redo task 0
+worker 7 task type 2
+initial worker id 10
+worker 10 request task, task type 0
+first: worker 10 try to lock 0
+first: worker 10 locked 0
+first: worker 10 unlock 0
+first: worker 10 try to lock 1
+first: worker 10 try to lock 2
+first: worker 10 try to lock 3
+first: worker 10 try to lock 4
+first: worker 10 try to lock 5
+first: worker 10 try to lock 6
+first: worker 10 try to lock 7
+first: worker 10 try to lock 8
+first: worker 10 try to lock 9
+worker 10 try to lock 0
+worker 10 locked 0
+worker 10 wait to redo task 0
+worker 10 release the lock 0
+worker 10 assign reduce task 0
+worker 9 unlock 0
+worker 9 try to lock 0
+worker 9 locked 0
+worker 9 wait to redo task 0
+worker 3 unlock 0
+worker 3 try to lock 0
+worker 3 locked 0
+worker 3 wait to redo task 0
+worker 10 task type 2
+initial worker id 11
+worker 11 request task, task type 0
+first: worker 11 try to lock 1
+first: worker 11 try to lock 2
+first: worker 11 try to lock 3
+first: worker 11 try to lock 4
+first: worker 11 try to lock 5
+first: worker 11 try to lock 6
+first: worker 11 try to lock 7
+first: worker 11 try to lock 8
+first: worker 11 try to lock 9
+first: worker 11 try to lock 0
+first: worker 11 locked 0
+first: worker 11 unlock 0
+worker 11 try to lock 0
+worker 11 locked 0
+worker 11 wait to redo task 0
+worker 11 release the lock 0
+worker 11 assign reduce task 0
+worker 9 unlock 0
+worker 9 try to lock 0
+worker 9 locked 0
+worker 9 wait to redo task 0
+worker 3 unlock 0
+worker 3 try to lock 0
+worker 3 locked 0
+worker 3 wait to redo task 0
+worker 11 task type 2
+initial worker id 12
+worker 12 request task, task type 0
+first: worker 12 try to lock 2
+first: worker 12 try to lock 3
+first: worker 12 try to lock 4
+first: worker 12 try to lock 5
+first: worker 12 try to lock 6
+first: worker 12 try to lock 7
+first: worker 12 try to lock 8
+first: worker 12 try to lock 9
+first: worker 12 try to lock 0
+first: worker 12 locked 0
+first: worker 12 unlock 0
+first: worker 12 try to lock 1
+worker 12 try to lock 0
+worker 12 locked 0
+worker 12 wait to redo task 0
+worker 12 release the lock 0
+worker 12 assign reduce task 0
+worker 9 unlock 0
+worker 9 try to lock 0
+worker 9 locked 0
+worker 9 wait to redo task 0
+worker 3 unlock 0
+worker 3 try to lock 0
+worker 3 locked 0
+worker 3 wait to redo task 0
+worker 12 task type 2
+worker 12 request task, task type 2
+worker 12 try to finish 0
+worker 12 finish 0
+0 map[0:true 1:true 2:true 3:true 4:true 5:true 6:true 7:true 8:true 9:true]
+worker 12 return 0
+worker 3 unlock 0
+worker 9 unlock 0
+worker 12 task type 0
+worker 9 task type 0
+worker 3 task type 0
+initial worker id 13
+initial worker id 14
+initial worker id 15
+worker 13 request task, task type 0
+worker 15 request task, task type 0
+worker 14 request task, task type 0
+worker 13 task type 0
+worker 15 task type 0
+worker 14 task type 0
+--- crash test: PASS
+*** FAILED SOME TESTS
+timeout: invalid time interval ‘../mrcoordinator’
+Try 'timeout --help' for more information.
+timeout: timeout: invalid time interval ‘../mrworker’invalid time interval ‘../mrworker’
+
+Try 'timeout --help' for more information.
+Try 'timeout --help' for more information.
+sort: cannot read: 'mr-out*': No such file or directory
+cmp: EOF on mr-indexer-all which is empty
+timeout: invalid time interval ‘../mrcoordinator’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+cat: 'mr-out*': No such file or directory
+cat: 'mr-out*': No such file or directory
+timeout: invalid time interval ‘../mrcoordinator’
+Try 'timeout --help' for more information.
+timeout: timeout: invalid time interval ‘../mrworker’
+invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+Try 'timeout --help' for more information.
+cat: 'mr-out*': No such file or directory
+timeout: invalid time interval ‘../mrcoordinator’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+cat: 'mr-out*': No such file or directory
+./test-mr.sh: line 267: [: : integer expression expected
+timeout: invalid time interval ‘../mrcoordinator’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+timeout: invalid time interval ‘../mrworker’
+Try 'timeout --help' for more information.
+sort: cannot read: 'mr-out*': No such file or directory
+sort: cannot read: 'mr-out*': No such file or directory
+*** FAILED TESTS IN TRIAL 1

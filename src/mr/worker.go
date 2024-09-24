@@ -27,6 +27,8 @@ func (a ByKey) Len() int           { return len(a) }
 func (a ByKey) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByKey) Less(i, j int) bool { return a[i].Key < a[j].Key }
 
+const ()
+
 // use ihash(key) % NReduce to choose the reduce
 // task number for each KeyValue emitted by Map.
 func ihash(key string) int {
@@ -58,19 +60,33 @@ func Worker(mapf func(string, string) []KeyValue,
 
 		request.TaskType = response.TaskType
 		if response.TaskType == 1 {
-			MapTask(mapf, response.InputFile, nReduce, request.WorkerId)
+			request.IntermediateFile = MapTask(mapf, response.InputFile, nReduce, request.WorkerId)
 		} else if response.TaskType == 2 {
 			intermediate, err := strconv.Atoi(response.InputFile)
 			if err != nil {
 				log.Fatalf("cannot convert %v", response.InputFile)
 			}
-			ReduceTask(reducef, intermediate)
+			request.IntermediateFile = ReduceTask(reducef, intermediate, request.WorkerId)
 		}
 		request.FinishedFile = response.InputFile
 	}
 }
 
-func MapTask(mapf func(string, string) []KeyValue, filename string, nReduce int, workerId int) {
+func CreateTempDir(workerId int) string {
+	// use temp file to store intermediate result -> rename to final file after write done
+	tempPathName := fmt.Sprintf("mr/worker-%d", workerId)
+	// define the temp directory
+	subDir := filepath.Join(os.TempDir(), tempPathName)
+
+	// Create the subdirectory if it doesn't exist
+	err := os.MkdirAll(subDir, 0755) // Permissions: read/write/execute for owner, read/execute for others
+	if err != nil {
+		log.Fatal("Error creating subdirectory:", err)
+	}
+	return subDir
+}
+
+func MapTask(mapf func(string, string) []KeyValue, filename string, nReduce int, workerId int) string {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("cannot open %v", filename)
@@ -83,19 +99,10 @@ func MapTask(mapf func(string, string) []KeyValue, filename string, nReduce int,
 	}
 	intermediate := mapf(filename, string(content))
 
-	// use temp file to store intermediate result -> rename to final file after write done
-	tempPathName := fmt.Sprintf("mr/worker-%d", workerId)
-	// define the temp directory
-	subDir := filepath.Join(os.TempDir(), tempPathName)
-
-	// Create the subdirectory if it doesn't exist
-	err = os.MkdirAll(subDir, 0755) // Permissions: read/write/execute for owner, read/execute for others
-	if err != nil {
-		log.Fatal("Error creating subdirectory:", err)
-	}
-
 	tempFiles := make([]*os.File, nReduce)
 	encoders := make([]*json.Encoder, nReduce)
+
+	subDir := CreateTempDir(workerId)
 
 	for i := 0; i < nReduce; i++ {
 		tempFile, err := os.CreateTemp(subDir, "mr-intermediate-*")
@@ -117,19 +124,20 @@ func MapTask(mapf func(string, string) []KeyValue, filename string, nReduce int,
 
 	hashFile := ihash(filename)
 
+	filePrefix := fmt.Sprintf("mr-intermediate-%d-%d", workerId, hashFile)
 	for i := 0; i < nReduce; i++ {
-		// rename to final file -> the struct of intermediate file is "mr-intermediate-{map worker id}-{filename}-{reduce id}"
-		err = os.Rename(tempFiles[i].Name(), fmt.Sprintf("mr-intermediate-%d-%d-%d", workerId, hashFile, i))
+		// rename to final file -> the struct of intermediate file is "mr-intermediate-{map worker id}-{hash(filename)}-{reduce id}"
+		err = os.Rename(tempFiles[i].Name(), fmt.Sprintf("%s-%d", filePrefix, i))
 		if err != nil {
 			log.Fatalf("cannot rename %v", err)
 		}
 		tempFiles[i].Close()
 	}
+	return filePrefix
 }
 
-func ReduceTask(reducef func(string, []string) string, intermediate int) {
+func ReduceTask(reducef func(string, []string) string, intermediate int, workerId int) string {
 	ifilename := fmt.Sprintf("mr-intermediate-*-%d", intermediate)
-	ofilename := fmt.Sprintf("mr-out-%d", intermediate)
 
 	files, err := filepath.Glob(ifilename)
 	if err != nil {
@@ -157,11 +165,13 @@ func ReduceTask(reducef func(string, []string) string, intermediate int) {
 
 	sort.Sort(ByKey(kvs))
 
-	ofile, err := os.Create(ofilename)
+	subDir := CreateTempDir(workerId)
+	tempFile, err := os.CreateTemp(subDir, "mr-out-*")
+
 	if err != nil {
-		log.Fatalf("cannot create %v", err)
+		log.Fatalf("cannot open %v", err)
 	}
-	defer ofile.Close()
+	defer tempFile.Close()
 
 	i := 0
 	for i < len(kvs) {
@@ -176,11 +186,18 @@ func ReduceTask(reducef func(string, []string) string, intermediate int) {
 		output := reducef(kvs[i].Key, values)
 
 		// this is the correct format for each line of Reduce output.
-		fmt.Fprintf(ofile, "%v %v\n", kvs[i].Key, output)
-
+		fmt.Fprintf(tempFile, "%v %v\n", kvs[i].Key, output)
 		i = j
 	}
 
+	// rename to final file -> the struct of intermediate file is "mr-out-{worker id}-{reduce id}"
+	filePrefix := fmt.Sprintf("mr-out-%d-%d", workerId, intermediate)
+	err = os.Rename(tempFile.Name(), filePrefix)
+	if err != nil {
+		log.Fatalf("cannot rename %v", err)
+	}
+
+	return filePrefix
 }
 
 func InitialRequest(request RPCRequset) RPCResponse {

@@ -31,9 +31,10 @@ const (
 
 // Add your RPC definitions here.
 type RPCRequset struct {
-	WorkerId     int
-	TaskType     TaskType
-	FinishedFile string
+	WorkerId         int
+	TaskType         TaskType
+	FinishedFile     string
+	IntermediateFile string
 }
 
 type RPCResponse struct {

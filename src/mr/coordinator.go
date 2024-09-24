@@ -8,6 +8,7 @@ import (
 	_ "net/http/pprof"
 	"net/rpc"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sync"
 	"time"
@@ -31,15 +32,20 @@ type TargetFile struct {
 	condition       *sync.Cond // worker may wait for
 }
 
+type FileBundle struct {
+	files     []TargetFile
+	fileToIdx map[string]int
+	donePool  map[int]bool
+	finished  bool
+}
+
 type Coordinator struct {
 	// Your definitions here.
-	nextWorkerId              int
-	lock                      sync.Mutex
-	nReduce                   int
-	inputFiles                []TargetFile
-	intputFileNameToIdx       map[string]int // map input file name to index
-	intermediateFiles         []TargetFile
-	intermediateFileNameToIdx map[string]int
+	nextWorkerId      int
+	lock              sync.Mutex
+	nReduce           int
+	inputFiles        FileBundle
+	intermediateFiles FileBundle
 }
 
 // Your code here -- RPC handlers for the worker to call.
@@ -52,45 +58,21 @@ func (c *Coordinator) InitialRequest(request *RPCRequset, response *RPCResponse)
 	return nil
 }
 
-// wait for a condition with timeout
-// return true if the condition is met, otherwise return false
-// this function will always give-up lock before return
-func TimeoutWait(cond *sync.Cond, timeout time.Duration) bool {
-	timer := time.NewTimer(timeout)
-	defer timer.Stop()
-
-	// a channel to notify the condition is met
-	done := make(chan bool)
-	go func() {
-		cond.Wait()
-		cond.L.Unlock() // unlock the lock
-		done <- true
-	}()
-
-	// wait for the condition or timeout
-	select {
-	case <-timer.C:
-		{
-			cond.Broadcast() // wake up nested goroutine
-			return false
-		}
-	case <-done:
-		return true
+func RequestForTargetFile(bundle *FileBundle, workerId int) *TargetFile {
+	if bundle.finished {
+		return nil
 	}
-}
 
-// return a task to finish
-func RequestForTargetFile(inputFiles []TargetFile, workerId int) *TargetFile {
-	for i, j := 0, workerId%len(inputFiles); i < len(inputFiles); i, j = i+1, j+1 {
-		if j == len(inputFiles) {
+	for i, j := 0, workerId%len(bundle.files); i < len(bundle.files); i, j = i+1, j+1 {
+		if j == len(bundle.files) {
 			j = 0
 		}
-		file := &inputFiles[j]
+		file := &bundle.files[j]
 		fmt.Printf("first: worker %v try to lock %v\n", workerId, file.fileName)
 		// file state is completed, skip
-		// if file.state == Completed {
-		// 	continue
-		// }
+		if file.state == Completed {
+			continue
+		}
 		file.lock.Lock()
 		fmt.Printf("first: worker %v locked %v\n", workerId, file.fileName)
 		if file.state == NotStarted || (file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME) {
@@ -104,87 +86,120 @@ func RequestForTargetFile(inputFiles []TargetFile, workerId int) *TargetFile {
 		fmt.Printf("first: worker %v unlock %v\n", workerId, file.fileName)
 	}
 
-	for i, j := 0, workerId%len(inputFiles); i < len(inputFiles); i, j = i+1, j+1 {
-		if j == len(inputFiles) {
+	// check files to complete => block, until all files are completed
+	for i, j := 0, workerId%len(bundle.files); i <= len(bundle.files); i, j = i+1, j+1 {
+		if j == len(bundle.files) {
 			j = 0
 		}
-		inputFile := &inputFiles[j]
+		file := &bundle.files[j]
 		// complete work cannot be in progress again
-		// if inputFile.state == Completed {
-		// 	continue
-		// }
-		fmt.Printf("worker %v try to lock %v\n", workerId, inputFile.fileName)
-		inputFile.lock.Lock()
-		fmt.Printf("worker %v locked %v\n", workerId, inputFile.fileName)
+		if file.state == Completed {
+			continue
+		}
+		fmt.Printf("worker %v try to lock %v\n", workerId, file.fileName)
+		file.lock.Lock()
+		fmt.Printf("worker %v locked %v\n", workerId, file.fileName)
 		// task has not started or timeout
-		if inputFile.state == InProgress {
+		if file.state == InProgress {
 			i = 0
-			lastTime := inputFile.lastExecuteTime
+			lastTime := file.lastExecuteTime
 			sinceLast := time.Since(lastTime)
 			if sinceLast >= MAX_EXECUTE_TIME {
 				// redo task immediately
-				fmt.Printf("worker %v redo task %v\n", workerId, inputFile.fileName)
-				inputFile.lastExecuteTime = time.Now()
-				inputFile.condition.Broadcast() // wake up the waiting worker
-				inputFile.lock.Unlock()
-				fmt.Printf("worker %v release the lock %v\n", workerId, inputFile.fileName)
-				return inputFile
+				fmt.Printf("worker %v redo task %v\n", workerId, file.fileName)
+				file.lastExecuteTime = time.Now()
+				file.condition.Broadcast() // wake up the waiting worker
+				file.lock.Unlock()
+				fmt.Printf("worker %v release the lock %v\n", workerId, file.fileName)
+				return file
 			} else {
-				// wait for the task to finish
-				fmt.Printf("worker %v wait to redo task %v\n", workerId, inputFile.fileName)
-				finished := TimeoutWait(inputFile.condition, MAX_EXECUTE_TIME-sinceLast)
-				if !finished {
-					// task timeout (lost lock)
-					fmt.Printf("worker %v retry to lock %v\n", workerId, inputFile.fileName)
-					inputFile.lock.Lock()
-					fmt.Printf("worker %v relocked %v\n", workerId, inputFile.fileName)
-					// current task has not been taken by other worker
-					if inputFile.lastExecuteTime == lastTime {
-						inputFile.lastExecuteTime = time.Now()
-						inputFile.condition.Broadcast() // wake up the waiting worker
-						inputFile.lock.Unlock()
-						fmt.Printf("worker %v release the lock %v\n", workerId, inputFile.fileName)
-						return inputFile
-					}
+				// wait to redo task (wake up by other worker or monitor)
+				fmt.Printf("worker %v wait to redo task %v\n", workerId, file.fileName)
+				file.condition.Wait()
+				// current task has not been taken by other worker
+				if file.state == InProgress && file.lastExecuteTime == lastTime {
+					file.lastExecuteTime = time.Now()
+					file.lock.Unlock()
+					fmt.Printf("worker %v release the lock %v\n", workerId, file.fileName)
+					return file
 				}
-				continue
 			}
 		}
-		inputFile.lock.Unlock()
-		fmt.Printf("worker %v unlock %v\n", workerId, inputFile.fileName)
+		file.lock.Unlock()
+		fmt.Printf("worker %v unlock %v\n", workerId, file.fileName)
 	}
 
 	return nil
 }
 
-func TryToFinishFileState(filename string, files []TargetFile, fileToIdx map[string]int, workerId int) {
-	if _, exist := fileToIdx[filename]; exist {
-		idx := fileToIdx[filename]
-		file := &files[idx]
-		fmt.Printf("worker %v try to finish %v\n", workerId, filename)
+func (c *Coordinator) TryToFinishFileState(request *RPCRequset) {
+	var bundle *FileBundle
+	if request.TaskType == Map {
+		bundle = &c.inputFiles
+	} else {
+		bundle = &c.intermediateFiles
+	}
+
+	if idx, exist := bundle.fileToIdx[request.FinishedFile]; exist {
+		file := &bundle.files[idx]
+		fmt.Printf("worker %v try to finish %v\n", request.WorkerId, request.FinishedFile)
 		file.lock.Lock()
-		fmt.Printf("worker %v finish %v\n", workerId, filename)
 		// task will be marked as finished, only if the task has not timeout
 		if file.state != Completed && time.Since(file.lastExecuteTime) < MAX_EXECUTE_TIME {
+			fmt.Printf("worker %v finish %v\n", request.WorkerId, request.FinishedFile)
 			file.state = Completed
-			// wake waiting worker
-			file.condition.Broadcast()
+			// mark the task as finished
+			bundle.donePool[idx] = true
+
+			fmt.Printf("%v %v\n", request.FinishedFile, bundle.donePool)
+
+			if len(bundle.donePool) == len(bundle.files) {
+				bundle.finished = true
+			}
+
+			if request.TaskType == Reduce {
+				newPath := fmt.Sprintf("mr-out-%d", idx)
+				err := os.Rename(request.IntermediateFile, newPath)
+				if err != nil {
+					log.Fatalf("cannot rename %v", err)
+				}
+			}
+		} else {
+			fmt.Printf("worker %v timeout %v\n", request.WorkerId, request.FinishedFile)
+			if request.TaskType == Map {
+				// map task generate a bunch of intermediate file
+				wildcard := fmt.Sprintf("%s*", request.IntermediateFile)
+				files, err := filepath.Glob(wildcard)
+				if err != nil {
+					log.Fatalf("cannot find %v", err)
+				}
+				for _, f := range files {
+					err = os.Remove(f)
+					if err != nil {
+						log.Fatalf("cannot remove %v", err)
+					}
+				}
+			} else {
+				// reduce task generate one intermediate file
+				err := os.Remove(request.IntermediateFile)
+				if err != nil {
+					log.Fatalf("cannot remove %v", err)
+				}
+			}
 		}
+		// wake waiting worker
+		file.condition.Broadcast()
 		file.lock.Unlock()
-		fmt.Printf("worker %v return %v\n", workerId, filename)
+		fmt.Printf("worker %v return %v\n", request.WorkerId, request.FinishedFile)
 	}
 }
 
 func (c *Coordinator) RequestForTask(request *RPCRequset, response *RPCResponse) error {
 	fmt.Printf("worker %v request task, task type %v\n", request.WorkerId, request.TaskType)
 
-	if request.TaskType == Map {
-		TryToFinishFileState(request.FinishedFile, c.inputFiles, c.intputFileNameToIdx, request.WorkerId)
-	} else if request.TaskType == Reduce {
-		TryToFinishFileState(request.FinishedFile, c.intermediateFiles, c.intermediateFileNameToIdx, request.WorkerId)
-	}
+	c.TryToFinishFileState(request)
 
-	mapTaskFile := RequestForTargetFile(c.inputFiles, request.WorkerId)
+	mapTaskFile := RequestForTargetFile(&c.inputFiles, request.WorkerId)
 	if mapTaskFile != nil {
 		response.TaskType = Map
 		response.InputFile = mapTaskFile.fileName
@@ -192,7 +207,7 @@ func (c *Coordinator) RequestForTask(request *RPCRequset, response *RPCResponse)
 		return nil
 	}
 
-	reduceTask := RequestForTargetFile(c.intermediateFiles, request.WorkerId)
+	reduceTask := RequestForTargetFile(&c.intermediateFiles, request.WorkerId)
 
 	if reduceTask != nil {
 		response.TaskType = Reduce
@@ -231,12 +246,43 @@ func (c *Coordinator) server() {
 // if the entire job has finished.
 func (c *Coordinator) Done() bool {
 	// Your code here.
-	for i := 0; i < len(c.intermediateFiles); i++ {
-		if c.intermediateFiles[i].state != Completed {
-			return false
+	return c.intermediateFiles.finished
+}
+
+func (c *Coordinator) monitor() {
+	for {
+		time.Sleep(time.Second)
+
+		if c.Done() {
+			break
+		}
+
+		for i := 0; i < len(c.inputFiles.files) && !c.inputFiles.finished; i++ {
+			// if c.inputFiles.files[i].state == Completed {
+			// 	continue
+			// }
+			file := &c.inputFiles.files[i]
+
+			file.lock.Lock()
+			if file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME {
+				file.condition.Broadcast()
+			}
+			file.lock.Unlock()
+		}
+
+		for i := 0; i < len(c.intermediateFiles.files) && !c.intermediateFiles.finished; i++ {
+			// if c.inputFiles.files[i].state == Completed {
+			// 	continue
+			// }
+			file := &c.intermediateFiles.files[i]
+
+			file.lock.Lock()
+			if file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME {
+				file.condition.Broadcast()
+			}
+			file.lock.Unlock()
 		}
 	}
-	return true
 }
 
 // create a Coordinator.
@@ -247,30 +293,30 @@ func MakeCoordinator(files []string, nReduce int) *Coordinator {
 	c := Coordinator{}
 	c.nextWorkerId = 0
 	c.nReduce = nReduce
-	c.inputFiles = make([]TargetFile, len(files))
-	c.intputFileNameToIdx = make(map[string]int, len(files))
-	c.intermediateFiles = make([]TargetFile, nReduce)
-	c.intermediateFileNameToIdx = make(map[string]int, nReduce)
+	c.inputFiles = FileBundle{files: make([]TargetFile, len(files)), fileToIdx: make(map[string]int, len(files)), donePool: make(map[int]bool)}
+	c.intermediateFiles = FileBundle{files: make([]TargetFile, nReduce), fileToIdx: make(map[string]int, nReduce), donePool: make(map[int]bool)}
 
 	for idx, file := range files {
-		c.inputFiles[idx] = TargetFile{}
-		c.inputFiles[idx].fileName = file
-		c.inputFiles[idx].state = NotStarted
-		c.inputFiles[idx].lastExecuteTime = time.Now()
-		c.inputFiles[idx].lock = sync.Mutex{}
-		c.inputFiles[idx].condition = sync.NewCond(&c.inputFiles[idx].lock)
-		c.intputFileNameToIdx[file] = idx
+		c.inputFiles.files[idx] = TargetFile{}
+		c.inputFiles.files[idx].fileName = file
+		c.inputFiles.files[idx].state = NotStarted
+		c.inputFiles.files[idx].lastExecuteTime = time.Now()
+		c.inputFiles.files[idx].lock = sync.Mutex{}
+		c.inputFiles.files[idx].condition = sync.NewCond(&c.inputFiles.files[idx].lock)
+		c.inputFiles.fileToIdx[file] = idx
 	}
+
+	fmt.Printf("input files %v\n", c.inputFiles.fileToIdx)
 
 	for i := 0; i < nReduce; i++ {
 		fileName := fmt.Sprintf("%d", i)
-		c.intermediateFiles[i] = TargetFile{}
-		c.intermediateFiles[i].fileName = fileName
-		c.intermediateFiles[i].state = NotStarted
-		c.intermediateFiles[i].lastExecuteTime = time.Now()
-		c.intermediateFiles[i].lock = sync.Mutex{}
-		c.intermediateFiles[i].condition = sync.NewCond(&c.intermediateFiles[i].lock)
-		c.intermediateFileNameToIdx[fileName] = i
+		c.intermediateFiles.files[i] = TargetFile{}
+		c.intermediateFiles.files[i].fileName = fileName
+		c.intermediateFiles.files[i].state = NotStarted
+		c.intermediateFiles.files[i].lastExecuteTime = time.Now()
+		c.intermediateFiles.files[i].lock = sync.Mutex{}
+		c.intermediateFiles.files[i].condition = sync.NewCond(&c.intermediateFiles.files[i].lock)
+		c.intermediateFiles.fileToIdx[fileName] = i
 	}
 
 	go func() {
@@ -278,6 +324,8 @@ func MakeCoordinator(files []string, nReduce int) *Coordinator {
 		runtime.SetMutexProfileFraction(1)
 		log.Println(http.ListenAndServe("localhost:6060", nil))
 	}()
+
+	go c.monitor()
 
 	c.server()
 	return &c
