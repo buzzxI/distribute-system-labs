@@ -15,7 +15,7 @@ func DPrintf(format string, a ...interface{}) (n int, err error) {
 }
 
 type ResponseBuffer struct {
-	RequestId int64
+	RequestId bool
 	Value     string
 }
 
@@ -27,31 +27,10 @@ type KVServer struct {
 	buff map[int64]ResponseBuffer // clerk id -> response buffer
 }
 
-// check if the request is duplicated
-// if the request is duplicated, fill the oldValue and return true,
-// otherwise return false (oldValue will be dummy value)
-func (kv *KVServer) CheckDuplicateRequest(ClerkInfo MetaInfo, oldValue *string) bool {
-	buff, contains := kv.buff[ClerkInfo.ClerkId]
-	if contains && buff.RequestId == ClerkInfo.RequestId {
-		*oldValue = buff.Value
-		return true
-	}
-	return false
-}
-
-func (kv *KVServer) UpdateClerkState(ClerkInfo MetaInfo, value string) {
-	kv.buff[ClerkInfo.ClerkId] = ResponseBuffer{RequestId: ClerkInfo.RequestId, Value: value}
-}
-
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
-
 	kv.mu.Lock()
 	defer kv.mu.Unlock()
-
-	// if kv.CheckDuplicateRequest(args.ClerkMeta, &reply.Value) {
-	// 	return
-	// }
 
 	value, contains := kv.kvs[args.Key]
 	// kv.mu.Unlock()
@@ -60,33 +39,30 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	} else {
 		reply.Value = value
 	}
-	// kv.UpdateClerkState(args.ClerkMeta, reply.Value)
 }
 
 func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
-
 	kv.mu.Lock()
 	defer kv.mu.Unlock()
-	if kv.CheckDuplicateRequest(args.ClerkMeta, &reply.Value) {
-		return
-	}
 
 	kv.kvs[args.Key] = args.Value
-	// kv.mu.Unlock()
 	reply.Value = args.Value
-	kv.UpdateClerkState(args.ClerkMeta, reply.Value)
 }
 
+// Only Append cannot be duplicated
 func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
 
 	kv.mu.Lock()
 	defer kv.mu.Unlock()
 
-	if kv.CheckDuplicateRequest(args.ClerkMeta, &reply.Value) {
+	buff, contains := kv.buff[args.ClerkMeta.ClerkId]
+	if contains && buff.RequestId == args.ClerkMeta.RequestId {
+		reply.Value = buff.Value
 		return
 	}
+
 	value, contains := kv.kvs[args.Key]
 	if !contains {
 		reply.Value = ""
@@ -96,7 +72,7 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 		kv.kvs[args.Key] = value + args.Value
 	}
 	// kv.mu.Unlock()
-	kv.UpdateClerkState(args.ClerkMeta, reply.Value)
+	kv.buff[args.ClerkMeta.ClerkId] = ResponseBuffer{RequestId: args.ClerkMeta.RequestId, Value: reply.Value}
 }
 
 func StartKVServer() *KVServer {

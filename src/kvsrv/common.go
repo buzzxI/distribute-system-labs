@@ -1,9 +1,9 @@
 package kvsrv
 
-type MetaInfo struct {
+type MetaAppendInfo struct {
 	// Your definitions here.
 	ClerkId   int64
-	RequestId int64
+	RequestId bool // one client for a clerk, a bool request id is enough
 }
 
 // Put or Append
@@ -13,7 +13,7 @@ type PutAppendArgs struct {
 	// You'll have to add definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
-	ClerkMeta MetaInfo
+	ClerkMeta MetaAppendInfo
 }
 
 type PutAppendReply struct {
@@ -23,7 +23,6 @@ type PutAppendReply struct {
 type GetArgs struct {
 	Key string
 	// You'll have to add definitions here.
-	ClerkMeta MetaInfo
 }
 
 type GetReply struct {

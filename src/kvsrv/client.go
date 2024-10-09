@@ -11,7 +11,7 @@ type Clerk struct {
 	server *labrpc.ClientEnd
 	// You will have to modify this struct.
 	id int64
-	op int64
+	op bool
 }
 
 func nrand() int64 {
@@ -23,7 +23,7 @@ func nrand() int64 {
 
 func MakeClerk(server *labrpc.ClientEnd) *Clerk {
 	// You'll have to add code here.
-	return &Clerk{server: server, id: nrand(), op: 0}
+	return &Clerk{server: server, id: nrand(), op: false}
 }
 
 // fetch the current value for a key.
@@ -38,7 +38,7 @@ func MakeClerk(server *labrpc.ClientEnd) *Clerk {
 // arguments. and reply must be passed as a pointer.
 func (ck *Clerk) Get(key string) string {
 	// You will have to modify this function.
-	args := GetArgs{Key: key, ClerkMeta: MetaInfo{ClerkId: ck.id, RequestId: ck.op}}
+	args := GetArgs{Key: key}
 	var reply GetReply
 	for {
 		ok := ck.server.Call("KVServer.Get", &args, &reply)
@@ -46,7 +46,6 @@ func (ck *Clerk) Get(key string) string {
 			break
 		}
 	}
-	ck.op++
 	return reply.Value
 }
 
@@ -60,7 +59,7 @@ func (ck *Clerk) Get(key string) string {
 // arguments. and reply must be passed as a pointer.
 func (ck *Clerk) PutAppend(key string, value string, op string) string {
 	// You will have to modify this function.
-	args := PutAppendArgs{Key: key, Value: value, ClerkMeta: MetaInfo{ClerkId: ck.id, RequestId: ck.op}}
+	args := PutAppendArgs{Key: key, Value: value, ClerkMeta: MetaAppendInfo{ClerkId: ck.id, RequestId: ck.op}}
 	var reply PutAppendReply
 	for {
 		ok := ck.server.Call("KVServer."+op, &args, &reply)
@@ -68,7 +67,10 @@ func (ck *Clerk) PutAppend(key string, value string, op string) string {
 			break
 		}
 	}
-	ck.op++
+	// Only Append cannot be duplicated
+	if op == "Append" {
+		ck.op = !ck.op
+	}
 	return reply.Value
 }
 
