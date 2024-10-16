@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -35,7 +36,7 @@ type TargetFile struct {
 type FileBundle struct {
 	files     []TargetFile
 	fileToIdx map[string]int
-	donePool  map[int]bool
+	doneCount int32
 	finished  bool
 }
 
@@ -133,6 +134,11 @@ func RequestForTargetFile(bundle *FileBundle, workerId int) *TargetFile {
 }
 
 func (c *Coordinator) TryToFinishFileState(request *RPCRequset) {
+	// initial request, no file to finish
+	if request.TaskType == None {
+		return
+	}
+
 	var bundle *FileBundle
 	if request.TaskType == Map {
 		bundle = &c.inputFiles
@@ -148,12 +154,9 @@ func (c *Coordinator) TryToFinishFileState(request *RPCRequset) {
 		if file.state != Completed && time.Since(file.lastExecuteTime) < MAX_EXECUTE_TIME {
 			fmt.Printf("worker %v finish %v\n", request.WorkerId, request.FinishedFile)
 			file.state = Completed
-			// mark the task as finished
-			bundle.donePool[idx] = true
 
-			fmt.Printf("%v %v\n", request.FinishedFile, bundle.donePool)
-
-			if len(bundle.donePool) == len(bundle.files) {
+			atomic.AddInt32(&bundle.doneCount, 1)
+			if atomic.LoadInt32(&bundle.doneCount) == int32(len(bundle.files)) {
 				bundle.finished = true
 			}
 
@@ -257,24 +260,26 @@ func (c *Coordinator) monitor() {
 			break
 		}
 
-		for i := 0; i < len(c.inputFiles.files) && !c.inputFiles.finished; i++ {
-			// if c.inputFiles.files[i].state == Completed {
-			// 	continue
-			// }
-			file := &c.inputFiles.files[i]
+		if !c.inputFiles.finished {
+			for i := 0; i < len(c.inputFiles.files); i++ {
+				file := &c.inputFiles.files[i]
+				if file.state == Completed {
+					continue
+				}
 
-			file.lock.Lock()
-			if file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME {
-				file.condition.Broadcast()
+				file.lock.Lock()
+				if file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME {
+					file.condition.Broadcast()
+				}
+				file.lock.Unlock()
 			}
-			file.lock.Unlock()
 		}
 
-		for i := 0; i < len(c.intermediateFiles.files) && !c.intermediateFiles.finished; i++ {
-			// if c.inputFiles.files[i].state == Completed {
-			// 	continue
-			// }
+		for i := 0; i < len(c.intermediateFiles.files); i++ {
 			file := &c.intermediateFiles.files[i]
+			if file.state == Completed {
+				continue
+			}
 
 			file.lock.Lock()
 			if file.state == InProgress && time.Since(file.lastExecuteTime) > MAX_EXECUTE_TIME {
@@ -293,8 +298,8 @@ func MakeCoordinator(files []string, nReduce int) *Coordinator {
 	c := Coordinator{}
 	c.nextWorkerId = 0
 	c.nReduce = nReduce
-	c.inputFiles = FileBundle{files: make([]TargetFile, len(files)), fileToIdx: make(map[string]int, len(files)), donePool: make(map[int]bool)}
-	c.intermediateFiles = FileBundle{files: make([]TargetFile, nReduce), fileToIdx: make(map[string]int, nReduce), donePool: make(map[int]bool)}
+	c.inputFiles = FileBundle{files: make([]TargetFile, len(files)), fileToIdx: make(map[string]int, len(files)), doneCount: 0}
+	c.intermediateFiles = FileBundle{files: make([]TargetFile, nReduce), fileToIdx: make(map[string]int, nReduce), doneCount: 0}
 
 	for idx, file := range files {
 		c.inputFiles.files[idx] = TargetFile{}

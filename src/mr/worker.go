@@ -49,6 +49,7 @@ func Worker(mapf func(string, string) []KeyValue,
 	nReduce := response.NReduce
 	// set worker id
 	request.WorkerId = response.WorkerId
+	request.FinishedFile = ""
 
 	for {
 		// request for task
