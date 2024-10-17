@@ -33,7 +33,6 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	defer kv.mu.Unlock()
 
 	value, contains := kv.kvs[args.Key]
-	// kv.mu.Unlock()
 	if !contains {
 		reply.Value = ""
 	} else {
@@ -53,7 +52,6 @@ func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 // Only Append cannot be duplicated
 func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
-
 	kv.mu.Lock()
 	defer kv.mu.Unlock()
 
@@ -71,7 +69,7 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 		reply.Value = value
 		kv.kvs[args.Key] = value + args.Value
 	}
-	// kv.mu.Unlock()
+
 	kv.buff[args.ClerkMeta.ClerkId] = ResponseBuffer{RequestId: args.ClerkMeta.RequestId, Value: reply.Value}
 }
 
