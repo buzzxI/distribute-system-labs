@@ -8,12 +8,14 @@ package raft
 // test with the original before submitting.
 //
 
-import "testing"
-import "fmt"
-import "time"
-import "math/rand"
-import "sync/atomic"
-import "sync"
+import (
+	"fmt"
+	"math/rand"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+)
 
 // The tester generously allows solutions to complete elections in one second
 // (much more than the paper's range of timeouts).
@@ -27,7 +29,8 @@ func TestInitialElection3A(t *testing.T) {
 	cfg.begin("Test (3A): initial election")
 
 	// is a leader elected?
-	cfg.checkOneLeader()
+	leader1 := cfg.checkOneLeader()
+	fmt.Printf("leader1 %d\n", leader1)
 
 	// sleep a bit to avoid racing with followers learning of the
 	// election, then check that all peers agree on the term.
@@ -45,8 +48,8 @@ func TestInitialElection3A(t *testing.T) {
 	}
 
 	// there should still be a leader.
-	cfg.checkOneLeader()
-
+	leader2 := cfg.checkOneLeader()
+	fmt.Printf("leader2 %d\n", leader2)
 	cfg.end()
 }
 
@@ -58,16 +61,19 @@ func TestReElection3A(t *testing.T) {
 	cfg.begin("Test (3A): election after network failure")
 
 	leader1 := cfg.checkOneLeader()
+	fmt.Printf("original %d\n", leader1)
 
 	// if the leader disconnects, a new one should be elected.
 	cfg.disconnect(leader1)
-	cfg.checkOneLeader()
+	leader := cfg.checkOneLeader()
+	fmt.Printf("leader after disconnect %d\n", leader)
 
 	// if the old leader rejoins, that shouldn't
 	// disturb the new leader. and the old leader
 	// should switch to follower.
 	cfg.connect(leader1)
 	leader2 := cfg.checkOneLeader()
+	fmt.Printf("leader after reconnect %d\n", leader2)
 
 	// if there's no quorum, no new leader should
 	// be elected.
@@ -81,11 +87,13 @@ func TestReElection3A(t *testing.T) {
 
 	// if a quorum arises, it should elect a leader.
 	cfg.connect((leader2 + 1) % servers)
-	cfg.checkOneLeader()
+	leader = cfg.checkOneLeader()
+	fmt.Printf("leader after one of the quorum back %d\n", leader)
 
 	// re-join of last node shouldn't prevent leader from existing.
 	cfg.connect(leader2)
-	cfg.checkOneLeader()
+	leader = cfg.checkOneLeader()
+	fmt.Printf("leader after all reconnect %d\n", leader)
 
 	cfg.end()
 }

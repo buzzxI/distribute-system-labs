@@ -19,6 +19,7 @@ package raft
 
 import (
 	//	"bytes"
+	"fmt"
 	"math/rand"
 	"sync"
 	"sync/atomic"
@@ -50,8 +51,8 @@ type ApplyMsg struct {
 }
 
 type LogEntry struct {
-	command interface{}
-	term    int
+	Command interface{}
+	Term    int
 }
 
 // A Go object implementing a single Raft peer.
@@ -70,16 +71,18 @@ type Raft struct {
 	log         []LogEntry
 
 	lastAppendEntriesTime time.Time
+
+	// use to count broadcast
+	broadcastCount int32
 }
 
 // return currentTerm and whether this server
 // believes it is the leader.
 func (rf *Raft) GetState() (int, bool) {
-
-	var term int
-	var isleader bool
 	// Your code here (3A).
-	return term, isleader
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	return rf.currentTerm, rf.votedFor == rf.me
 }
 
 // save Raft's persistent state to stable storage,
@@ -147,9 +150,82 @@ type RequestVoteReply struct {
 	VoteGranted bool
 }
 
+// used for heartbeats for 3A
+// can be empty for 3A
+type AppendEntryArgs struct {
+	Term         int
+	LeaderId     int
+	PrevLogIndex int
+	PrevLogTerm  int
+	Entries      []LogEntry
+	LeaderCommit int
+}
+
+type AppendEntryReply struct {
+	Term    int
+	Success bool
+}
+
 // example RequestVote RPC handler.
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (3A, 3B).
+	in := time.Now()
+
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+
+	fmt.Printf("node %d get request vote from %d\n", rf.me, args.CandidateId)
+
+	if args.Term < rf.currentTerm {
+		reply.Term = args.Term
+		reply.VoteGranted = false
+	} else {
+		if args.Term > rf.currentTerm || rf.votedFor == args.CandidateId {
+			fmt.Printf("node %d grant request vote from %d term %d\n", rf.me, args.CandidateId, args.Term)
+			reply.Term = args.Term
+			reply.VoteGranted = true
+			rf.currentTerm = args.Term
+			rf.votedFor = args.CandidateId
+		} else {
+			reply.Term = rf.currentTerm
+			reply.VoteGranted = false
+		}
+	}
+	out := time.Now()
+	duration := out.Sub(in)
+	fmt.Printf("node %d request vote duration %d\n", rf.me, duration)
+}
+
+func (rf *Raft) InnerAppendEntries(args *AppendEntryArgs, reply *AppendEntryReply) {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+
+	fmt.Printf("node %d get append entry from %d current term %d arg term %d\n", rf.me, args.LeaderId, rf.currentTerm, args.Term)
+
+	if args.Term < rf.currentTerm {
+		return
+	}
+
+	if args.Term == rf.currentTerm && rf.votedFor != args.LeaderId {
+		return
+	}
+
+	fmt.Printf("node %d grant append entry from %d\n", rf.me, args.LeaderId)
+
+	// get append entry from another leader
+	rf.currentTerm = args.Term
+	rf.votedFor = args.LeaderId
+	rf.lastAppendEntriesTime = time.Now()
+}
+
+// for 3A this function just update lastAppendEntriesTime => to avoid leader election
+func (rf *Raft) AppendEntries(args *AppendEntryArgs, reply *AppendEntryReply) {
+	// Your code here (3A).
+	in := time.Now()
+	rf.InnerAppendEntries(args, reply)
+	out := time.Now()
+	duration := out.Sub(in)
+	fmt.Printf("node %d append entry duration %d\n", rf.me, duration)
 }
 
 // example code to send a RequestVote RPC to a server.
@@ -225,46 +301,139 @@ func (rf *Raft) killed() bool {
 	return z == 1
 }
 
-func (rf *Raft) ticker() {
-	for rf.killed() == false {
+// start an election
+// @returns if the election is successful
+func (rf *Raft) requestForLeader() bool {
+	rf.mu.Lock()
+	rf.currentTerm++
+	rf.votedFor = -1 // clean vote flag
+	rf.mu.Unlock()
 
-		// Your code here (3A)
-		// Check if a leader election should be started.
-		// If this peer hasn't heard from a leader in a while, it should start an election.
-		currentTime := time.Now()
-		duration := currentTime.Sub(rf.lastAppendEntriesTime)
-		if duration > time.Duration(350)*time.Millisecond {
-			// Start an election
-			rf.currentTerm++
-			rf.votedFor = rf.me
+	fmt.Printf("node %d start leader election\n", rf.me)
+	args := RequestVoteArgs{
+		Term:         rf.currentTerm,
+		CandidateId:  rf.me,
+		LastLogIndex: len(rf.log),
+		LastLogTerm:  rf.log[len(rf.log)-1].Term,
+	}
 
-			wg := sync.WaitGroup{}
-			for i := 0; i < len(rf.peers); i++ {
-				if i != rf.me {
-					wg.Add(1)
-					go func(peer int) {
-						args := RequestVoteArgs{
-							Term:         rf.currentTerm,
-							CandidateId:  rf.me,
-							LastLogIndex: len(rf.log),
-							LastLogTerm:  rf.log[len(rf.log)-1].term,
-						}
-						reply := RequestVoteReply{}
-						rf.sendRequestVote(peer, &args, &reply)
-						if reply.VoteGranted {
-						}
-						wg.Done()
-					}(i)
+	voteCh := make(chan bool)
+
+	for i := 0; i < len(rf.peers); i++ {
+		if i != rf.me {
+			go func(peer int) {
+				reply := RequestVoteReply{}
+				ok := rf.sendRequestVote(peer, &args, &reply)
+				fmt.Printf("node %d request vote RPC to %d:%v\n", rf.me, i, ok)
+				voteCh <- ok && reply.VoteGranted
+			}(i)
+		}
+	}
+
+	votedCount := 1
+loop:
+	for {
+		select {
+		case <-time.After(300 * time.Millisecond):
+			break loop
+		case msg := <-voteCh:
+			if msg {
+				votedCount++
+
+				if votedCount<<1 > len(rf.peers) {
+					// get majority vote
+					break loop
 				}
 			}
-			// Wait for all the RPCs to finish
-			wg.Wait()
 		}
+	}
 
-		// pause for a random amount of time between 50 and 350
+	fmt.Printf("node %d get %d\n", rf.me, votedCount)
+
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	return votedCount<<1 > len(rf.peers) && rf.votedFor == -1
+}
+
+// for 3A args can be empty -> just to update lastAppendEntriesTime
+func (rf *Raft) broadcastHeartbeat() {
+	atomic.AddInt32(&rf.broadcastCount, 1)
+	fmt.Printf("node %v broadcast heartbeat %d\n", rf.me, atomic.LoadInt32(&rf.broadcastCount))
+
+	args := AppendEntryArgs{
+		Term:         rf.currentTerm,
+		LeaderId:     rf.me,
+		PrevLogIndex: len(rf.log) - 1,
+		PrevLogTerm:  rf.log[len(rf.log)-1].Term,
+		Entries:      rf.log,
+		LeaderCommit: 0, // TODO: implement
+	}
+	for i := 0; i < len(rf.peers); i++ {
+		if i != rf.me {
+			go func(peer int) {
+				reply := AppendEntryReply{}
+				ok := rf.peers[peer].Call("Raft.AppendEntries", &args, &reply)
+				fmt.Printf("node %d(%d) append entry RPC to %d:%v\n", rf.me, atomic.LoadInt32(&rf.broadcastCount), i, ok)
+			}(i)
+		}
+	}
+}
+
+// ticker is used for check leader heartbeat (fellower) and broadcast heartbeat (leader)
+func (rf *Raft) ticker() {
+	// Your code here (3A)
+	for !rf.killed() {
+		// lab requires no more than 10 times heartbeat per second
+		ms := 300
+		// var ms int64
+		rf.mu.Lock()
+		if rf.votedFor != rf.me {
+			// pause for a random amount of time between 300 and 450 ms
+			ms = 300 + int(rand.Int63()%150)
+		}
+		rf.mu.Unlock()
+
 		// milliseconds.
-		ms := 50 + (rand.Int63() % 300)
 		time.Sleep(time.Duration(ms) * time.Millisecond)
+
+		rf.mu.Lock()
+		if rf.votedFor == rf.me {
+			rf.mu.Unlock()
+			rf.broadcastHeartbeat()
+		} else {
+			currentTime := time.Now()
+			// Check if a leader election should be started.
+			// If this peer hasn't heard from a leader in a while, it should start an election.
+			duration := currentTime.Sub(rf.lastAppendEntriesTime)
+			rf.mu.Unlock()
+			if duration > time.Duration(1000)*time.Millisecond {
+				fmt.Printf("node %d duration %v\n", rf.me, duration)
+				rst := rf.requestForLeader()
+				for !rst {
+					rf.mu.Lock()
+					if rf.votedFor != -1 {
+						// vote for other leader
+						rf.mu.Unlock()
+						break
+					}
+					rf.mu.Unlock()
+					// pause for a random amount of time (in case of split vote)
+					ms = int(rand.Int63() % 300)
+					time.Sleep(time.Duration(ms) * time.Millisecond)
+					rst = rf.requestForLeader()
+				}
+				rf.mu.Lock()
+				// win the election
+				if rf.votedFor == -1 {
+					rf.votedFor = rf.me
+					rf.mu.Unlock()
+					// broadcast heartbeat after leader election
+					rf.broadcastHeartbeat()
+				} else {
+					rf.mu.Unlock()
+				}
+			}
+		}
 	}
 }
 
@@ -287,7 +456,10 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// Your initialization code here (3A, 3B, 3C).
 	rf.currentTerm = 0
 	rf.votedFor = -1
-	rf.log = make([]LogEntry, 0)
+	rf.log = make([]LogEntry, 1)
+	rf.log[0].Term = 0 // dummy log entry
+	rf.lastAppendEntriesTime = time.Now()
+	rf.broadcastCount = 0
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
