@@ -505,7 +505,10 @@ func TestBackup3B(t *testing.T) {
 
 	cfg.begin("Test (3B): leader backs up quickly over incorrect follower logs")
 
-	cfg.one(rand.Int(), servers, true)
+	j := 0
+	// cfg.one(rand.Int(), servers, true)
+	cfg.one(j, servers, true)
+	j++
 
 	// put leader and one follower in a partition
 	leader1 := cfg.checkOneLeader()
@@ -515,7 +518,9 @@ func TestBackup3B(t *testing.T) {
 
 	// submit lots of commands that won't commit
 	for i := 0; i < 50; i++ {
-		cfg.rafts[leader1].Start(rand.Int())
+		// cfg.rafts[leader1].Start(rand.Int())
+		cfg.rafts[leader1].Start(j)
+		j++
 	}
 
 	time.Sleep(RaftElectionTimeout / 2)
@@ -530,7 +535,9 @@ func TestBackup3B(t *testing.T) {
 
 	// lots of successful commands to new group.
 	for i := 0; i < 50; i++ {
-		cfg.one(rand.Int(), 3, true)
+		// cfg.one(rand.Int(), 3, true)
+		cfg.one(j, 3, true)
+		j++
 	}
 
 	// now another partitioned leader and one follower
@@ -543,7 +550,9 @@ func TestBackup3B(t *testing.T) {
 
 	// lots more commands that won't commit
 	for i := 0; i < 50; i++ {
-		cfg.rafts[leader2].Start(rand.Int())
+		// cfg.rafts[leader2].Start(rand.Int())
+		cfg.rafts[leader2].Start(j)
+		j++
 	}
 
 	time.Sleep(RaftElectionTimeout / 2)
@@ -558,15 +567,18 @@ func TestBackup3B(t *testing.T) {
 
 	// lots of successful commands to new group.
 	for i := 0; i < 50; i++ {
-		cfg.one(rand.Int(), 3, true)
+		// cfg.one(rand.Int(), 3, true)
+		cfg.one(j, 3, true)
+		j++
 	}
 
 	// now everyone
 	for i := 0; i < servers; i++ {
 		cfg.connect(i)
 	}
-	cfg.one(rand.Int(), servers, true)
-
+	// cfg.one(rand.Int(), servers, true)
+	cfg.one(j, servers, true)
+	j++
 	cfg.end()
 }
 
