@@ -87,8 +87,8 @@ type Raft struct {
 	// use to count broadcast // 3A (test usage)
 	broadcastCount int32
 
-	// update flag is used for heartbeat
-	updateFlag []int
+	replicaProcess []int
+	// commitCh       chan int // channel to count replicated client
 }
 
 // return currentTerm and whether this server
@@ -178,6 +178,7 @@ type AppendEntriesArgs struct {
 type AppendEntriesReply struct {
 	Term    int
 	Success bool
+	Index   int // index of the last commited log entry
 }
 
 // example RequestVote RPC handler.
@@ -228,9 +229,10 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	fmt.Printf("node %d get append entry from %d current term %d arg term %d rf commit %v commit index %v prev index %v\n",
-		rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.commitIndex, args.LeaderCommit, args.PrevLogIndex)
+	fmt.Printf("node %d get append entry from %d current term %d arg term %d rf commit %v commit index %v prev index %v logs %v\n",
+		rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.commitIndex, args.LeaderCommit, args.PrevLogIndex, args.Entries)
 
+	reply.Index = rf.commitIndex
 	// AppendRPC with stale term -> reject
 	if args.Term < rf.currentTerm {
 		reply.Term = rf.currentTerm
@@ -270,20 +272,36 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 
 	// append log entries
 	if len(args.Entries) > 0 {
-		// append leader log from prevLogIndex + 1
-		rf.log = rf.log[:args.PrevLogIndex+1]
-		// incase of data race
-		for i := 0; i < len(args.Entries); i++ {
-			entry := LogEntry{Term: args.Entries[i].Term, Command: args.Entries[i].Command}
-			rf.log = append(rf.log, entry)
+		i := 0
+		j := args.PrevLogIndex + 1
+		// same index, term -> same command
+		// jump through same command
+		for i < len(args.Entries) && j < len(rf.log) {
+			if args.Entries[i].Term != rf.log[j].Term {
+				break
+			}
+			i++
+			j++
 		}
+		fmt.Printf("node %d append log from %v i %v j %v\n", rf.me, args.LeaderId, i, j)
+		// append remaining log
+		if i < len(args.Entries) {
+			rf.log = append(rf.log[:j], args.Entries[i:]...)
+		}
+		fmt.Printf("node %d append log from %d log %v\n", rf.me, args.LeaderId, rf.log)
+
+		// incase of data race
+		// rf.log = rf.log[:args.PrevLogIndex+1]
+		// for i := 0; i < len(args.Entries); i++ {
+		// 	entry := LogEntry{Term: args.Entries[i].Term, Command: args.Entries[i].Command}
+		// 	rf.log = append(rf.log, entry)
+		// }
 	}
 
 	commitIndex := min(args.LeaderCommit, max(len(rf.log)-1, 0))
 	if commitIndex > rf.commitIndex {
 		// update commit index, commit the msg to channel
 		// commit from rf.commitIndex to min(args.LeaderCommit, len(rf.log)-1)
-		// fmt.Printf("node %v commit log %v\n", rf.me, rf.log[rf.commitIndex+1:commitIndex+1])
 		for i := rf.commitIndex + 1; i <= commitIndex; i++ {
 			fmt.Printf("node %v commit index %v log %v\n", rf.me, i, rf.log[i])
 			// ApplyMsg index start from 1
@@ -360,6 +378,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		// append log entry to leader
 		rf.log = append(rf.log, entry)
 		index = len(rf.log)
+		rf.nextIndex[rf.me] = max(rf.nextIndex[rf.me], index+1)
 		// applyMsg index start from 1
 		fmt.Printf("leader %v append entry %v command %v\n", rf.me, index, command)
 		go rf.AppendEntriesRPC(index - 1)
@@ -371,96 +390,37 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 // this function should be invoked by leader only
 // append log entry at @param: logIndex to all server
 // logIndex can be -1 to indicate current AppendEntriesRPC is a headerbeat
-func (rf *Raft) AppendEntriesRPC(logIndex int) bool {
+func (rf *Raft) AppendEntriesRPC(logIndex int) {
 	rf.mu.Lock()
 	if rf.votedFor != rf.me {
 		rf.mu.Unlock()
-		return false
+		return
 	}
 	rf.mu.Unlock()
 
-	appendChan := make(chan bool)
 	for i := 0; i < len(rf.peers); i++ {
 		if i != rf.me {
-			go rf.appendEntriesToServer(i, appendChan, logIndex)
+			go rf.AppendEntriesRPCToServer(i, logIndex)
 		}
 	}
-
-	// leader should agree to append log entry
-	count := 1
-	appendCount := 1
-
-	// appendEntriesToServer will return in reasonable time
-	// no need to use select for timeout
-	for msg := range appendChan {
-		count++
-		if msg {
-			appendCount++
-		}
-		if appendCount<<1 > len(rf.peers) {
-			break
-		}
-		if count == len(rf.peers)-1 {
-			break
-		}
-	}
-
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-
-	if rf.votedFor == rf.me {
-		// appendEntriesRPC for majority of server
-		if appendCount<<1 > len(rf.peers) {
-			// commit the entries (one rpc may commit multiple entries)
-			if logIndex >= 0 {
-				// AppendEntriesRPC run in parallel (update commitIndex)
-				for rf.commitIndex < logIndex {
-					rf.commitIndex++
-					// ApplyMsg index start from 1
-					msg := ApplyMsg{CommandValid: true, Command: rf.log[rf.commitIndex].Command, CommandIndex: rf.commitIndex + 1}
-					fmt.Printf("leader %v commit log %v command %v\n", rf.me, msg.CommandIndex, msg.Command)
-					rf.applyCh <- msg
-				}
-			}
-			return true
-		} else {
-			// lost leader
-			rf.votedFor = -1
-			fmt.Printf("node %v lost leader\n", rf.me)
-		}
-	}
-
-	return false
 }
 
-// append log entry to server (heartbeat maybe blocked by updateFlag)
-func (rf *Raft) appendEntriesToServer(server int, appendChan chan bool, logIndex int) {
-	rf.mu.Lock()
-	// heartbeat
-	if logIndex == -1 {
-		// if updateFlag is set, previous AppendEntriesRPC has not finished, just return
-		if rf.updateFlag[server] == 1 {
-			fmt.Printf("leader %v heartbeat to server %v blocked\n", rf.me, server)
-			rf.mu.Unlock()
-			return
-		}
-	}
-	rf.updateFlag[server] = 1
-	rf.mu.Unlock()
-loop:
+func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) {
 	for {
 		rf.mu.Lock()
+		// leader changed
 		if rf.votedFor != rf.me {
-			// leader has changed
 			rf.mu.Unlock()
-			appendChan <- false
 			return
 		}
-		// other goroutines has commited current log
-		if logIndex >= 0 && rf.nextIndex[server] > logIndex {
-			rf.mu.Unlock()
-			appendChan <- true
-			return
+
+		if logIndex >= 0 {
+			// other goroutine handles current log replication
+			if rf.replicaProcess[server] > logIndex {
+				rf.mu.Unlock()
+				return
+			}
+			rf.replicaProcess[server] = logIndex
 		}
 
 		args := AppendEntriesArgs{
@@ -469,61 +429,152 @@ loop:
 			PrevLogIndex: rf.nextIndex[server] - 1,
 			LeaderCommit: rf.commitIndex,
 		}
+
 		if args.PrevLogIndex >= 0 {
 			args.PrevLogTerm = rf.log[args.PrevLogIndex].Term
-		}
-		if logIndex >= 0 {
-			args.Entries = rf.log[rf.nextIndex[server] : logIndex+1]
 		} else {
-			// heartbeat with all entries
-			args.Entries = rf.log[rf.nextIndex[server]:]
+			args.PrevLogTerm = -1
 		}
 
-		fmt.Printf("leader %v append log index %v commit %v to server %v PrevLogIndex %v\n", rf.me, logIndex, args.LeaderCommit, server, args.PrevLogIndex)
+		// slice end (log end for heartbeat, log index for AppendLogEntries)
+		end := 0
+		if logIndex >= 0 {
+			end = logIndex
+		} else {
+			// log index -1 -> heartbeat
+			end = len(rf.log) - 1
+		}
 
-		// if current append entries fails
-		// rf.nextIndex[server] should be less than failIndex
-		// however nextIndex should be non-negative
-		failIndex := max(rf.nextIndex[server]-1, 0)
-		// failIndex := rf.nextIndex[server] - 1
-		rf.mu.Unlock()
+		args.Entries = rf.log[rf.nextIndex[server] : end+1]
+
 		reply := AppendEntriesReply{}
+
+		rf.mu.Unlock()
 		resultChan := make(chan bool)
 		go func() {
+			fmt.Printf("leader %v append log index %v to server %v prev index %v\n",
+				rf.me, logIndex, server, args.PrevLogIndex)
 			resultChan <- rf.sendAppendEntries(server, &args, &reply)
 		}()
 
 		select {
-		// rpc timeout for 300 ms
 		case <-time.After(300 * time.Millisecond):
 			fmt.Printf("leader %v append log index %v to server %v timeout\n", rf.me, logIndex, server)
-			appendChan <- false
-			break loop
+			return
 		case rst := <-resultChan:
 			if !rst {
 				fmt.Printf("leader %v append log index %v to server %v connection fail\n", rf.me, logIndex, server)
-				appendChan <- false
-				break loop
+				return
 			}
 			if reply.Success {
 				rf.mu.Lock()
-				rf.nextIndex[server] = max(rf.nextIndex[server], logIndex+1)
-
+				rf.nextIndex[server] = max(rf.nextIndex[server], end+1)
 				fmt.Printf("leader %v append log index %v to server %v success\n", rf.me, logIndex, server)
 				rf.mu.Unlock()
-				appendChan <- true
-				break loop
+				rf.CheckLogCommitment(end)
+				return
+			} else {
+				rf.mu.Lock()
+				fmt.Printf("leader %v append log index %v to server %v fail, fallback to %v\n", rf.me, logIndex, server, reply.Index+1)
+				rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
+				rf.mu.Unlock()
+				// sleep before retry
+				time.Sleep(10 * time.Millisecond)
 			}
-			rf.mu.Lock()
-			rf.nextIndex[server] = min(rf.nextIndex[server], failIndex)
-			rf.mu.Unlock()
-			// sleep before retry
-			time.Sleep(10 * time.Millisecond)
 		}
 	}
+}
+
+// func (rf *Raft) LeaderCommitChecker() {
+// 	record := make(map[int]int, 0)
+// 	for logIndex := range rf.commitCh {
+// 		rf.mu.Lock()
+// 		if rf.commitIndex >= logIndex {
+// 			rf.mu.Unlock()
+// 			continue
+// 		}
+// 		rf.mu.Unlock()
+
+// 		// commit to logIndex indicates commit to all entries below
+// 		for key := range record {
+// 			if key <= logIndex {
+// 				record[key]++
+// 			}
+// 		}
+
+// 		max := -1
+
+// 		for key := range record {
+// 			if record[key]<<1 > len(rf.peers) && key > max {
+// 				max = key
+// 			}
+// 		}
+
+// 		// has entries to commit
+// 		if max >= 0 {
+// 			rf.mu.Lock()
+// 			if rf.commitIndex < max {
+// 				for i := rf.commitIndex; i <= max; i++ {
+// 					fmt.Printf("leader %v commit index %v log %v\n", rf.me, i, rf.log[i])
+// 					// ApplyMsg index start from 1
+// 					msg := ApplyMsg{CommandValid: true, Command: rf.log[i].Command, CommandIndex: i + 1}
+// 					rf.applyCh <- msg
+// 				}
+// 				rf.commitIndex = max
+// 			}
+// 			rf.mu.Unlock()
+
+// 			// free space for record
+// 			for key := range record {
+// 				if key <= max {
+// 					delete(record, key)
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+// check if current log can be commited
+func (rf *Raft) CheckLogCommitment(logIndex int) {
 	rf.mu.Lock()
-	rf.updateFlag[server] = 0
-	rf.mu.Unlock()
+	defer rf.mu.Unlock()
+	// current server is not leader
+	if rf.votedFor != rf.me {
+		return
+	}
+
+	// current server has commited current log
+	if rf.commitIndex >= logIndex {
+		return
+	}
+	i := logIndex
+	// find the largest log index that can be commited
+	for i > rf.commitIndex {
+		vote := 1
+		for j := 0; j < len(rf.peers); j++ {
+			if j == rf.me {
+				continue
+			}
+			if rf.nextIndex[j] > logIndex {
+				vote++
+			}
+		}
+		// get majority
+		if vote<<1 > len(rf.peers) {
+			break
+		}
+		i--
+	}
+
+	// commit until i
+	for j := rf.commitIndex + 1; j <= i; j++ {
+		fmt.Printf("leader %v commit index %v log %v\n", rf.me, j, rf.log[j])
+		// ApplyMsg index start from 1
+		msg := ApplyMsg{CommandValid: true, Command: rf.log[j].Command, CommandIndex: j + 1}
+		rf.applyCh <- msg
+	}
+
+	rf.commitIndex = i
 }
 
 // the tester doesn't halt goroutines created by Raft after each test,
@@ -587,7 +638,6 @@ loop:
 		case msg := <-voteCh:
 			if msg {
 				votedCount++
-
 				if votedCount<<1 > len(rf.peers) {
 					// get majority vote
 					break loop
@@ -711,9 +761,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.lastAppendEntriesTime = time.Now()
 	rf.broadcastCount = 0
 
-	rf.updateFlag = make([]int, len(peers))
-	for i := range rf.updateFlag {
-		rf.updateFlag[i] = 0
+	rf.replicaProcess = make([]int, len(peers))
+	for i := range rf.replicaProcess {
+		rf.replicaProcess[i] = -1
 	}
 
 	// 3B
