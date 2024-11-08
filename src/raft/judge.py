@@ -13,7 +13,18 @@ command = ['go', 'test', '-run', pattern, '-race', '-v']
 
 for i in range(repeat_count):
     # Run the command and capture the output
-    print(f"Round {i+1}")
+    print(f"== Round {i+1} start ==")
+
+    # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+
+    # for line in process.stdout:
+    #     print(line, end='')
+    
+    # process.wait()
+
+    # print(f"== Round {i+1} finished ==\n")
+
+
     result = subprocess.run(command, capture_output=True, text=True)
 
     # Check if the test failed

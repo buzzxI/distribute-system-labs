@@ -1,30 +1,220 @@
-Round 1
-Test passed
-
-Round 2
-Test passed
-
-Round 3
-Test passed
-
-Round 4
-Test passed
-
-Round 5
-Test passed
-
-Round 6
-Test passed
-
-Round 7
-Test passed
-
-Round 8
-Test passed
-
-Round 9
-Test passed
-
-Round 10
-Test passed
-
+Test (3C): more persistence ...
+node 1 duration 1.104858695s
+node 1 start leader election
+node 4 get request vote from 1 term 1 current term 0 commitIndex -1
+node 3 get request vote from 1 term 1 current term 0 commitIndex -1
+node 4 grant request vote from 1 term 1
+node 3 grant request vote from 1 term 1
+node 0 get request vote from 1 term 1 current term 0 commitIndex -1
+node 2 get request vote from 1 term 1 current term 0 commitIndex -1
+node 0 grant request vote from 1 term 1
+node 2 grant request vote from 1 term 1
+node 1 get vote from 4
+node 1 get vote from 3
+node 1 get vote 2
+node 1 get vote from 0
+node 1 become leader
+leader 1 broadcast heartbeat 1
+leader 1 append log index -1 to server 3 prev index -1
+leader 1 append log index -1 to server 2 prev index -1
+leader 1 append log index -1 to server 4 prev index -1
+leader 1 append log index -1 to server 0 prev index -1
+node 1 get vote from 2
+node 2 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 2 get valid append entry from 1
+node 3 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 4 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 4 get valid append entry from 1
+node 2 grant append rpc from 1 log length 0
+node 0 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 0 get valid append entry from 1
+node 0 grant append rpc from 1 log length 0
+node 4 grant append rpc from 1 log length 0
+leader 1 append log index -1 to server 2 success
+node 3 get valid append entry from 1
+node 3 grant append rpc from 1 log length 0
+leader 1 append log index -1 to server 4 success
+leader 1 append log index -1 to server 0 success
+leader 1 append log index -1 to server 3 success
+leader 1 append entry 1 command 11
+leader 1 append log index 0 to server 2 prev index -1
+leader 1 append log index 0 to server 0 prev index -1
+leader 1 append log index 0 to server 3 prev index -1
+leader 1 append log index 0 to server 4 prev index -1
+node 2 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 2 get valid append entry from 1
+node 4 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 4 get valid append entry from 1
+node 2 append log from 1 i 0 j 0
+node 3 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 0 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 4 append log from 1 i 0 j 0
+node 3 get valid append entry from 1
+node 2 append log from 1 log [{11 1}]
+node 2 grant append rpc from 1 log length 1
+node 4 append log from 1 log [{11 1}]
+node 4 grant append rpc from 1 log length 1
+node 3 append log from 1 i 0 j 0
+node 0 get valid append entry from 1
+node 3 append log from 1 log [{11 1}]
+node 3 grant append rpc from 1 log length 1
+node 0 append log from 1 i 0 j 0
+leader 1 append log index 0 to server 2 success
+leader 1 append log index 0 to server 4 success
+node 0 append log from 1 log [{11 1}]
+node 0 grant append rpc from 1 log length 1
+leader 1 commit index 0 log {11 1}
+leader 1 append log index 0 to server 3 success
+leader 1 append log index 0 to server 0 success
+leader 1 broadcast heartbeat 2
+leader 1 append log index -1 to server 4 prev index 0
+leader 1 append log index -1 to server 3 prev index 0
+leader 1 append log index -1 to server 0 prev index 0
+leader 1 append log index -1 to server 2 prev index 0
+node 4 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 4 get valid append entry from 1
+node 2 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 3 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 0 get append entry from 1 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 0 get valid append entry from 1
+node 3 get valid append entry from 1
+node 2 get valid append entry from 1
+node 0 commit index 0 log {11 1}
+node 0 grant append rpc from 1 log length 1
+node 3 commit index 0 log {11 1}
+node 3 grant append rpc from 1 log length 1
+node 2 commit index 0 log {11 1}
+node 2 grant append rpc from 1 log length 1
+node 4 commit index 0 log {11 1}
+leader 1 append log index -1 to server 0 success
+node 4 grant append rpc from 1 log length 1
+leader 1 append log index -1 to server 3 success
+leader 1 append log index -1 to server 2 success
+leader 1 append log index -1 to server 4 success
+leader 1 broadcast heartbeat 3
+leader 1 append log index -1 to server 3 prev index 0
+leader 1 append log index -1 to server 2 prev index 0
+leader 1 append log index -1 to server 0 prev index 0
+leader 1 append log index -1 to server 4 prev index 0
+node 3 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 3 get valid append entry from 1
+node 3 grant append rpc from 1 log length 1
+node 2 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 2 get valid append entry from 1
+node 0 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 0 get valid append entry from 1
+node 2 grant append rpc from 1 log length 1
+node 4 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 4 get valid append entry from 1
+leader 1 append log index -1 to server 3 success
+node 0 grant append rpc from 1 log length 1
+node 4 grant append rpc from 1 log length 1
+leader 1 append log index -1 to server 2 success
+leader 1 append log index -1 to server 0 success
+leader 1 append log index -1 to server 4 success
+leader 1 append entry 2 command 12
+leader 1 append log index 1 to server 2 prev index 0
+leader 1 append log index 1 to server 4 prev index 0
+leader 1 append log index 1 to server 3 prev index 0
+leader 1 append log index 1 to server 0 prev index 0
+node 4 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs [{12 1}]
+node 4 get valid append entry from 1
+node 0 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs [{12 1}]
+node 0 get valid append entry from 1
+node 4 append log from 1 i 0 j 1
+node 0 append log from 1 i 0 j 1
+node 4 append log from 1 log [{11 1} {12 1}]
+node 4 grant append rpc from 1 log length 2
+node 0 append log from 1 log [{11 1} {12 1}]
+node 0 grant append rpc from 1 log length 2
+leader 1 append log index 1 to server 0 success
+leader 1 append log index 1 to server 4 success
+leader 1 commit index 1 log {12 1}
+leader 1 broadcast heartbeat 4
+leader 1 append log index -1 to server 4 prev index 1
+leader 1 append log index -1 to server 3 prev index 0
+leader 1 append log index -1 to server 0 prev index 1
+leader 1 append log index -1 to server 2 prev index 0
+node 0 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 1 prev index 1 logs []
+node 0 get valid append entry from 1
+node 0 commit index 1 log {12 1}
+node 0 grant append rpc from 1 log length 2
+node 4 get append entry from 1 current term 1 arg term 1 rf commit 0 commit index 1 prev index 1 logs []
+node 4 get valid append entry from 1
+node 4 commit index 1 log {12 1}
+node 4 grant append rpc from 1 log length 2
+leader 1 append log index -1 to server 4 success
+leader 1 append log index -1 to server 0 success
+node 2 read term 1 vote 1 log [{11 1}]
+node 3 read term 1 vote 1 log [{11 1}]
+leader 1 append log index 1 to server 3 timeout
+leader 1 append log index 1 to server 2 timeout
+leader 1 broadcast heartbeat 5
+leader 1 append log index -1 to server 2 timeout
+leader 1 append log index -1 to server 2 prev index 0
+leader 1 append log index -1 to server 0 prev index 1
+leader 1 append log index -1 to server 3 timeout
+leader 1 append log index -1 to server 4 prev index 1
+leader 1 append log index -1 to server 3 prev index 0
+leader 1 append log index -1 to server 0 timeout
+leader 1 broadcast heartbeat 6
+leader 1 append log index -1 to server 3 timeout
+leader 1 append log index -1 to server 4 timeout
+leader 1 append log index -1 to server 2 timeout
+leader 1 append entires -1 lost leadership
+node 4 read term 1 vote 1 log [{11 1} {12 1}]
+node 0 duration 1.140322327s
+node 0 start leader election
+node 3 duration 1.264378893s
+node 3 start leader election
+node 4 get request vote from 3 term 2 current term 1 commitIndex -1
+node 2 get request vote from 3 term 2 current term 1 commitIndex -1
+node 4 grant request vote from 3 term 2
+node 2 grant request vote from 3 term 2
+node 3 get vote from 4
+node 3 get vote from 2
+node 3 get vote 2
+node 3 become leader
+leader 3 broadcast heartbeat 1
+leader 3 append log index -1 to server 0 prev index -1
+leader 3 append log index -1 to server 2 prev index -1
+leader 3 append log index -1 to server 4 prev index -1
+leader 3 append log index -1 to server 1 prev index -1
+node 2 get append entry from 3 current term 2 arg term 2 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 4 get append entry from 3 current term 2 arg term 2 rf commit -1 commit index -1 prev index -1 logs [{11 1}]
+node 4 get valid append entry from 3
+node 2 get valid append entry from 3
+node 4 append log from 3 i 1 j 1
+node 4 append log from 3 log [{11 1} {12 1}]
+node 4 grant append rpc from 3 log length 2
+node 2 append log from 3 i 1 j 1
+node 2 append log from 3 log [{11 1}]
+node 2 grant append rpc from 3 log length 1
+leader 3 append log index -1 to server 4 success
+leader 3 append log index -1 to server 2 success
+leader 3 append entry 2 command 13
+leader 3 append log index 1 to server 2 prev index 0
+leader 3 append log index 1 to server 4 prev index 0
+leader 3 append log index 1 to server 1 prev index -1
+leader 3 append log index 1 to server 0 prev index -1
+node 4 get append entry from 3 current term 2 arg term 2 rf commit -1 commit index -1 prev index 0 logs [{13 2}]
+node 4 get valid append entry from 3
+node 2 get append entry from 3 current term 2 arg term 2 rf commit -1 commit index -1 prev index 0 logs [{13 2}]
+node 2 get valid append entry from 3
+node 4 append log from 3 i 0 j 1
+node 2 append log from 3 i 0 j 1
+node 4 append log from 3 log [{11 1} {13 2}]
+node 4 grant append rpc from 3 log length 2
+node 2 append log from 3 log [{11 1} {13 2}]
+node 2 grant append rpc from 3 log length 2
+leader 3 append log index 1 to server 4 success
+leader 3 append log index 1 to server 2 success
+leader 3 commit index 0 log {11 1}
+leader 3 commit index 1 log {13 2}
+2024/11/08 19:53:42 3: log map[1:11]; server map[1:11 2:12]
+2024/11/08 19:53:42 3: log map[1:11]; server map[1:11 2:12]
+2024/11/08 19:53:42 3: log map[1:11]; server map[1:11 2:12]
+2024/11/08 19:53:42 apply error: commit index=2 server=3 13 != server=4 12 
+{true 13 2 false [] 0 0}
+exit status 1
+FAIL	6.5840/raft	3.332s

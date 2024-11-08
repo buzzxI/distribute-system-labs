@@ -113,17 +113,20 @@ func TestManyElections3A(t *testing.T) {
 		i1 := rand.Int() % servers
 		i2 := rand.Int() % servers
 		i3 := rand.Int() % servers
+		fmt.Printf("disconnect %v %v %v\n", i1, i2, i3)
 		cfg.disconnect(i1)
 		cfg.disconnect(i2)
 		cfg.disconnect(i3)
 
 		// either the current leader should still be alive,
 		// or the remaining four should elect a new one.
-		cfg.checkOneLeader()
+		leader := cfg.checkOneLeader()
+		fmt.Printf("disconnect new leader %v\n", leader)
 
 		cfg.connect(i1)
 		cfg.connect(i2)
 		cfg.connect(i3)
+		fmt.Printf("reconnect %v %v %v\n", i1, i2, i3)
 	}
 
 	cfg.checkOneLeader()
@@ -829,14 +832,18 @@ func TestFigure83C(t *testing.T) {
 
 	cfg.begin("Test (3C): Figure 8")
 
-	cfg.one(rand.Int(), 1, true)
+	j := 0
+	// cfg.one(rand.Int(), 1, true)
+	cfg.one(j, 1, true)
+	j++
 
 	nup := servers
 	for iters := 0; iters < 1000; iters++ {
 		leader := -1
 		for i := 0; i < servers; i++ {
 			if cfg.rafts[i] != nil {
-				_, _, ok := cfg.rafts[i].Start(rand.Int())
+				// _, _, ok := cfg.rafts[i].Start(rand.Int())
+				_, _, ok := cfg.rafts[i].Start(j)
 				if ok {
 					leader = i
 				}
@@ -852,6 +859,7 @@ func TestFigure83C(t *testing.T) {
 		}
 
 		if leader != -1 {
+			fmt.Printf("server %v crash\n", leader)
 			cfg.crash1(leader)
 			nup -= 1
 		}
@@ -859,21 +867,25 @@ func TestFigure83C(t *testing.T) {
 		if nup < 3 {
 			s := rand.Int() % servers
 			if cfg.rafts[s] == nil {
+				fmt.Printf("server %v recover\n", s)
 				cfg.start1(s, cfg.applier)
 				cfg.connect(s)
 				nup += 1
 			}
 		}
+		j++
 	}
 
 	for i := 0; i < servers; i++ {
 		if cfg.rafts[i] == nil {
+			fmt.Printf("server %v recover\n", i)
 			cfg.start1(i, cfg.applier)
 			cfg.connect(i)
 		}
 	}
 
-	cfg.one(rand.Int(), servers, true)
+	cfg.one(j, servers, true)
+	// cfg.one(rand.Int(), servers, true)
 
 	cfg.end()
 }
