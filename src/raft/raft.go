@@ -98,11 +98,16 @@ type Raft struct {
 	// use to count broadcast
 	broadcastCount     int
 	confirmedBroadcast int
+	// if flag[i] = 1 means heartbeat to i has not finished
+	boradcastFlag []int
 
 	replicaProcess []int
 	role           int
-	// debug flag
+	// debug flag -> print lock/unlock info
 	debug bool
+
+	// raft store log from offset (initialized to 0)
+	logOffset int
 }
 
 // return currentTerm and whether this server
@@ -184,6 +189,11 @@ func (rf *Raft) readPersist(data []byte) {
 		d.Decode(&log) == nil {
 		rf.currentTerm = currentTerm
 		rf.votedFor = votedFor
+		if rf.votedFor == -2 {
+			rf.votedFor = -1
+			fmt.Printf("node %v read candidate state\n", rf.me)
+		}
+
 		rf.log = log
 		fmt.Printf("node %v read term %v vote %v log %v\n", rf.me, currentTerm, votedFor, log)
 		for i := 0; i < len(rf.peers); i++ {
@@ -199,9 +209,21 @@ func (rf *Raft) readPersist(data []byte) {
 // all info up to and including index. this means the
 // service no longer needs the log through (and including)
 // that index. Raft should now trim its log as much as possible.
+// raft should discard log entries before index (including index)
 func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// Your code here (3D).
+	rf.lock(&rf.mu)
+	defer rf.unlock(&rf.mu)
 
+	end := index - rf.logOffset
+	// out of range
+	if end < 0 || end >= len(rf.log) {
+		return
+	}
+
+	rf.log = rf.log[end+1:]
+	rf.logOffset = index + 1
+	rf.persist()
 }
 
 // example RequestVote RPC arguments structure.
@@ -367,7 +389,13 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		fmt.Printf("node %d append log from %v i %v j %v\n", rf.me, args.LeaderId, i, j)
 		// append remaining log
 		if i < len(args.Entries) {
-			rf.log = append(rf.log[:j], args.Entries[i:]...)
+			// in case of data race
+			rf.log = rf.log[:j]
+			for k := i; k < len(args.Entries); k++ {
+				entry := args.Entries[k]
+				rf.log = append(rf.log, entry)
+			}
+			// rf.log = append(rf.log[:j], args.Entries[i:]...)
 			// added for 3C
 			rf.persist()
 		}
@@ -435,7 +463,26 @@ func (rf *Raft) getLastLogIndexTerm() (int, int) {
 	if len(rf.log) == 0 {
 		return -1, -1
 	}
-	return len(rf.log) - 1, rf.log[len(rf.log)-1].Term
+	// return len(rf.log) - 1, rf.log[len(rf.log)-1].Term
+	// added for 3D
+	return len(rf.log) - 1 + rf.logOffset, rf.log[len(rf.log)-1].Term
+}
+
+// locks should be held by caller
+func (rf *Raft) lostLeadership() {
+	if rf.votedFor != rf.me {
+		// already not a leader
+		return
+	}
+
+	rf.votedFor = -1 // back to follower
+
+	// reset heartbeat state
+	rf.broadcastCount = 0
+	rf.confirmedBroadcast = 0
+	for i := range rf.boradcastFlag {
+		rf.boradcastFlag[i] = 0
+	}
 }
 
 // the service using Raft (e.g. a k/v server) wants to start
@@ -464,7 +511,9 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		rf.log = append(rf.log, entry)
 		// added for 3C
 		rf.persist()
-		index = len(rf.log)
+		// index = len(rf.log)
+		// added for 3D
+		index = len(rf.log) + rf.logOffset
 		rf.nextIndex[rf.me] = max(rf.nextIndex[rf.me], index+1)
 		// applyMsg index start from 1
 		fmt.Printf("leader %v append entry %v command %v\n", rf.me, index, command)
@@ -485,54 +534,63 @@ func (rf *Raft) AppendEntriesRPC(logIndex int) bool {
 	}
 	rf.unlock(&rf.mu)
 
-	// bufferd channel to avoid blocking
-	appendChan := make(chan bool, len(rf.peers)-1)
-	rejectChan := make(chan bool, len(rf.peers)-1)
+	rstChan := make(chan bool, len(rf.peers)-1)
 	for i := 0; i < len(rf.peers); i++ {
 		if i != rf.me {
-			go rf.AppendEntriesRPCToServer(i, logIndex, appendChan, rejectChan)
+			go func() {
+				if logIndex == -1 {
+					rf.lock(&rf.mu)
+					if rf.boradcastFlag[i] == 1 {
+						rf.unlock(&rf.mu)
+						return
+					}
+					rf.boradcastFlag[i] = 1
+					rf.unlock(&rf.mu)
+				}
+				rstChan <- rf.AppendEntriesRPCToServer(i, logIndex)
+				if logIndex == -1 {
+					rf.lock(&rf.mu)
+					rf.boradcastFlag[i] = 0
+					rf.unlock(&rf.mu)
+				}
+			}()
 		}
 	}
 
 	appendFailCount := 0
 	count := 0
-
-	for {
-		select {
-		case msg := <-appendChan:
-			if !msg {
-				appendFailCount++
-				// cannot connect to majority of server: lost leadership
-				if appendFailCount<<1 > len(rf.peers) {
-					fmt.Printf("leader %v append entires %v lost leadership\n", rf.me, logIndex)
-					rf.lock(&rf.mu)
-					rf.votedFor = -1
-					rf.persist()
-					rf.lastAppendEntriesTime = time.Now()
-					rf.unlock(&rf.mu)
-					return false
-				}
-			}
-			count++
-			if count == len(rf.peers)-1 {
-				return true
-			}
-		case msg := <-rejectChan:
-			if msg {
-				return false
+	for msg := range rstChan {
+		if !msg {
+			appendFailCount++
+			if appendFailCount<<1 > len(rf.peers) {
+				break
 			}
 		}
+		count++
+		if count == len(rf.peers)-1 {
+			break
+		}
 	}
+
+	return appendFailCount<<1 <= len(rf.peers)
 }
 
-func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int, appendChan chan bool, rejectChan chan bool) {
+func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
+	retry := 0
 	for {
+		// retry 5 times (at most)
+		if rf.killed() {
+			return false
+		}
+		retry++
+		// if retry > 5 {
+		// 	return false
+		// }
 		rf.lock(&rf.mu)
 		// leader changed
 		if rf.votedFor != rf.me {
 			rf.unlock(&rf.mu)
-			rejectChan <- true
-			return
+			return false
 		}
 
 		if logIndex >= 0 {
@@ -540,8 +598,7 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int, appendChan ch
 			if rf.replicaProcess[server] > logIndex {
 				rf.unlock(&rf.mu)
 				// true to append channel does not means append success
-				appendChan <- true
-				return
+				return false
 			}
 			rf.replicaProcess[server] = logIndex
 		}
@@ -568,57 +625,61 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int, appendChan ch
 			end = len(rf.log) - 1
 		}
 
-		args.Entries = rf.log[rf.nextIndex[server] : end+1]
+		// make a copy to avoid data race
+		len := end - rf.nextIndex[server] + 1
+		logCpy := make([]LogEntry, len)
+		copy(logCpy, rf.log[rf.nextIndex[server]:end+1])
+		args.Entries = logCpy
 		reply := AppendEntriesReply{}
 
 		rf.unlock(&rf.mu)
 		resultChan := make(chan bool)
 		go func() {
-			fmt.Printf("leader %v append log index %v to server %v prev index %v\n",
-				rf.me, logIndex, server, args.PrevLogIndex)
+			fmt.Printf("leader %v append log index %v to server %v prev index %v, retry %v\n",
+				rf.me, logIndex, server, args.PrevLogIndex, retry)
 			resultChan <- rf.sendAppendEntries(server, &args, &reply)
 		}()
 
 		// timeout or connection fail triggers retry (not just return!)
 		select {
 		case <-time.After(300 * time.Millisecond):
-			fmt.Printf("leader %v append log index %v to server %v timeout\n", rf.me, logIndex, server)
-			appendChan <- false
-			return
+			fmt.Printf("leader %v append log index %v to server %v timeout, retry %v\n", rf.me, logIndex, server, retry)
+			// heartbeat does not retry
+			if logIndex == -1 {
+				return false
+			}
 		case rst := <-resultChan:
 			if !rst {
-				fmt.Printf("leader %v append log index %v to server %v connection fail\n", rf.me, logIndex, server)
-				appendChan <- false
-				return
+				fmt.Printf("leader %v append log index %v to server %v connection fail, retry %v\n", rf.me, logIndex, server, retry)
+				// connection failure triggers retry
+				break
 			}
 			rf.lock(&rf.mu)
 			// lost leadership
 			if rf.votedFor != rf.me {
 				rf.unlock(&rf.mu)
-				rejectChan <- true
-				return
+				return false
 			}
 			if reply.Success {
 				rf.nextIndex[server] = max(rf.nextIndex[server], end+1)
-				fmt.Printf("leader %v append log index %v to server %v success\n", rf.me, logIndex, server)
-				appendChan <- true
+				fmt.Printf("leader %v append log index %v to server %v success, retry %v\n", rf.me, logIndex, server, retry)
+				// appendChan <- true
 				rf.unlock(&rf.mu)
 				rf.CheckLogCommitment(end)
-				return
+				return true
 			} else {
 				if reply.Term > rf.currentTerm {
+					fmt.Printf("leader %v append log index %v to server %v fail, stale term %v reply term %v, lost leadership, retry %v\n", rf.me, logIndex, server, rf.currentTerm, reply.Term, retry)
 					rf.currentTerm = reply.Term
-					rf.votedFor = -1
+					rf.lostLeadership()
 					// added for 3C
 					rf.persist()
-					fmt.Printf("leader %v append log index %v to server %v fail, lost leadership\n", rf.me, logIndex, server)
 					rf.lastAppendEntriesTime = time.Now()
-					rejectChan <- true
 					rf.unlock(&rf.mu)
-					return
+					return false
 				}
 
-				fmt.Printf("leader %v append log index %v to server %v fail, next index fallback to %v\n", rf.me, logIndex, server, reply.Index+1)
+				fmt.Printf("leader %v append log index %v to server %v fail, next index fallback to %v, retry %v\n", rf.me, logIndex, server, reply.Index+1, retry)
 				rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
 				rf.unlock(&rf.mu)
 				// sleep before retry
@@ -818,7 +879,6 @@ func (rf *Raft) RequestVoteRPC(args RequestVoteArgs) bool {
 	}
 	rf.unlock(&rf.mu)
 
-	fmt.Printf("node %d start leader election\n", rf.me)
 	// use bufferd channel to avoid blocking
 	voteCh := make(chan bool, len(rf.peers)-1)
 	rejectChan := make(chan bool, len(rf.peers)-1)
@@ -909,7 +969,14 @@ func (rf *Raft) attemptForElection() {
 		fmt.Printf("node %d wait for %v\n", rf.me, duration)
 		// process should release lock after break the loop
 		// hold lock within the loop (except for rpc)
+		retry := 0
 		for {
+			// exist after killed
+			if rf.killed() {
+				rf.unlock(&rf.mu)
+				return
+			}
+			retry++
 			rf.currentTerm++
 			rf.votedFor = -2 // transfer to candidate
 			// added for 3C
@@ -921,6 +988,7 @@ func (rf *Raft) attemptForElection() {
 				LastLogIndex: lastIndex,
 				LastLogTerm:  lastTerm,
 			}
+			fmt.Printf("node %d start leader election retry: %v\n", rf.me, retry)
 			rf.unlock(&rf.mu)
 			rst := rf.RequestVoteRPC(args)
 			if rst {
@@ -940,6 +1008,8 @@ func (rf *Raft) attemptForElection() {
 		rf.unlock(&rf.mu)
 	}
 }
+
+// what if current leader read voteFor is -2 ?
 
 // ticker is used for check leader heartbeat (fellower) and broadcast heartbeat (leader)
 func (rf *Raft) ticker() {
@@ -973,6 +1043,9 @@ func (rf *Raft) ticker() {
 // tester or service expects Raft to send ApplyMsg messages.
 // Make() must return quickly, so it should start goroutines
 // for any long-running work.
+
+// after server restart, judge invoke Make to create a new Raft instance
+// old Raft should be killed ...
 func Make(peers []*labrpc.ClientEnd, me int,
 	persister *Persister, applyCh chan ApplyMsg) *Raft {
 	rf := &Raft{}
@@ -1002,6 +1075,12 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	rf.lastAppendEntriesTime = time.Now()
 	rf.broadcastCount = 0
+	rf.confirmedBroadcast = 0
+	rf.boradcastFlag = make([]int, len(peers))
+
+	for i := range rf.boradcastFlag {
+		rf.boradcastFlag[i] = 0
+	}
 
 	rf.replicaProcess = make([]int, len(peers))
 	for i := range rf.replicaProcess {
@@ -1014,6 +1093,8 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.applyCh = applyCh
 
 	rf.debug = false
+	// rf.debug = true
+	rf.logOffset = 0
 
 	// start ticker goroutine to start elections
 	go rf.ticker()
