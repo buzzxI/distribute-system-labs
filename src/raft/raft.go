@@ -361,9 +361,12 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	}
 
 	// prev log mismatch
-	if len(rf.log) <= args.PrevLogIndex ||
-		(args.PrevLogIndex >= 0 && rf.log[args.PrevLogIndex].Term != args.PrevLogTerm) {
-		if len(rf.log) <= args.PrevLogIndex {
+	// added for 3D
+	totalLen := len(rf.log) + rf.logOffset
+	prevLogIndexOffset := args.PrevLogIndex - rf.logOffset
+	if totalLen <= args.PrevLogIndex ||
+		(args.PrevLogIndex >= 0 && rf.log[prevLogIndexOffset].Term != args.PrevLogTerm) {
+		if totalLen <= args.PrevLogIndex {
 			fmt.Printf("node %d reject append entry from %d log length %v PrevLogIndex %v\n", rf.me, args.LeaderId, len(rf.log), args.PrevLogIndex)
 		} else {
 			fmt.Printf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.log[args.PrevLogIndex].Term, args.PrevLogTerm)
@@ -372,6 +375,18 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		reply.Success = false
 		return
 	}
+
+	// if len(rf.log) <= args.PrevLogIndex ||
+	// 	(args.PrevLogIndex >= 0 && rf.log[args.PrevLogIndex].Term != args.PrevLogTerm) {
+	// 	if len(rf.log) <= args.PrevLogIndex {
+	// 		fmt.Printf("node %d reject append entry from %d log length %v PrevLogIndex %v\n", rf.me, args.LeaderId, len(rf.log), args.PrevLogIndex)
+	// 	} else {
+	// 		fmt.Printf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.log[args.PrevLogIndex].Term, args.PrevLogTerm)
+	// 	}
+	// 	reply.Term = rf.currentTerm
+	// 	reply.Success = false
+	// 	return
+	// }
 
 	// append log entries
 	if len(args.Entries) > 0 {
