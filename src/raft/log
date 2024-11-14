@@ -1,212 +1,2230 @@
-Running TestInitialElection3A
+Running TestSnapshotInstallCrash3D
 == Round 1 start ==
-== Round 1 finished, consume 5.84 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 5.27 s ==
-
-Test TestInitialElection3A consume 11.12 s
-Test TestInitialElection3A passed
-
-Running TestReElection3A
-== Round 1 start ==
-== Round 1 finished, consume 8.04 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 7.34 s ==
-
-Test TestReElection3A consume 15.37 s
-Test TestReElection3A passed
-
-Running TestManyElections3A
-== Round 1 start ==
-== Round 1 finished, consume 8.99 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 8.90 s ==
-
-Test TestManyElections3A consume 17.89 s
-Test TestManyElections3A passed
-
-Running TestBasicAgree3B
-== Round 1 start ==
-== Round 1 finished, consume 3.42 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 3.58 s ==
-
-Test TestBasicAgree3B consume 7.00 s
-Test TestBasicAgree3B passed
-
-Running TestRPCBytes3B
-== Round 1 start ==
-== Round 1 finished, consume 6.59 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 6.76 s ==
-
-Test TestRPCBytes3B consume 13.35 s
-Test TestRPCBytes3B passed
-
-Running TestFollowerFailure3B
-== Round 1 start ==
-== Round 1 finished, consume 7.18 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 7.28 s ==
-
-Test TestFollowerFailure3B consume 14.46 s
-Test TestFollowerFailure3B passed
-
-Running TestLeaderFailure3B
-== Round 1 start ==
-== Round 1 finished, consume 8.19 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 8.62 s ==
-
-Test TestLeaderFailure3B consume 16.82 s
-Test TestLeaderFailure3B passed
-
-Running TestFailAgree3B
-== Round 1 start ==
-== Round 1 finished, consume 8.21 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 8.59 s ==
-
-Test TestFailAgree3B consume 16.81 s
-Test TestFailAgree3B passed
-
-Running TestFailNoAgree3B
-== Round 1 start ==
-== Round 1 finished, consume 5.74 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 6.15 s ==
-
-Test TestFailNoAgree3B consume 11.89 s
-Test TestFailNoAgree3B passed
-
-Running TestConcurrentStarts3B
-== Round 1 start ==
-== Round 1 finished, consume 3.49 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 2.83 s ==
-
-Test TestConcurrentStarts3B consume 6.32 s
-Test TestConcurrentStarts3B passed
-
-Running TestRejoin3B
-== Round 1 start ==
-== Round 1 finished, consume 7.78 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 9.83 s ==
-
-Test TestRejoin3B consume 17.61 s
-Test TestRejoin3B passed
-
-Running TestBackup3B
-== Round 1 start ==
-== Round 1 finished, consume 46.24 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 47.11 s ==
-
-Test TestBackup3B consume 93.35 s
-Test TestBackup3B passed
-
-Running TestCount3B
-== Round 1 start ==
-== Round 1 finished, consume 4.59 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 4.46 s ==
-
-Test TestCount3B consume 9.05 s
-Test TestCount3B passed
-
-Running TestPersist13C
-== Round 1 start ==
-== Round 1 finished, consume 6.94 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 7.73 s ==
-
-Test TestPersist13C consume 14.67 s
-Test TestPersist13C passed
-
-Running TestPersist23C
-== Round 1 start ==
-== Round 1 finished, consume 28.68 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 26.86 s ==
-
-Test TestPersist23C consume 55.55 s
-Test TestPersist23C passed
-
-Running TestPersist33C
-== Round 1 start ==
-== Round 1 finished, consume 4.22 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 4.34 s ==
-
-Test TestPersist33C consume 8.56 s
-Test TestPersist33C passed
-
-Running TestFigure83C
-== Round 1 start ==
-== Round 1 finished, consume 33.25 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 42.09 s ==
-
-Test TestFigure83C consume 75.33 s
-Test TestFigure83C passed
-
-Running TestUnreliableAgree3C
-== Round 1 start ==
-== Round 1 finished, consume 4.19 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 3.75 s ==
-
-Test TestUnreliableAgree3C consume 7.93 s
-Test TestUnreliableAgree3C passed
-
-Running TestFigure8Unreliable3C
-== Round 1 start ==
-== Round 1 finished, consume 33.35 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 34.89 s ==
-
-Test TestFigure8Unreliable3C consume 68.25 s
-Test TestFigure8Unreliable3C passed
-
-Running TestReliableChurn3C
-== Round 1 start ==
-== Round 1 finished, consume 17.89 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 17.61 s ==
-
-Test TestReliableChurn3C consume 35.51 s
-Test TestReliableChurn3C passed
-
-Running TestUnreliableChurn3C
-== Round 1 start ==
-== Round 1 finished, consume 17.41 s ==
-
-== Round 2 start ==
-== Round 2 finished, consume 17.57 s ==
-
-Test TestUnreliableChurn3C consume 34.97 s
-Test TestUnreliableChurn3C passed
-
-Total consume: 34.97 s
-All Test passed
+=== RUN   TestSnapshotInstallCrash3D
+Test (3D): install snapshots (crash) ...
+node 0 wait for 1.073148213s
+node 0 start leader election retry: 1
+node 0 request vote RPC to 2 arg term 1 last index -1 last term -1
+node 0 request vote RPC to 1 arg term 1 last index -1 last term -1
+node 2 get request vote from 0 term 1 current term 0 last log index -1 last log term -1
+node 1 get request vote from 0 term 1 current term 0 last log index -1 last log term -1
+node 2 grant request vote from 0 term 1
+node 1 grant request vote from 0 term 1
+node 0 get vote from 2
+candidate 0 get vote 1
+node 0 get vote from 1
+candidate 0 voteFor -2 current term 1 arg term 1
+node 0 become leader
+leader 0 term 1 broadcast heartbeat 1
+leader 0 append log to server 1 prev index -1 entries [], retry 1
+leader 0 append log to server 2 prev index -1 entries [], retry 1
+node 1 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 1 get valid append entry from 0
+node 2 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs []
+node 2 get valid append entry from 0
+node 1 grant append rpc from 0, commit index -1, rf last included index -1 term -1, log []
+node 2 grant append rpc from 0, commit index -1, rf last included index -1 term -1, log []
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit -1 raft commit index -1
+leader 0 append log index -1 to server 1 success, retry 1
+node 0 try to commit -1 raft commit index -1
+leader 0 append entry 0 command 0
+leader 0 append log to server 1 prev index -1 entries [{0 1}], retry 1
+leader 0 append log to server 2 prev index -1 entries [{0 1}], retry 1
+node 1 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{0 1}]
+node 2 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index -1 prev index -1 logs [{0 1}]
+node 1 get valid append entry from 0
+node 2 get valid append entry from 0
+node 1 append log from 0 args(i) 0 self(j) 0
+node 1 append log from 0 log [{0 1}]
+node 2 append log from 0 args(i) 0 self(j) 0
+node 2 append log from 0 log [{0 1}]
+node 1 grant append rpc from 0, commit index -1, rf last included index -1 term -1, log [{0 1}]
+node 2 grant append rpc from 0, commit index -1, rf last included index -1 term -1, log [{0 1}]
+leader 0 append log index 0 to server 2 success, retry 1
+node 0 try to commit 0 raft commit index -1
+leader 0 append log index 0 to server 1 success, retry 1
+node 0 try to commit 0 raft commit index 0
+node 0 commit index 0 log 0
+leader 0 term 1 broadcast heartbeat 2
+leader 0 append log to server 1 prev index 0 entries [], retry 1
+leader 0 append log to server 2 prev index 0 entries [], retry 1
+node 1 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 1 get valid append entry from 0
+node 1 grant append rpc from 0, commit index 0, rf last included index -1 term -1, log [{0 1}]
+node 1 commit index 0 log 0
+node 2 get append entry from 0 current term 1 arg term 1 rf commit -1 commit index 0 prev index 0 logs []
+node 2 get valid append entry from 0
+node 2 grant append rpc from 0, commit index 0, rf last included index -1 term -1, log [{0 1}]
+node 2 commit index 0 log 0
+leader 0 append log index -1 to server 1 success, retry 1
+node 0 try to commit 0 raft commit index 0
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 0 raft commit index 0
+leader 0 term 1 broadcast heartbeat 3
+leader 0 append log to server 2 prev index 0 entries [], retry 1
+leader 0 append log to server 1 prev index 0 entries [], retry 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 2 get valid append entry from 0
+node 2 grant append rpc from 0, commit index 0, rf last included index -1 term -1, log [{0 1}]
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 0 raft commit index 0
+node 1 get append entry from 0 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs []
+node 1 get valid append entry from 0
+node 1 grant append rpc from 0, commit index 0, rf last included index -1 term -1, log [{0 1}]
+leader 0 append log index -1 to server 1 success, retry 1
+node 0 try to commit 0 raft commit index 0
+crash 1
+leader 0 append entry 1 command 1
+leader 0 append log to server 2 prev index 0 entries [{1 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1}], retry 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 0 commit index 0 prev index 0 logs [{1 1}]
+node 2 get valid append entry from 0
+node 2 append log from 0 args(i) 0 self(j) 1
+node 2 append log from 0 log [{0 1} {1 1}]
+node 2 grant append rpc from 0, commit index 0, rf last included index -1 term -1, log [{0 1} {1 1}]
+leader 0 append log index 1 to server 2 success, retry 1
+node 0 try to commit 1 raft commit index 0
+node 0 commit index 1 log 1
+leader 0 term 1 broadcast heartbeat 4
+leader 0 append log to server 2 prev index 1 entries [], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1}], retry 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 0 commit index 1 prev index 1 logs []
+node 2 get valid append entry from 0
+node 2 grant append rpc from 0, commit index 1, rf last included index -1 term -1, log [{0 1} {1 1}]
+node 2 commit index 1 log 1
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 1 raft commit index 1
+round 0 nn 14
+leader 0 append entry 2 command 2
+leader 0 append entry 3 command 3
+leader 0 append entry 4 command 4
+leader 0 append entry 5 command 5
+leader 0 append entry 6 command 6
+leader 0 append entry 7 command 7
+leader 0 append entry 8 command 8
+leader 0 append entry 9 command 9
+leader 0 append entry 10 command 10
+leader 0 append entry 11 command 11
+leader 0 append entry 12 command 12
+leader 0 append entry 13 command 13
+leader 0 append entry 14 command 14
+leader 0 append entry 15 command 15
+leader 0 append entry 16 command 16
+leader 0 append log to server 2 prev index 1 entries [{2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1}], retry 1
+leader 0 append log to server 2 prev index 1 entries [{2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1}], retry 1
+leader 0 append log to server 1 prev index 0 entries [{1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}], retry 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 1 commit index 1 prev index 1 logs [{2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+node 2 get valid append entry from 0
+node 2 append log from 0 args(i) 0 self(j) 2
+node 2 append log from 0 log [{0 1} {1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+node 2 grant append rpc from 0, commit index 1, rf last included index -1 term -1, log [{0 1} {1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 1 commit index 1 prev index 1 logs [{2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1}]
+node 2 get valid append entry from 0
+leader 0 append log index 16 to server 2 success, retry 1
+node 0 try to commit 16 raft commit index 1
+node 0 commit index 2 log 2
+node 0 commit index 3 log 3
+node 2 append log from 0 args(i) 9 self(j) 11
+node 0 commit index 4 log 4
+node 0 commit index 5 log 5
+node 2 append log from 0 log [{0 1} {1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+node 0 commit index 6 log 6
+node 0 commit index 7 log 7
+node 0 commit index 8 log 8
+node 0 commit index 9 log 9
+node 2 grant append rpc from 0, commit index 1, rf last included index -1 term -1, log [{0 1} {1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+leader 0 append log index 10 to server 2 success, retry 1
+node 0 try to commit 10 raft commit index 16
+node 0 commit index 10 log 10
+node 0 snapshot 8, rf last include index -1 term -1
+node 0 commit index 11 log 11
+node 0 commit index 12 log 12
+node 0 commit index 13 log 13
+node 0 commit index 14 log 14
+node 0 commit index 15 log 15
+node 0 commit index 16 log 16
+leader 0 append log index 1 to server 1 timeout, retry 1
+leader 0 append log index 10 to server 1 connection fail, retry 1
+leader 0 append log index -1 to server 1 timeout, retry 1
+leader 0 invoke InstallSnapshotRPCToServer to 1 prevLogIndexOffset -9 logIndex -1
+leader 0 install snapshot to server 1 last included index 8 term 1
+leader 0 append log index 15 to server 1 timeout, retry 1
+leader 0 append log index 12 to server 1 timeout, retry 1
+leader 0 append log index 16 to server 1 timeout, retry 1
+leader 0 invoke InstallSnapshotRPCToServer to 1 prevLogIndexOffset -9 logIndex 16
+leader 0 install snapshot to server 1 last included index 8 term 1
+leader 0 append log index 11 to server 1 timeout, retry 1
+leader 0 term 1 broadcast heartbeat 5
+leader 0 append log to server 2 prev index 16 entries [], retry 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 1 commit index 16 prev index 16 logs []
+node 2 get valid append entry from 0
+node 2 grant append rpc from 0, commit index 16, rf last included index -1 term -1, log [{0 1} {1 1} {2 1} {3 1} {4 1} {5 1} {6 1} {7 1} {8 1} {9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1}]
+node 2 commit index 2 log 2
+node 2 commit index 3 log 3
+node 2 commit index 4 log 4
+node 2 commit index 5 log 5
+node 2 commit index 6 log 6
+node 2 commit index 7 log 7
+node 2 commit index 8 log 8
+node 2 commit index 9 log 9
+node 2 snapshot 8, rf last include index -1 term -1
+node 2 commit index 10 log 10
+node 2 commit index 11 log 11
+node 2 commit index 12 log 12
+node 2 commit index 13 log 13
+node 2 commit index 14 log 14
+node 2 commit index 15 log 15
+node 2 commit index 16 log 16
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 16 raft commit index 16
+restart 1
+leader 0 append entry 17 command 17
+leader 0 append log to server 2 prev index 16 entries [{17 1}], retry 1
+leader 0 invoke InstallSnapshotRPCToServer to 1 prevLogIndexOffset -9 logIndex 17
+leader 0 install snapshot to server 1 last included index 8 term 1
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 16 commit index 16 prev index 16 logs [{17 1}]
+node 2 get valid append entry from 0
+node 2 append log from 0 args(i) 0 self(j) 17
+node 1 get valid install snapshot from 0 offset 0 last included index 8 term 1
+node 1 install snapshot from 0, rf last include index -1 term -1, args last include index 8 term 1
+node 2 append log from 0 log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 2 grant append rpc from 0, commit index 16, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+leader 0 append log index 17 to server 2 success, retry 1
+node 0 try to commit 17 raft commit index 16
+node 0 commit index 17 log 17
+leader 0 install snapshot to server 1 success, retry 1
+leader 0 append log to server 1 prev index 8 entries [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}], retry 2
+node 1 get append entry from 0 current term 1 arg term 1 rf commit 8 commit index 17 prev index 8 logs [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 1 get valid append entry from 0
+node 1 append log from 0 args(i) 0 self(j) 9
+node 1 append log from 0 log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 1 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 1 commit index 9 log 9
+node 1 commit index 10 log 10
+node 1 commit index 11 log 11
+node 1 commit index 12 log 12
+node 1 commit index 13 log 13
+node 1 commit index 14 log 14
+node 1 commit index 15 log 15
+node 1 commit index 16 log 16
+node 1 commit index 17 log 17
+leader 0 append log index 17 to server 1 success, retry 2
+node 0 try to commit 17 raft commit index 17
+leader 0 install snapshot to server 1 timeout, retry 1
+leader 0 append log to server 1 prev index 17 entries [], retry 3
+node 1 get append entry from 0 current term 1 arg term 1 rf commit 17 commit index 17 prev index 17 logs []
+node 1 get valid append entry from 0
+node 1 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+leader 0 append log index -1 to server 1 success, retry 3
+node 0 try to commit 17 raft commit index 17
+leader 0 install snapshot to server 1 timeout, retry 1
+leader 0 term 1 broadcast heartbeat 6
+leader 0 append log to server 1 prev index 17 entries [], retry 1
+leader 0 append log to server 2 prev index 17 entries [], retry 1
+node 1 get append entry from 0 current term 1 arg term 1 rf commit 17 commit index 17 prev index 17 logs []
+node 1 get valid append entry from 0
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 16 commit index 17 prev index 17 logs []
+node 2 get valid append entry from 0
+node 1 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 2 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 2 commit index 17 log 17
+leader 0 append log index -1 to server 1 success, retry 1
+node 0 try to commit 17 raft commit index 17
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 17 raft commit index 17
+leader 0 term 1 broadcast heartbeat 7
+leader 0 append log to server 1 prev index 17 entries [], retry 1
+leader 0 append log to server 2 prev index 17 entries [], retry 1
+node 1 get append entry from 0 current term 1 arg term 1 rf commit 17 commit index 17 prev index 17 logs []
+node 1 get valid append entry from 0
+node 2 get append entry from 0 current term 1 arg term 1 rf commit 17 commit index 17 prev index 17 logs []
+node 2 get valid append entry from 0
+node 1 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+node 2 grant append rpc from 0, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+leader 0 append log index -1 to server 1 success, retry 1
+node 0 try to commit 17 raft commit index 17
+leader 0 append log index -1 to server 2 success, retry 1
+node 0 try to commit 17 raft commit index 17
+crash 0
+leader 0 term 1 broadcast heartbeat 8
+node 1 wait for 1.181246977s
+node 1 start leader election retry: 1
+node 1 request vote RPC to 2 arg term 2 last index 17 last term 1
+node 1 request vote RPC to 0 arg term 2 last index 17 last term 1
+node 2 get request vote from 1 term 2 current term 1 last log index 17 last log term 1
+node 2 grant request vote from 1 term 2
+node 1 get vote from 2
+candidate 1 get vote 1
+candidate 1 voteFor -2 current term 2 arg term 2
+node 1 become leader
+leader 1 term 2 broadcast heartbeat 1
+leader 1 append log to server 0 prev index 17 entries [], retry 1
+leader 1 append log to server 2 prev index 17 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 17 commit index 17 prev index 17 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 17 raft commit index 17
+leader 1 append entry 18 command 18
+leader 1 append log to server 2 prev index 17 entries [{18 2}], retry 1
+leader 1 append log to server 0 prev index 17 entries [{18 2}], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 17 commit index 17 prev index 17 logs [{18 2}]
+node 2 get valid append entry from 1
+node 2 append log from 1 args(i) 0 self(j) 18
+node 2 append log from 1 log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1} {18 2}]
+node 2 grant append rpc from 1, commit index 17, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1} {18 2}]
+leader 1 append log index 18 to server 2 success, retry 1
+node 1 try to commit 18 raft commit index 17
+node 1 commit index 18 log 18
+node 1 snapshot 18, rf last include index 8 term 1
+node 1 request vote RPC to 0 timeout
+leader 1 append log index -1 to server 0 timeout, retry 1
+leader 1 invoke InstallSnapshotRPCToServer to 0 prevLogIndexOffset -2 logIndex -1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 append log index 18 to server 0 timeout, retry 1
+leader 1 invoke InstallSnapshotRPCToServer to 0 prevLogIndexOffset -2 logIndex 18
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 2
+leader 1 append log to server 2 prev index 18 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 17 commit index 18 prev index 18 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 18, rf last included index 8 term 8, log [{9 1} {10 1} {11 1} {12 1} {13 1} {14 1} {15 1} {16 1} {17 1} {18 2}]
+node 2 commit index 18 log 18
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 18 raft commit index 18
+node 2 snapshot 18, rf last include index 8 term 1
+round 1 nn 5
+leader 1 append entry 19 command 19
+leader 1 append entry 20 command 20
+leader 1 append entry 21 command 21
+leader 1 append entry 22 command 22
+leader 1 append entry 23 command 23
+leader 1 append entry 24 command 24
+leader 1 invoke InstallSnapshotRPCToServer to 0 prevLogIndexOffset -2 logIndex 23
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 invoke InstallSnapshotRPCToServer to 0 prevLogIndexOffset -2 logIndex 24
+leader 1 append log to server 2 prev index 18 entries [{19 2} {20 2}], retry 1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 append log to server 2 prev index 18 entries [{19 2} {20 2} {21 2} {22 2} {23 2}], retry 1
+leader 1 append log to server 2 prev index 18 entries [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}], retry 1
+leader 1 append log to server 2 prev index 18 entries [{19 2} {20 2} {21 2}], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 18 commit index 18 prev index 18 logs [{19 2} {20 2}]
+node 2 get valid append entry from 1
+node 2 append log from 1 args(i) 0 self(j) 19
+node 2 append log from 1 log [{19 2} {20 2}]
+node 2 grant append rpc from 1, commit index 18, rf last included index 18 term 18, log [{19 2} {20 2}]
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 18 commit index 18 prev index 18 logs [{19 2} {20 2} {21 2} {22 2} {23 2}]
+node 2 get valid append entry from 1
+node 2 append log from 1 args(i) 2 self(j) 21
+leader 1 append log index 20 to server 2 success, retry 1
+node 1 try to commit 20 raft commit index 18
+node 2 append log from 1 log [{19 2} {20 2} {21 2} {22 2} {23 2}]
+node 1 commit index 19 log 19
+node 2 grant append rpc from 1, commit index 18, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2}]
+node 1 commit index 20 log 20
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 18 commit index 18 prev index 18 logs [{19 2} {20 2} {21 2}]
+node 2 get valid append entry from 1
+leader 1 append log index 23 to server 2 success, retry 1
+node 1 try to commit 23 raft commit index 20
+node 2 append log from 1 args(i) 3 self(j) 22
+node 1 commit index 21 log 21
+node 1 commit index 22 log 22
+node 2 append log from 1 log [{19 2} {20 2} {21 2} {22 2} {23 2}]
+node 1 commit index 23 log 23
+node 2 grant append rpc from 1, commit index 18, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2}]
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 18 commit index 18 prev index 18 logs [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+node 2 get valid append entry from 1
+node 2 append log from 1 args(i) 5 self(j) 24
+leader 1 append log index 21 to server 2 success, retry 1
+node 1 try to commit 21 raft commit index 23
+node 2 append log from 1 log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+node 2 grant append rpc from 1, commit index 18, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index 24 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 23
+node 1 commit index 24 log 24
+leader 1 install snapshot to server 0 timeout, retry 1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 1
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 3
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 18 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+node 2 commit index 19 log 19
+node 2 commit index 20 log 20
+node 2 commit index 21 log 21
+node 2 commit index 22 log 22
+node 2 commit index 23 log 23
+node 2 commit index 24 log 24
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 4
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 3
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 3
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 3
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 3
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 4
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 4
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 5
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 4
+leader 1 install snapshot to server 0 timeout, retry 4
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 5
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 5
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 5
+leader 1 install snapshot to server 0 timeout, retry 5
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 6
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 6
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 6
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 6
+leader 1 install snapshot to server 0 timeout, retry 6
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 7
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 7
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 7
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 7
+leader 1 install snapshot to server 0 timeout, retry 7
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 8
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 8
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 8
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 8
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 8
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 9
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 9
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 9
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 9
+leader 1 install snapshot to server 0 timeout, retry 9
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 10
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 10
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 10
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 10
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 10
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 11
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 11
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 11
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 11
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 11
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 12
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 12
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 12
+leader 1 install snapshot to server 0 timeout, retry 12
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 12
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 13
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 13
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 13
+leader 1 install snapshot to server 0 timeout, retry 13
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 13
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 14
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 14
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 14
+leader 1 install snapshot to server 0 timeout, retry 14
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 14
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 15
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 15
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 15
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 15
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 16
+leader 1 install snapshot to server 0 timeout, retry 16
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 15
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 16
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 16
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 17
+leader 1 install snapshot to server 0 timeout, retry 17
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 17
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 17
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 16
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 18
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 18
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 18
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 18
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 17
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 19
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 19
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 19
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 19
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 18
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 20
+leader 1 install snapshot to server 0 timeout, retry 20
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 20
+leader 1 install snapshot to server 0 timeout, retry 20
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 19
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 21
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 21
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 21
+leader 1 install snapshot to server 0 timeout, retry 21
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 22
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 22
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 22
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 22
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 20
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 23
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 23
+leader 1 install snapshot to server 0 timeout, retry 23
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 23
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 21
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 24
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 24
+leader 1 install snapshot to server 0 timeout, retry 24
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 24
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 25
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 22
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 25
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 25
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 25
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 26
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 26
+leader 1 install snapshot to server 0 timeout, retry 26
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 26
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 23
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 connection fail, retry 27
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 27
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 27
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 27
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 28
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 28
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 24
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 28
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 28
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 29
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 29
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 29
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 25
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 29
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 30
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 30
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 30
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 30
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 26
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 31
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 31
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 31
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 31
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 27
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 32
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 33
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 32
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 32
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 32
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 34
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 33
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 28
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 33
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 33
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 35
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 34
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 34
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 29
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 34
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 36
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 35
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 35
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 35
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 30
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 37
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 36
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 36
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 36
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 38
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 37
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 31
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 37
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 37
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 39
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 38
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 32
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 38
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 38
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 40
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 39
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 39
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 33
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 39
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 41
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 40
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 40
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 40
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 34
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 42
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 41
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 41
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 41
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 35
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 43
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 42
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 42
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 42
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 44
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 43
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 43
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 43
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 36
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 45
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 44
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 44
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 44
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 37
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 46
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 45
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 47
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 45
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 45
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 38
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 46
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 48
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 46
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 46
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 39
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 47
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 49
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 47
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 47
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 48
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 50
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 48
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 48
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 40
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 49
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 51
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 49
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 49
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 41
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 50
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 52
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 50
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 50
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 42
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 51
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 53
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 51
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 51
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 52
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 54
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 43
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 52
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 52
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 53
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 55
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 44
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 53
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 54
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 53
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 56
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 55
+leader 1 install snapshot to server 0 timeout, retry 54
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 54
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 45
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 57
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 55
+leader 1 install snapshot to server 0 timeout, retry 56
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 55
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 46
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 58
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 57
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 56
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 56
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 47
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 59
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 58
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 57
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 57
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 60
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 58
+leader 1 install snapshot to server 0 timeout, retry 59
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 58
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 48
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 61
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 59
+leader 1 install snapshot to server 0 timeout, retry 60
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 59
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 49
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 62
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 60
+leader 1 install snapshot to server 0 timeout, retry 61
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 60
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 50
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 63
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 61
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 62
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 61
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 51
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 64
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 63
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 62
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 62
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 65
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 63
+leader 1 install snapshot to server 0 timeout, retry 64
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 52
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 63
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 66
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 64
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 65
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 64
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 53
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 connection fail, retry 65
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 67
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 65
+leader 1 install snapshot to server 0 timeout, retry 66
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 54
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 66
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 68
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 67
+leader 1 install snapshot to server 0 timeout, retry 66
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 67
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 55
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 connection fail, retry 69
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 67
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 68
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 68
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 70
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 56
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 69
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 68
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 69
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 71
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 69
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 70
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 57
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 70
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 72
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 71
+leader 1 install snapshot to server 0 timeout, retry 70
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 58
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 71
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 73
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 72
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 72
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 71
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 59
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 74
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 73
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 72
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 73
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 75
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 74
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 73
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 74
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 60
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 76
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 75
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 74
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 75
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 61
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 77
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 76
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 75
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 76
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 62
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 78
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 77
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 76
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 77
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 79
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 78
+leader 1 term 2 broadcast heartbeat 63
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 78
+leader 1 install snapshot to server 0 timeout, retry 77
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 80
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 79
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 78
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 79
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 64
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 81
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 80
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 80
+leader 1 install snapshot to server 0 timeout, retry 79
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 65
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 82
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 81
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 80
+leader 1 install snapshot to server 0 timeout, retry 81
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 66
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 83
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 84
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 82
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 81
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 82
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 85
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 83
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 82
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 83
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 67
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 86
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 84
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 84
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 83
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 68
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 87
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 85
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 85
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 84
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 69
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 88
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 86
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 86
+leader 1 install snapshot to server 0 timeout, retry 85
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 70
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 89
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 87
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 87
+leader 1 install snapshot to server 0 timeout, retry 86
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 71
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 90
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 88
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 87
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 88
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 72
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 91
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 89
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 89
+leader 1 install snapshot to server 0 timeout, retry 88
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 73
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 92
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 90
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 89
+leader 1 install snapshot to server 0 timeout, retry 90
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 93
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 91
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 74
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 90
+leader 1 install snapshot to server 0 timeout, retry 91
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 94
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 92
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 91
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 92
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 93
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 75
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 95
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 93
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 92
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 94
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 76
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 96
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 94
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 93
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 95
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 77
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 97
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 95
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 94
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 96
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 98
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 96
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 95
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 97
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 78
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 99
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 97
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 96
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 98
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 79
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 100
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 98
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 97
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 99
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 80
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 101
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 99
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 98
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 100
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 102
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 100
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 99
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 101
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 81
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 103
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 101
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 100
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 102
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 82
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 connection fail, retry 101
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 104
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 102
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 103
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 102
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 83
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 105
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 103
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 104
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 103
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 84
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 106
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 104
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 105
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 104
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 107
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 105
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 106
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 85
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 105
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 108
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 106
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 107
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 86
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 106
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 109
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 107
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 108
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 87
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 107
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 110
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 108
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 109
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 108
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 88
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 111
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 109
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 110
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 109
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 112
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 110
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 89
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 111
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 110
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 113
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 111
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 112
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 90
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 111
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 114
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 112
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 113
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 91
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 112
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 115
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 113
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 114
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 113
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 92
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 116
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 114
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 115
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 114
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 117
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 115
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 93
+leader 1 install snapshot to server 0 timeout, retry 116
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 115
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 118
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 116
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 117
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 94
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 116
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 119
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 117
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 118
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 95
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 117
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 120
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 118
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 119
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 118
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 121
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 119
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 96
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 120
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 119
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 122
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 120
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 97
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 121
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 120
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 123
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 121
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 122
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 98
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 121
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 124
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 122
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 123
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 122
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 125
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 99
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 123
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 124
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 123
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 126
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 124
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 125
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 100
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 124
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 127
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 125
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 126
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 125
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 101
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 128
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 126
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 127
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 126
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 102
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 129
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 127
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 128
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 127
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 103
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 130
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 128
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 129
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 128
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 131
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 129
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 130
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 104
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 129
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 132
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 130
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 131
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 130
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 connection fail, retry 131
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 105
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 133
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 132
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 131
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 132
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 134
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 106
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 133
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 132
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 133
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 135
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 134
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 133
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 107
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 134
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 136
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 135
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 134
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 108
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 135
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 137
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 136
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 135
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 109
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+leader 1 install snapshot to server 0 timeout, retry 136
+leader 1 install snapshot to server 0 last included index 18 term 2
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 138
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 137
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 136
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 137
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 110
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 139
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 138
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 137
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 138
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 term 2 broadcast heartbeat 111
+leader 1 append log to server 2 prev index 24 entries [], retry 1
+node 2 get append entry from 1 current term 2 arg term 2 rf commit 24 commit index 24 prev index 24 logs []
+node 2 get valid append entry from 1
+node 2 grant append rpc from 1, commit index 24, rf last included index 18 term 18, log [{19 2} {20 2} {21 2} {22 2} {23 2} {24 2}]
+leader 1 append log index -1 to server 2 success, retry 1
+node 1 try to commit 24 raft commit index 24
+leader 1 install snapshot to server 0 timeout, retry 140
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 139
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 138
+leader 1 install snapshot to server 0 last included index 18 term 2
+leader 1 install snapshot to server 0 timeout, retry 139
+leader 1 install snapshot to server 0 last included index 18 term 2

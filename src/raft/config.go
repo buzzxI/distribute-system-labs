@@ -154,6 +154,7 @@ func (cfg *config) checkLogs(i int, m ApplyMsg) (string, bool) {
 	}
 	_, prevok := cfg.logs[i][m.CommandIndex-1]
 	cfg.logs[i][m.CommandIndex] = v
+	// fmt.Printf("write cfg.log[%v][%v] %v\n", i, m.CommandIndex, v)
 	if m.CommandIndex > cfg.maxIndex {
 		cfg.maxIndex = m.CommandIndex
 	}
@@ -233,10 +234,12 @@ func (cfg *config) applierSnap(i int, applyCh chan ApplyMsg) {
 				err_msg = fmt.Sprintf("server %v apply out of order, expected index %v, got %v", i, cfg.lastApplied[i]+1, m.CommandIndex)
 			}
 
+			// fmt.Printf("applier get log %v i %v\n", m, i)
 			if err_msg == "" {
 				cfg.mu.Lock()
 				var prevok bool
 				err_msg, prevok = cfg.checkLogs(i, m)
+				// fmt.Printf("err_msg %v\nprevok %v\n", err_msg, prevok)
 				cfg.mu.Unlock()
 				if m.CommandIndex > 1 && prevok == false {
 					err_msg = fmt.Sprintf("server %v apply out of order %v", i, m.CommandIndex)
@@ -501,6 +504,7 @@ func (cfg *config) nCommitted(index int) (int, interface{}) {
 
 		cfg.mu.Lock()
 		cmd1, ok := cfg.logs[i][index]
+		// fmt.Printf("check cfg.log[%v][%v] %v\n", i, index, cfg.logs[i][index])
 		cfg.mu.Unlock()
 
 		if ok {
@@ -585,6 +589,8 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 			// somebody claimed to be the leader and to have
 			// submitted our command; wait a while for agreement.
 			t1 := time.Now()
+			// fmt.Printf("index %v\n", index)
+			// for time.Since(t1).Seconds() < 10 {
 			for time.Since(t1).Seconds() < 2 {
 				nd, cmd1 := cfg.nCommitted(index)
 				// fmt.Printf("index %v nd %v\n", index, nd)
@@ -597,8 +603,11 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 				}
 				time.Sleep(20 * time.Millisecond)
 			}
+			// fmt.Printf("commit time %v\n", time.Since(t1))
 			if retry == false {
 				cfg.t.Fatalf("one(%v) failed to reach agreement", cmd)
+			} else {
+				// fmt.Printf("judge retry one(%v)\n", cmd)
 			}
 		} else {
 			time.Sleep(50 * time.Millisecond)
