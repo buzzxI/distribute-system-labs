@@ -1,53 +1,285 @@
-Running TestSnapshotInstall3D
+Running TestInitialElection3A
 == Round 1 start ==
-== Round 1 finished, consume 69.20 s ==
+== Round 1 finished, consume 5.32 s ==
 
 == Round 2 start ==
-== Round 2 finished, consume 71.78 s ==
+== Round 2 finished, consume 5.39 s ==
 
 == Round 3 start ==
-== Round 3 finished, consume 71.03 s ==
+== Round 3 finished, consume 5.34 s ==
 
 == Round 4 start ==
-== Round 4 finished, consume 68.38 s ==
+== Round 4 finished, consume 5.43 s ==
 
 == Round 5 start ==
-== Round 5 finished, consume 69.13 s ==
+== Round 5 finished, consume 5.26 s ==
 
 == Round 6 start ==
-== Round 6 finished, consume 70.03 s ==
+== Round 6 finished, consume 5.44 s ==
 
 == Round 7 start ==
-== Round 7 finished, consume 71.19 s ==
+== Round 7 finished, consume 5.30 s ==
 
 == Round 8 start ==
-== Round 8 finished, consume 71.66 s ==
+== Round 8 finished, consume 5.24 s ==
 
 == Round 9 start ==
-== Round 9 finished, consume 70.00 s ==
+== Round 9 finished, consume 5.29 s ==
 
 == Round 10 start ==
-== Round 10 finished, consume 71.96 s ==
+== Round 10 finished, consume 5.36 s ==
 
 == Round 11 start ==
-== Round 11 finished, consume 68.29 s ==
+== Round 11 finished, consume 5.40 s ==
 
 == Round 12 start ==
-== Round 12 finished, consume 68.96 s ==
+== Round 12 finished, consume 5.45 s ==
 
 == Round 13 start ==
-== Round 13 finished, consume 71.72 s ==
+== Round 13 finished, consume 5.22 s ==
 
 == Round 14 start ==
-== Round 14 finished, consume 69.68 s ==
+== Round 14 finished, consume 4.88 s ==
 
 == Round 15 start ==
-== Round 15 finished, consume 68.87 s ==
+== Round 15 finished, consume 5.21 s ==
 
 == Round 16 start ==
-== Round 16 finished, consume 69.05 s ==
+== Round 16 finished, consume 4.90 s ==
 
 == Round 17 start ==
-== Round 17 finished, consume 70.08 s ==
+== Round 17 finished, consume 5.37 s ==
 
 == Round 18 start ==
+== Round 18 finished, consume 5.33 s ==
+
+== Round 19 start ==
+== Round 19 finished, consume 5.29 s ==
+
+== Round 20 start ==
+== Round 20 finished, consume 5.40 s ==
+
+Test TestInitialElection3A consume 105.83 s
+Test TestInitialElection3A passed
+
+Running TestReElection3A
+== Round 1 start ==
+== Round 1 finished, consume 7.26 s ==
+
+== Round 2 start ==
+== Round 2 finished, consume 7.28 s ==
+
+== Round 3 start ==
+== Round 3 finished, consume 7.35 s ==
+
+== Round 4 start ==
+== Round 4 finished, consume 7.79 s ==
+
+== Round 5 start ==
+== Round 5 finished, consume 7.70 s ==
+
+== Round 6 start ==
+== Round 6 finished, consume 7.44 s ==
+
+== Round 7 start ==
+== Round 7 finished, consume 7.16 s ==
+
+== Round 8 start ==
+== Round 8 finished, consume 8.17 s ==
+
+== Round 9 start ==
+== Round 9 finished, consume 7.37 s ==
+
+== Round 10 start ==
+== Round 10 finished, consume 7.40 s ==
+
+== Round 11 start ==
+== Round 11 finished, consume 7.19 s ==
+
+== Round 12 start ==
+== Round 12 finished, consume 7.34 s ==
+
+== Round 13 start ==
+== Round 13 finished, consume 7.44 s ==
+
+== Round 14 start ==
+== Round 14 finished, consume 7.13 s ==
+
+== Round 15 start ==
+== Round 15 finished, consume 7.22 s ==
+
+== Round 16 start ==
+== Round 16 finished, consume 7.61 s ==
+
+== Round 17 start ==
+== Round 17 finished, consume 7.82 s ==
+
+== Round 18 start ==
+== Round 18 finished, consume 7.26 s ==
+
+== Round 19 start ==
+== Round 19 finished, consume 7.90 s ==
+
+== Round 20 start ==
+== Round 20 finished, consume 7.51 s ==
+
+Test TestReElection3A consume 149.34 s
+Test TestReElection3A passed
+
+Running TestManyElections3A
+== Round 1 start ==
+== Round 1 finished, consume 8.83 s ==
+
+== Round 2 start ==
+== Round 2 finished, consume 7.73 s ==
+
+== Round 3 start ==
+== Round 3 finished, consume 8.31 s ==
+
+== Round 4 start ==
+== Round 4 finished, consume 8.31 s ==
+
+== Round 5 start ==
+== Round 5 finished, consume 11.52 s ==
+
+== Round 6 start ==
+== Round 6 finished, consume 7.31 s ==
+
+== Round 7 start ==
+== Round 7 finished, consume 8.82 s ==
+
+== Round 8 start ==
+== Round 8 finished, consume 9.41 s ==
+
+== Round 9 start ==
+== Round 9 finished, consume 8.37 s ==
+
+== Round 10 start ==
+== Round 10 finished, consume 8.67 s ==
+
+== Round 11 start ==
+== Round 11 finished, consume 7.62 s ==
+
+== Round 12 start ==
+== Round 12 finished, consume 8.28 s ==
+
+== Round 13 start ==
+== Round 13 finished, consume 7.80 s ==
+
+== Round 14 start ==
+== Round 14 finished, consume 9.28 s ==
+
+== Round 15 start ==
+== Round 15 finished, consume 8.65 s ==
+
+== Round 16 start ==
+== Round 16 finished, consume 8.46 s ==
+
+== Round 17 start ==
+== Round 17 finished, consume 8.25 s ==
+
+== Round 18 start ==
+== Round 18 finished, consume 8.41 s ==
+
+== Round 19 start ==
+== Round 19 finished, consume 8.67 s ==
+
+== Round 20 start ==
+== Round 20 finished, consume 10.23 s ==
+
+Test TestManyElections3A consume 172.94 s
+Test TestManyElections3A passed
+
+Running TestBasicAgree3B
+== Round 1 start ==
+== Round 1 finished, consume 3.42 s ==
+
+== Round 2 start ==
+== Round 2 finished, consume 3.70 s ==
+
+== Round 3 start ==
+== Round 3 finished, consume 3.72 s ==
+
+== Round 4 start ==
+== Round 4 finished, consume 3.67 s ==
+
+== Round 5 start ==
+== Round 5 finished, consume 3.78 s ==
+
+== Round 6 start ==
+== Round 6 finished, consume 3.50 s ==
+
+== Round 7 start ==
+== Round 7 finished, consume 3.70 s ==
+
+== Round 8 start ==
+== Round 8 finished, consume 3.37 s ==
+
+== Round 9 start ==
+== Round 9 finished, consume 3.61 s ==
+
+== Round 10 start ==
+== Round 10 finished, consume 3.49 s ==
+
+== Round 11 start ==
+== Round 11 finished, consume 3.55 s ==
+
+== Round 12 start ==
+== Round 12 finished, consume 3.49 s ==
+
+== Round 13 start ==
+== Round 13 finished, consume 3.39 s ==
+
+== Round 14 start ==
+== Round 14 finished, consume 3.55 s ==
+
+== Round 15 start ==
+== Round 15 finished, consume 3.56 s ==
+
+== Round 16 start ==
+== Round 16 finished, consume 3.69 s ==
+
+== Round 17 start ==
+== Round 17 finished, consume 3.61 s ==
+
+== Round 18 start ==
+== Round 18 finished, consume 3.55 s ==
+
+== Round 19 start ==
+== Round 19 finished, consume 3.60 s ==
+
+== Round 20 start ==
+== Round 20 finished, consume 3.57 s ==
+
+Test TestBasicAgree3B consume 71.52 s
+Test TestBasicAgree3B passed
+
+Running TestRPCBytes3B
+== Round 1 start ==
+== Round 1 finished, consume 6.68 s ==
+
+== Round 2 start ==
+== Round 2 finished, consume 6.40 s ==
+
+== Round 3 start ==
+== Round 3 finished, consume 6.64 s ==
+
+== Round 4 start ==
+== Round 4 finished, consume 6.90 s ==
+
+== Round 5 start ==
+== Round 5 finished, consume 6.58 s ==
+
+== Round 6 start ==
+== Round 6 finished, consume 6.40 s ==
+
+== Round 7 start ==
+== Round 7 finished, consume 6.52 s ==
+
+== Round 8 start ==
+== Round 8 finished, consume 6.54 s ==
+
+== Round 9 start ==
+== Round 9 finished, consume 6.51 s ==
+
+== Round 10 start ==
