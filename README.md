@@ -1,1 +1,1 @@
-lab code of (mit distribte system course)[https://pdos.csail.mit.edu/6.824/index.html]
+lab code of [mit distribte system course](https://pdos.csail.mit.edu/6.824/index.html)

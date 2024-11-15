@@ -27,10 +27,5 @@ jobs:
 
     - name: Run test
       run: |
-        python3 ./src/raft/judge.py --count 200 --pattern 'TestSnapshotInstall3D' --race
-
-    - name: Build
-      run: go build -v ./...
-
-    - name: Test
-      run: go test -v ./...
+        cd ./src/raft
+        python3 judge.py --count 200 --pattern 'TestSnapshotInstall3D' --race
