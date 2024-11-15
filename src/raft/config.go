@@ -603,7 +603,7 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 			// for time.Since(t1).Seconds() < 10 {
 			for time.Since(t1).Seconds() < 2 {
 				nd, cmd1 := cfg.nCommitted(index)
-				// fmt.Printf("one index %v nd %v\n", index, nd)
+				// fmt.Printf("one index %v nd %v cmd1 %v cmd %v\n", index, nd, cmd1, cmd)
 				if nd > 0 && nd >= expectedServers {
 					// committed
 					if cmd1 == cmd {

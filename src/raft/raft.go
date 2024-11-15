@@ -111,7 +111,7 @@ type Raft struct {
 	// snapshot fields
 	lastIncludedIndex int
 	lastIncludedTerm  int
-	commitLock        sync.Mutex
+	// commitLock        sync.Mutex
 
 	leaderSnapshotData map[int][]byte // declare a map offset as key, raw data as value
 	snapshotDataDone   int            // snapshotDone is -1 if leader snapshot has not finished
@@ -216,6 +216,7 @@ func (rf *Raft) readRaftState(data []byte) {
 		rf.lastIncludedIndex = lastIncludedIndex
 		rf.lastIncludedTerm = lastIncludedTerm
 		rf.commitIndex = rf.lastIncludedIndex // initialize commit index to lastInclude index
+		rf.lastApplied = rf.lastIncludedIndex
 	}
 }
 
@@ -258,7 +259,28 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	fmt.Printf("node %v get Snapshot %v\n", rf.me, index)
 
 	// use go routine to finsh invocation of snapshot quickly
-	go func(index int, snapshot []byte) {
+	// go func(index int, snapshot []byte) {
+	// 	rf.lock(&rf.mu)
+	// 	defer rf.unlock(&rf.mu)
+
+	// 	// stale index
+	// 	if rf.lastIncludedIndex >= index {
+	// 		return
+	// 	}
+
+	// 	// get index offset in current log
+	// 	logOffset := index - rf.lastIncludedIndex - 1
+
+	// 	fmt.Printf("node %v snapshot %v, rf last include index %v term %v\n", rf.me, index, rf.lastIncludedIndex, rf.lastIncludedTerm)
+
+	// 	rf.lastIncludedIndex = index
+	// 	rf.lastIncludedTerm = rf.log[logOffset].Term
+	// 	rf.log = rf.log[logOffset+1:]
+
+	// 	rf.persist(snapshot)
+	// }(index, snapshot)
+
+	func(index int, snapshot []byte) {
 		rf.lock(&rf.mu)
 		defer rf.unlock(&rf.mu)
 
@@ -390,6 +412,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 // same index, same term -> same command
 func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	rf.lock(&rf.mu)
+	defer rf.unlock(&rf.mu)
 	fmt.Printf("node %d get append entry from %d current term %d arg term %d rf commit %v commit index %v prev index %v logs %v\n",
 		rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.commitIndex, args.LeaderCommit, args.PrevLogIndex, args.Entries)
 
@@ -398,7 +421,6 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	if args.Term < rf.currentTerm {
 		reply.Term = rf.currentTerm
 		reply.Success = false
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -413,7 +435,6 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	if args.Term == rf.currentTerm && rf.votedFor >= 0 && rf.votedFor != args.LeaderId {
 		reply.Term = rf.currentTerm
 		reply.Success = false
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -435,7 +456,6 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		fmt.Printf("node %d reject append entry from %d log length %v PrevLogIndex %v\n", rf.me, args.LeaderId, totalLen, args.PrevLogIndex)
 		reply.Term = rf.currentTerm
 		reply.Success = false
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -446,7 +466,6 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		fmt.Printf("node %d get append rpc with trimed prevLogIndex %v\n", rf.me, prevLogIndexOffset)
 		reply.Term = rf.currentTerm
 		reply.Success = false
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -459,7 +478,6 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		}
 		reply.Term = rf.currentTerm
 		reply.Success = false
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -493,38 +511,23 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	}
 
 	commitIndex := min(args.LeaderCommit, max(rf.lastIncludedIndex+len(rf.log), 0))
-	var commitedLog []ApplyMsg
 	if commitIndex > rf.commitIndex {
-		// update commit index, commit the msg to channel
-		// commit from rf.commitIndex to min(args.LeaderCommit, len(rf.log)-1)
-		commitedLog = make([]ApplyMsg, commitIndex-rf.commitIndex)
-		i := rf.commitIndex + 1
-		for j := range commitedLog {
-			logIndexOffset := i - rf.lastIncludedIndex - 1
-			// ApplyMsg index start from 1
-			commitedLog[j] = ApplyMsg{CommandValid: true, Command: rf.log[logIndexOffset].Command, CommandIndex: i + 1}
-			i++
-		}
 		rf.commitIndex = commitIndex
 	}
 
 	fmt.Printf("node %v grant append rpc from %v, args commit index %v, rf commit index %v, rf last included index %v term %v, log %v\n", rf.me, args.LeaderId, args.LeaderCommit, rf.commitIndex, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
 	reply.Term = rf.currentTerm
 	reply.Success = true
-
-	rf.lock(&rf.commitLock, "commit lock")
-	rf.unlock(&rf.mu)
-	rf.CommitEntries(commitedLog)
-	rf.unlock(&rf.commitLock, "commit lock")
 }
 
 func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapshotReply) {
 	rf.lock(&rf.mu)
+	defer rf.unlock(&rf.mu)
 
 	// reply immediately if leader get stale term
 	if args.Term < rf.currentTerm {
 		reply.Term = args.Term
-		rf.unlock(&rf.mu)
+		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -539,7 +542,7 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 
 	// get AppendRPC from current term with different leader -> reject
 	if args.Term == rf.currentTerm && rf.votedFor >= 0 && rf.votedFor != args.LeaderId {
-		rf.unlock(&rf.mu)
+		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -580,13 +583,13 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 
 	if !flag {
 		// snapshot data has not finished
-		rf.unlock(&rf.mu)
+		// rf.unlock(&rf.mu)
 		return
 	}
 
 	// stale index (if args'last included index is equals to raft'last included index -> stale snapshot)
 	if rf.lastIncludedIndex >= args.LastIncludedIndex {
-		rf.unlock(&rf.mu)
+		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -602,18 +605,20 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 
 	rf.lastIncludedIndex = args.LastIncludedIndex
 	rf.lastIncludedTerm = args.LastIncludedTerm
+	// trimed log also trim commit index and last applied
 	rf.commitIndex = max(args.LastIncludedIndex, rf.commitIndex)
+	rf.lastApplied = rf.commitIndex
 
 	rf.persist(snapshot)
 	// commit lock is used to order ApplyMsg to apply channel
-	rf.lock(&rf.commitLock)
-	rf.unlock(&rf.mu)
+	// rf.lock(&rf.commitLock)
+	// rf.unlock(&rf.mu)
 
 	// only until the lock is released, msg can be sent to channel
 	// used to inform upper layer snapshot change
 	// judge index start from 1
 	rf.applyCh <- ApplyMsg{SnapshotValid: true, Snapshot: snapshot, SnapshotIndex: args.LastIncludedIndex + 1, SnapshotTerm: args.LastIncludedTerm}
-	rf.unlock(&rf.commitLock)
+	// rf.unlock(&rf.commitLock)
 }
 
 // example code to send a RequestVote RPC to a server.
@@ -997,17 +1002,16 @@ func (rf *Raft) CommitEntries(commitedLog []ApplyMsg) {
 // check if current log can be commited
 func (rf *Raft) CheckLogCommitment(logIndex int) {
 	rf.lock(&rf.mu)
+	defer rf.unlock(&rf.mu)
 	fmt.Printf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
 
 	// current server is not leader
 	if rf.votedFor != rf.me {
-		rf.unlock(&rf.mu)
 		return
 	}
 
 	// current server has commited current log
 	if rf.commitIndex >= logIndex {
-		rf.unlock(&rf.mu)
 		return
 	}
 
@@ -1033,24 +1037,28 @@ func (rf *Raft) CheckLogCommitment(logIndex int) {
 	logOffset := i - rf.lastIncludedIndex - 1
 	// raft does not commit previous log (multiple success heartbeat should commit previous log)
 	if logOffset >= 0 && rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
-		rf.unlock(&rf.mu)
 		return
 	}
 
-	commitedLog := make([]ApplyMsg, i-rf.commitIndex)
-	j := rf.commitIndex + 1
-	for k := range commitedLog {
-		commitOffset := j - rf.lastIncludedIndex - 1
-		commitedLog[k] = ApplyMsg{CommandValid: true, Command: rf.log[commitOffset].Command, CommandIndex: j + 1}
-		j++
-	}
 	// commit until i
 	rf.commitIndex = i
-	// commit lock is use to ensure order of commited log
-	rf.lock(&rf.commitLock, "commit lock")
-	rf.unlock(&rf.mu)
-	rf.CommitEntries(commitedLog)
-	rf.unlock(&rf.commitLock, "commit lock")
+}
+
+func (rf *Raft) commitChecker() {
+	for {
+		rf.lock(&rf.mu)
+		if rf.lastApplied < rf.commitIndex {
+			rf.lastApplied++
+			fmt.Printf("node %v commit %v\n", rf.me, rf.lastApplied)
+			logOffset := rf.lastApplied - rf.lastIncludedIndex - 1
+			msg := ApplyMsg{CommandValid: true, Command: rf.log[logOffset].Command, CommandIndex: rf.lastApplied + 1}
+			rf.unlock(&rf.mu)
+			rf.applyCh <- msg
+		} else {
+			rf.unlock(&rf.mu)
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
 }
 
 // the tester doesn't halt goroutines created by Raft after each test,
@@ -1366,6 +1374,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	// start ticker goroutine to start elections
 	go rf.ticker()
+	go rf.commitChecker()
 
 	return rf
 }
