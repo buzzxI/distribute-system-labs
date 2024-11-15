@@ -200,6 +200,7 @@ func (cfg *config) ingestSnap(i int, snapshot []byte, index int) string {
 		log.Fatalf("snapshot decode error")
 		return "snapshot Decode() error"
 	}
+	// fmt.Printf("ingestSnap lastIncludedIndex %v xlog %v index %v\n", lastIncludedIndex, xlog, index)
 	if index != -1 && index != lastIncludedIndex {
 		err := fmt.Sprintf("server %v snapshot doesn't match m.SnapshotIndex", i)
 		return err
@@ -279,6 +280,7 @@ func (cfg *config) applierSnap(i int, applyCh chan ApplyMsg) {
 // state persister, to isolate previous instance of
 // this server. since we cannot really kill it.
 func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
+	// fmt.Printf("start1 try to crash1 %v\n", i)
 	cfg.crash1(i)
 
 	// a fresh set of outgoing ClientEnd names.
@@ -288,6 +290,7 @@ func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
 		cfg.endnames[i][j] = randstring(20)
 	}
 
+	// fmt.Printf("start1 try to make end %v\n", i)
 	// a fresh set of ClientEnds.
 	ends := make([]*labrpc.ClientEnd, cfg.n)
 	for j := 0; j < cfg.n; j++ {
@@ -304,24 +307,29 @@ func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
 	// but copy old persister's content so that we always
 	// pass Make() the last persisted state.
 	if cfg.saved[i] != nil {
+		// fmt.Printf("start1 try to read snapshot %v\n", i)
 		cfg.saved[i] = cfg.saved[i].Copy()
 
 		snapshot := cfg.saved[i].ReadSnapshot()
+		// fmt.Printf("start1 read snapshot %v\n", snapshot)
 		if snapshot != nil && len(snapshot) > 0 {
 			// mimic KV server and process snapshot now.
 			// ideally Raft should send it up on applyCh...
 			err := cfg.ingestSnap(i, snapshot, -1)
+			// fmt.Printf("start1 invoke ingestSnap get %v\n", err)
 			if err != "" {
 				cfg.t.Fatal(err)
 			}
 		}
 	} else {
+		// fmt.Printf("start1 try to make snapshot %v\n", i)
 		cfg.saved[i] = MakePersister()
 	}
 
 	cfg.mu.Unlock()
-
 	applyCh := make(chan ApplyMsg)
+
+	// fmt.Printf("start1 try to Make a new raft instance %v\n", i)
 
 	rf := Make(ends, i, cfg.saved[i], applyCh)
 
@@ -329,8 +337,10 @@ func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
 	cfg.rafts[i] = rf
 	cfg.mu.Unlock()
 
+	// fmt.Printf("start1 try to start a go routine %v\n", i)
 	go applier(i, applyCh)
 
+	// fmt.Printf("start1 try to make service %v\n", i)
 	svc := labrpc.MakeService(rf)
 	srv := labrpc.MakeServer()
 	srv.AddService(svc)
@@ -589,11 +599,11 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 			// somebody claimed to be the leader and to have
 			// submitted our command; wait a while for agreement.
 			t1 := time.Now()
-			// fmt.Printf("index %v\n", index)
+			// fmt.Printf("one index %v\n", index)
 			// for time.Since(t1).Seconds() < 10 {
 			for time.Since(t1).Seconds() < 2 {
 				nd, cmd1 := cfg.nCommitted(index)
-				// fmt.Printf("index %v nd %v\n", index, nd)
+				// fmt.Printf("one index %v nd %v\n", index, nd)
 				if nd > 0 && nd >= expectedServers {
 					// committed
 					if cmd1 == cmd {

@@ -172,6 +172,8 @@ func (rf *Raft) persist(snapshot []byte) {
 	e.Encode(rf.log)
 	e.Encode(rf.lastIncludedIndex)
 	e.Encode(rf.lastIncludedTerm)
+	fmt.Printf("node %v persist current term %v vote for %v last included index %v term %v log %v\n", rf.me, rf.currentTerm, rf.votedFor, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
+	// fmt.Printf()
 	raftstate := w.Bytes()
 	// if snapshot is nil, then current persist is a cascaded persist (raft state only, snapshot should be the same)
 	if snapshot == nil {
@@ -181,6 +183,7 @@ func (rf *Raft) persist(snapshot []byte) {
 }
 
 func (rf *Raft) readRaftState(data []byte) {
+	fmt.Printf("node %v read raft state\n", rf.me)
 	r := bytes.NewBuffer(data)
 	d := labgob.NewDecoder(r)
 	var currentTerm int
@@ -193,7 +196,7 @@ func (rf *Raft) readRaftState(data []byte) {
 		d.Decode(&votedFor) == nil &&
 		d.Decode(&log) == nil &&
 		d.Decode(&lastIncludedIndex) == nil &&
-		d.Decode(lastIncludedTerm) == nil {
+		d.Decode(&lastIncludedTerm) == nil {
 		rf.currentTerm = currentTerm
 		rf.votedFor = votedFor
 		if rf.votedFor == -2 {
@@ -217,24 +220,29 @@ func (rf *Raft) readRaftState(data []byte) {
 }
 
 func (rf *Raft) readSnapshot(data []byte) {
-	// apply the message to apply channel
-	rf.applyCh <- ApplyMsg{SnapshotValid: true, Snapshot: data, SnapshotIndex: rf.lastIncludedIndex + 1, SnapshotTerm: rf.lastIncludedTerm}
+	fmt.Printf("node %v read snapshot\n", rf.me)
+	// apply the message to apply channel (use go routine to not block raft instance)
+	go func() {
+		rf.applyCh <- ApplyMsg{SnapshotValid: true, Snapshot: data, SnapshotIndex: rf.lastIncludedIndex + 1, SnapshotTerm: rf.lastIncludedTerm}
+	}()
 }
 
 // restore previously persisted state.
 // no need to hold the lock (initial stage)
 func (rf *Raft) readPersist(state []byte, snapshot []byte) {
+	fmt.Printf("node %v read persist\n", rf.me)
+
 	stateSize := rf.persister.RaftStateSize()
 
 	if stateSize > 0 {
 		rf.readRaftState(state)
 	}
 
-	snapshotSize := rf.persister.SnapshotSize()
+	// snapshotSize := rf.persister.SnapshotSize()
 
-	if snapshotSize > 0 {
-		rf.readSnapshot(snapshot)
-	}
+	// if snapshotSize > 0 {
+	// 	rf.readSnapshot(snapshot)
+	// }
 }
 
 // the service says it has created a snapshot that has
@@ -247,6 +255,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 
 	// judge index start from 1
 	index--
+	fmt.Printf("node %v get Snapshot %v\n", rf.me, index)
 
 	// use go routine to finsh invocation of snapshot quickly
 	go func(index int, snapshot []byte) {
@@ -264,7 +273,6 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 		fmt.Printf("node %v snapshot %v, rf last include index %v term %v\n", rf.me, index, rf.lastIncludedIndex, rf.lastIncludedTerm)
 
 		rf.lastIncludedIndex = index
-
 		rf.lastIncludedTerm = rf.log[logOffset].Term
 		rf.log = rf.log[logOffset+1:]
 
@@ -500,7 +508,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		rf.commitIndex = commitIndex
 	}
 
-	fmt.Printf("node %v grant append rpc from %v, commit index %v, rf last included index %v term %v, log %v\n", rf.me, args.LeaderId, rf.commitIndex, rf.lastIncludedIndex, rf.lastIncludedIndex, rf.log)
+	fmt.Printf("node %v grant append rpc from %v, args commit index %v, rf commit index %v, rf last included index %v term %v, log %v\n", rf.me, args.LeaderId, args.LeaderCommit, rf.commitIndex, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
 	reply.Term = rf.currentTerm
 	reply.Success = true
 
@@ -1345,8 +1353,6 @@ func Make(peers []*labrpc.ClientEnd, me int,
 		rf.replicaProcess[i] = -1
 	}
 
-	rf.readPersist(persister.ReadRaftState(), persister.ReadSnapshot())
-
 	// 3B
 	rf.applyCh = applyCh
 
@@ -1355,6 +1361,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.lastIncludedIndex = -1
 	rf.lastIncludedTerm = -1
 
+	rf.readPersist(persister.ReadRaftState(), persister.ReadSnapshot())
 	rf.snapshotDataDone = -1
 
 	// start ticker goroutine to start elections

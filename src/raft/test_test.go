@@ -1148,6 +1148,7 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 
 	j := 0
 	// cfg.one(rand.Int(), servers, true)
+	fmt.Printf("cfg one(%v)\n", j)
 	cfg.one(j, servers, true)
 	j++
 	leader1 := cfg.checkOneLeader()
@@ -1164,6 +1165,7 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 			fmt.Printf("disconnect %v\n", victim)
 			cfg.disconnect(victim)
 			// cfg.one(rand.Int(), servers-1, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers-1, true)
 			j++
 		}
@@ -1171,6 +1173,7 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 			fmt.Printf("crash %v\n", victim)
 			cfg.crash1(victim)
 			// cfg.one(rand.Int(), servers-1, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers-1, true)
 			j++
 		}
@@ -1180,6 +1183,7 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 		fmt.Printf("round %v nn %v\n", i, nn)
 		for i := 0; i < nn; i++ {
 			// cfg.rafts[sender].Start(rand.Int())
+			fmt.Printf("cfg start(%v)\n", j)
 			cfg.rafts[sender].Start(j)
 			j++
 		}
@@ -1190,10 +1194,12 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 			// an InstallSnapshot RPC isn't required for
 			// TestSnapshotBasic3D().
 			// cfg.one(rand.Int(), servers, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers, true)
 			j++
 		} else {
 			// cfg.one(rand.Int(), servers-1, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers-1, true)
 			j++
 		}
@@ -1207,15 +1213,18 @@ func snapcommon(t *testing.T, name string, disconnect bool, reliable bool, crash
 			cfg.connect(victim)
 			fmt.Printf("reconnect %v\n", victim)
 			// cfg.one(rand.Int(), servers, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers, true)
 			j++
 			leader1 = cfg.checkOneLeader()
 		}
 		if crash {
+			// fmt.Printf("cfg try to restart %v\n", victim)
 			cfg.start1(victim, cfg.applierSnap)
 			fmt.Printf("restart %v\n", victim)
 			cfg.connect(victim)
 			// cfg.one(rand.Int(), servers, true)
+			fmt.Printf("cfg one(%v)\n", j)
 			cfg.one(j, servers, true)
 			j++
 			leader1 = cfg.checkOneLeader()
@@ -1256,19 +1265,31 @@ func TestSnapshotAllCrash3D(t *testing.T) {
 
 	cfg.begin("Test (3D): crash and restart all servers")
 
-	cfg.one(rand.Int(), servers, true)
+	// cfg.one(rand.Int(), servers, true)
+	j := 0
+	fmt.Printf("one (%v)\n", j)
+	cfg.one(j, servers, true)
+	j++
 
 	for i := 0; i < iters; i++ {
 		// perhaps enough to get a snapshot
 		nn := (SnapShotInterval / 2) + (rand.Int() % SnapShotInterval)
+		fmt.Printf("round %v nn %v\n", i, nn)
 		for i := 0; i < nn; i++ {
-			cfg.one(rand.Int(), servers, true)
+			// cfg.one(rand.Int(), servers, true)
+			fmt.Printf("one (%v)\n", j)
+			cfg.one(j, servers, true)
+			j++
 		}
 
-		index1 := cfg.one(rand.Int(), servers, true)
+		// index1 := cfg.one(rand.Int(), servers, true)
+		fmt.Printf("one (%v)\n", j)
+		index1 := cfg.one(j, servers, true)
+		j++
 
 		// crash all
 		for i := 0; i < servers; i++ {
+			fmt.Printf("crash %v\n", i)
 			cfg.crash1(i)
 		}
 
@@ -1276,9 +1297,14 @@ func TestSnapshotAllCrash3D(t *testing.T) {
 		for i := 0; i < servers; i++ {
 			cfg.start1(i, cfg.applierSnap)
 			cfg.connect(i)
+			fmt.Printf("restart %v\n", i)
 		}
 
-		index2 := cfg.one(rand.Int(), servers, true)
+		// index2 := cfg.one(rand.Int(), servers, true)
+		fmt.Printf("one (%v)\n", j)
+		index2 := cfg.one(j, servers, true)
+		j++
+
 		if index2 < index1+1 {
 			t.Fatalf("index decreased from %v to %v", index1, index2)
 		}
