@@ -126,11 +126,6 @@ func (rf *Raft) GetState() (int, bool) {
 	return rf.currentTerm, rf.votedFor == rf.me
 }
 
-// func (rf *Raft) getLine() int {
-// 	_, _, line, _ := runtime.Caller(1)
-// 	return line
-// }
-
 func (rf *Raft) lock(lock *sync.Mutex, sign ...string) {
 	lock.Lock()
 	if rf.debug {
@@ -220,17 +215,9 @@ func (rf *Raft) readRaftState(data []byte) {
 	}
 }
 
-func (rf *Raft) readSnapshot(data []byte) {
-	fmt.Printf("node %v read snapshot\n", rf.me)
-	// apply the message to apply channel (use go routine to not block raft instance)
-	go func() {
-		rf.applyCh <- ApplyMsg{SnapshotValid: true, Snapshot: data, SnapshotIndex: rf.lastIncludedIndex + 1, SnapshotTerm: rf.lastIncludedTerm}
-	}()
-}
-
 // restore previously persisted state.
 // no need to hold the lock (initial stage)
-func (rf *Raft) readPersist(state []byte, snapshot []byte) {
+func (rf *Raft) readPersist(state []byte) {
 	fmt.Printf("node %v read persist\n", rf.me)
 
 	stateSize := rf.persister.RaftStateSize()
@@ -238,12 +225,6 @@ func (rf *Raft) readPersist(state []byte, snapshot []byte) {
 	if stateSize > 0 {
 		rf.readRaftState(state)
 	}
-
-	// snapshotSize := rf.persister.SnapshotSize()
-
-	// if snapshotSize > 0 {
-	// 	rf.readSnapshot(snapshot)
-	// }
 }
 
 // the service says it has created a snapshot that has
@@ -257,28 +238,6 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	// judge index start from 1
 	index--
 	fmt.Printf("node %v get Snapshot %v\n", rf.me, index)
-
-	// use go routine to finsh invocation of snapshot quickly
-	// go func(index int, snapshot []byte) {
-	// 	rf.lock(&rf.mu)
-	// 	defer rf.unlock(&rf.mu)
-
-	// 	// stale index
-	// 	if rf.lastIncludedIndex >= index {
-	// 		return
-	// 	}
-
-	// 	// get index offset in current log
-	// 	logOffset := index - rf.lastIncludedIndex - 1
-
-	// 	fmt.Printf("node %v snapshot %v, rf last include index %v term %v\n", rf.me, index, rf.lastIncludedIndex, rf.lastIncludedTerm)
-
-	// 	rf.lastIncludedIndex = index
-	// 	rf.lastIncludedTerm = rf.log[logOffset].Term
-	// 	rf.log = rf.log[logOffset+1:]
-
-	// 	rf.persist(snapshot)
-	// }(index, snapshot)
 
 	func(index int, snapshot []byte) {
 		rf.lock(&rf.mu)
@@ -1369,7 +1328,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.lastIncludedIndex = -1
 	rf.lastIncludedTerm = -1
 
-	rf.readPersist(persister.ReadRaftState(), persister.ReadSnapshot())
+	rf.readPersist(persister.ReadRaftState())
 	rf.snapshotDataDone = -1
 
 	// start ticker goroutine to start elections
