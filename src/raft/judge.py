@@ -94,24 +94,24 @@ logging.getLogger('httpcore').setLevel(logging.ERROR)
 
 testsToRun = [test for test in testlist if re.search(pattern, test)]
 
-flag = False
+flag = True
 
 judge_start = time.time()
-# for test in testsToRun:
-#     command = ['go', 'test', '-run', test, '-v']
-#     if race:
-#         command.append("-race")
-#     start = time.time()
-#     logging.info(f"Running {test}")
-#     rst = run_command(command)
-#     end = time.time()
-#     logging.info(f"Test {test} consume {end - start:.2f} s")
-#     if not rst:
-#         logging.error(f"Test {test} failed\n")
-#         flag = False
-#         break
-#     else:
-#         logging.info(f"Test {test} passed\n")
+for test in testsToRun:
+    command = ['go', 'test', '-run', test, '-v']
+    if race:
+        command.append("-race")
+    start = time.time()
+    logging.info(f"Running {test}")
+    rst = run_command(command)
+    end = time.time()
+    logging.info(f"Test {test} consume {end - start:.2f} s")
+    if not rst:
+        logging.error(f"Test {test} failed\n")
+        flag = False
+        break
+    else:
+        logging.info(f"Test {test} passed\n")
 
 judge_end = time.time()
 logging.info(f"Total consume: {judge_end - judge_start:.2f} s")
