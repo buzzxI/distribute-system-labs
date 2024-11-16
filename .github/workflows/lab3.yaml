@@ -31,4 +31,4 @@ jobs:
     - name: Run test
       run: |
         cd ./src/raft
-        python3 judge.py --count 20 --pattern '3[ABCD]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram_chatid ${{ secrets.TELEGRAM_CHATID }}
+        python3 judge.py --count 20 --pattern '3[ABCD]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram-chatid ${{ secrets.TELEGRAM_CHATID }}
