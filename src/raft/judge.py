@@ -1,7 +1,6 @@
 import subprocess
 import argparse
 import time
-import sys
 import re
 import logging
 import asyncio
@@ -44,15 +43,14 @@ def run_command(command):
     return flag
 
 def report_result(flag):
-    running_command = ' '.join(sys.argv)
     async def error_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 fail, command: {running_command}')
+        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 fail, round {repeat_count}, pattern {pattern}')
         await bot.send_document(chat_id=telegram_chatid, document='./log.txt')
 
     async def success_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 success, command: {running_command}')
+        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 success, round {repeat_count}, pattern {pattern}')
 
     if flag:
         asyncio.run(success_report())
@@ -92,7 +90,7 @@ logging.basicConfig(
 
 testsToRun = [test for test in testlist if re.search(pattern, test)]
 
-flag = True
+flag = False
 
 judge_start = time.time()
 # for test in testsToRun:
