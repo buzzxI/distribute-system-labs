@@ -88,6 +88,10 @@ logging.basicConfig(
         logging.StreamHandler()]
 )
 
+# suppress PTB http request output
+logging.getLogger('httpx').setLevel(logging.ERROR)
+logging.getLogger('httpcore').setLevel(logging.ERROR)
+
 testsToRun = [test for test in testlist if re.search(pattern, test)]
 
 flag = False
