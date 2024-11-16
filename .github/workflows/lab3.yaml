@@ -25,7 +25,10 @@ jobs:
       with:
         python-version: '3.13' 
 
+    - name: Install telegram bot dependencies
+      run: python -m pip install --upgrade pip python-telegram-bot
+
     - name: Run test
       run: |
         cd ./src/raft
-        python3 judge.py --count 20 --pattern '3[ABCD]$' --race
+        python3 judge.py --count 20 --pattern '3[ABCD]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram_chatid ${{ secrets.TELEGRAM_CHATID }}
