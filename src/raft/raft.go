@@ -390,12 +390,13 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		rf.persist(nil)
 	}
 
+	// maybe different leader is just ok...
 	// get AppendRPC from current term with different leader -> reject
-	if args.Term == rf.currentTerm && rf.votedFor >= 0 && rf.votedFor != args.LeaderId {
-		reply.Term = rf.currentTerm
-		reply.Success = false
-		return
-	}
+	// if args.Term == rf.currentTerm && rf.votedFor >= 0 && rf.votedFor != args.LeaderId {
+	// 	// reply.Term = rf.currentTerm
+	// 	// reply.Success = false
+	// 	return
+	// }
 
 	fmt.Printf("node %d get valid append entry from %d\n", rf.me, args.LeaderId)
 

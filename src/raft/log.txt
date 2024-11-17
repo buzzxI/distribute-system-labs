@@ -1,1 +1,170 @@
-2024-11-16 16:53:47 - INFO - Total consume: 0.00 s
+2024-11-17 15:35:10 - INFO - Running TestInitialElection3A
+2024-11-17 15:35:10 - INFO - Round 1 start
+2024-11-17 15:35:17 - INFO - Round 1 finished, consume 6.06 s
+2024-11-17 15:35:17 - INFO - Test TestInitialElection3A consume 6.06 s
+2024-11-17 15:35:17 - INFO - Test TestInitialElection3A passed
+
+2024-11-17 15:35:17 - INFO - Running TestReElection3A
+2024-11-17 15:35:17 - INFO - Round 1 start
+2024-11-17 15:35:24 - INFO - Round 1 finished, consume 7.79 s
+2024-11-17 15:35:24 - INFO - Test TestReElection3A consume 7.79 s
+2024-11-17 15:35:24 - INFO - Test TestReElection3A passed
+
+2024-11-17 15:35:24 - INFO - Running TestManyElections3A
+2024-11-17 15:35:24 - INFO - Round 1 start
+2024-11-17 15:35:33 - INFO - Round 1 finished, consume 8.91 s
+2024-11-17 15:35:33 - INFO - Test TestManyElections3A consume 8.91 s
+2024-11-17 15:35:33 - INFO - Test TestManyElections3A passed
+
+2024-11-17 15:35:33 - INFO - Running TestBasicAgree3B
+2024-11-17 15:35:33 - INFO - Round 1 start
+2024-11-17 15:35:37 - INFO - Round 1 finished, consume 3.65 s
+2024-11-17 15:35:37 - INFO - Test TestBasicAgree3B consume 3.65 s
+2024-11-17 15:35:37 - INFO - Test TestBasicAgree3B passed
+
+2024-11-17 15:35:37 - INFO - Running TestRPCBytes3B
+2024-11-17 15:35:37 - INFO - Round 1 start
+2024-11-17 15:35:43 - INFO - Round 1 finished, consume 6.48 s
+2024-11-17 15:35:43 - INFO - Test TestRPCBytes3B consume 6.48 s
+2024-11-17 15:35:43 - INFO - Test TestRPCBytes3B passed
+
+2024-11-17 15:35:43 - INFO - Running TestFollowerFailure3B
+2024-11-17 15:35:43 - INFO - Round 1 start
+2024-11-17 15:35:51 - INFO - Round 1 finished, consume 7.32 s
+2024-11-17 15:35:51 - INFO - Test TestFollowerFailure3B consume 7.32 s
+2024-11-17 15:35:51 - INFO - Test TestFollowerFailure3B passed
+
+2024-11-17 15:35:51 - INFO - Running TestLeaderFailure3B
+2024-11-17 15:35:51 - INFO - Round 1 start
+2024-11-17 15:35:59 - INFO - Round 1 finished, consume 8.50 s
+2024-11-17 15:35:59 - INFO - Test TestLeaderFailure3B consume 8.50 s
+2024-11-17 15:35:59 - INFO - Test TestLeaderFailure3B passed
+
+2024-11-17 15:35:59 - INFO - Running TestFailAgree3B
+2024-11-17 15:35:59 - INFO - Round 1 start
+2024-11-17 15:36:08 - INFO - Round 1 finished, consume 8.60 s
+2024-11-17 15:36:08 - INFO - Test TestFailAgree3B consume 8.60 s
+2024-11-17 15:36:08 - INFO - Test TestFailAgree3B passed
+
+2024-11-17 15:36:08 - INFO - Running TestFailNoAgree3B
+2024-11-17 15:36:08 - INFO - Round 1 start
+2024-11-17 15:36:14 - INFO - Round 1 finished, consume 5.92 s
+2024-11-17 15:36:14 - INFO - Test TestFailNoAgree3B consume 5.92 s
+2024-11-17 15:36:14 - INFO - Test TestFailNoAgree3B passed
+
+2024-11-17 15:36:14 - INFO - Running TestConcurrentStarts3B
+2024-11-17 15:36:14 - INFO - Round 1 start
+2024-11-17 15:36:17 - INFO - Round 1 finished, consume 3.25 s
+2024-11-17 15:36:17 - INFO - Test TestConcurrentStarts3B consume 3.25 s
+2024-11-17 15:36:17 - INFO - Test TestConcurrentStarts3B passed
+
+2024-11-17 15:36:17 - INFO - Running TestRejoin3B
+2024-11-17 15:36:17 - INFO - Round 1 start
+2024-11-17 15:36:27 - INFO - Round 1 finished, consume 9.53 s
+2024-11-17 15:36:27 - INFO - Test TestRejoin3B consume 9.53 s
+2024-11-17 15:36:27 - INFO - Test TestRejoin3B passed
+
+2024-11-17 15:36:27 - INFO - Running TestBackup3B
+2024-11-17 15:36:27 - INFO - Round 1 start
+2024-11-17 15:37:13 - INFO - Round 1 finished, consume 46.42 s
+2024-11-17 15:37:13 - INFO - Test TestBackup3B consume 46.43 s
+2024-11-17 15:37:13 - INFO - Test TestBackup3B passed
+
+2024-11-17 15:37:13 - INFO - Running TestCount3B
+2024-11-17 15:37:13 - INFO - Round 1 start
+2024-11-17 15:37:18 - INFO - Round 1 finished, consume 5.07 s
+2024-11-17 15:37:18 - INFO - Test TestCount3B consume 5.07 s
+2024-11-17 15:37:18 - INFO - Test TestCount3B passed
+
+2024-11-17 15:37:18 - INFO - Running TestPersist13C
+2024-11-17 15:37:18 - INFO - Round 1 start
+2024-11-17 15:37:26 - INFO - Round 1 finished, consume 7.62 s
+2024-11-17 15:37:26 - INFO - Test TestPersist13C consume 7.62 s
+2024-11-17 15:37:26 - INFO - Test TestPersist13C passed
+
+2024-11-17 15:37:26 - INFO - Running TestPersist23C
+2024-11-17 15:37:26 - INFO - Round 1 start
+2024-11-17 15:37:50 - INFO - Round 1 finished, consume 23.97 s
+2024-11-17 15:37:50 - INFO - Test TestPersist23C consume 23.97 s
+2024-11-17 15:37:50 - INFO - Test TestPersist23C passed
+
+2024-11-17 15:37:50 - INFO - Running TestPersist33C
+2024-11-17 15:37:50 - INFO - Round 1 start
+2024-11-17 15:37:54 - INFO - Round 1 finished, consume 4.15 s
+2024-11-17 15:37:54 - INFO - Test TestPersist33C consume 4.15 s
+2024-11-17 15:37:54 - INFO - Test TestPersist33C passed
+
+2024-11-17 15:37:54 - INFO - Running TestFigure83C
+2024-11-17 15:37:54 - INFO - Round 1 start
+2024-11-17 15:38:30 - INFO - Round 1 finished, consume 36.69 s
+2024-11-17 15:38:30 - INFO - Test TestFigure83C consume 36.69 s
+2024-11-17 15:38:30 - INFO - Test TestFigure83C passed
+
+2024-11-17 15:38:30 - INFO - Running TestUnreliableAgree3C
+2024-11-17 15:38:30 - INFO - Round 1 start
+2024-11-17 15:38:36 - INFO - Round 1 finished, consume 5.29 s
+2024-11-17 15:38:36 - INFO - Test TestUnreliableAgree3C consume 5.29 s
+2024-11-17 15:38:36 - INFO - Test TestUnreliableAgree3C passed
+
+2024-11-17 15:38:36 - INFO - Running TestFigure8Unreliable3C
+2024-11-17 15:38:36 - INFO - Round 1 start
+2024-11-17 15:39:16 - INFO - Round 1 finished, consume 40.50 s
+2024-11-17 15:39:16 - INFO - Test TestFigure8Unreliable3C consume 40.50 s
+2024-11-17 15:39:16 - INFO - Test TestFigure8Unreliable3C passed
+
+2024-11-17 15:39:16 - INFO - Running TestReliableChurn3C
+2024-11-17 15:39:16 - INFO - Round 1 start
+2024-11-17 15:39:35 - INFO - Round 1 finished, consume 18.75 s
+2024-11-17 15:39:35 - INFO - Test TestReliableChurn3C consume 18.75 s
+2024-11-17 15:39:35 - INFO - Test TestReliableChurn3C passed
+
+2024-11-17 15:39:35 - INFO - Running TestUnreliableChurn3C
+2024-11-17 15:39:35 - INFO - Round 1 start
+2024-11-17 15:39:55 - INFO - Round 1 finished, consume 19.85 s
+2024-11-17 15:39:55 - INFO - Test TestUnreliableChurn3C consume 19.85 s
+2024-11-17 15:39:55 - INFO - Test TestUnreliableChurn3C passed
+
+2024-11-17 15:39:55 - INFO - Running TestSnapshotBasic3D
+2024-11-17 15:39:55 - INFO - Round 1 start
+2024-11-17 15:40:10 - INFO - Round 1 finished, consume 15.10 s
+2024-11-17 15:40:10 - INFO - Test TestSnapshotBasic3D consume 15.10 s
+2024-11-17 15:40:10 - INFO - Test TestSnapshotBasic3D passed
+
+2024-11-17 15:40:10 - INFO - Running TestSnapshotInstall3D
+2024-11-17 15:40:10 - INFO - Round 1 start
+2024-11-17 15:41:19 - INFO - Round 1 finished, consume 69.00 s
+2024-11-17 15:41:19 - INFO - Test TestSnapshotInstall3D consume 69.00 s
+2024-11-17 15:41:19 - INFO - Test TestSnapshotInstall3D passed
+
+2024-11-17 15:41:19 - INFO - Running TestSnapshotInstallUnreliable3D
+2024-11-17 15:41:19 - INFO - Round 1 start
+2024-11-17 15:42:27 - INFO - Round 1 finished, consume 68.42 s
+2024-11-17 15:42:27 - INFO - Test TestSnapshotInstallUnreliable3D consume 68.42 s
+2024-11-17 15:42:27 - INFO - Test TestSnapshotInstallUnreliable3D passed
+
+2024-11-17 15:42:27 - INFO - Running TestSnapshotInstallCrash3D
+2024-11-17 15:42:27 - INFO - Round 1 start
+2024-11-17 15:43:34 - INFO - Round 1 finished, consume 66.86 s
+2024-11-17 15:43:34 - INFO - Test TestSnapshotInstallCrash3D consume 66.86 s
+2024-11-17 15:43:34 - INFO - Test TestSnapshotInstallCrash3D passed
+
+2024-11-17 15:43:34 - INFO - Running TestSnapshotInstallUnCrash3D
+2024-11-17 15:43:34 - INFO - Round 1 start
+2024-11-17 15:44:46 - INFO - Round 1 finished, consume 71.84 s
+2024-11-17 15:44:46 - INFO - Test TestSnapshotInstallUnCrash3D consume 71.84 s
+2024-11-17 15:44:46 - INFO - Test TestSnapshotInstallUnCrash3D passed
+
+2024-11-17 15:44:46 - INFO - Running TestSnapshotAllCrash3D
+2024-11-17 15:44:46 - INFO - Round 1 start
+2024-11-17 15:45:08 - INFO - Round 1 finished, consume 21.58 s
+2024-11-17 15:45:08 - INFO - Test TestSnapshotAllCrash3D consume 21.58 s
+2024-11-17 15:45:08 - INFO - Test TestSnapshotAllCrash3D passed
+
+2024-11-17 15:45:08 - INFO - Running TestSnapshotInit3D
+2024-11-17 15:45:08 - INFO - Round 1 start
+2024-11-17 15:45:15 - INFO - Round 1 finished, consume 7.81 s
+2024-11-17 15:45:15 - INFO - Test TestSnapshotInit3D consume 7.81 s
+2024-11-17 15:45:15 - INFO - Test TestSnapshotInit3D passed
+
+2024-11-17 15:45:15 - INFO - Total consume: 604.94 s
+2024-11-17 15:45:15 - INFO - All Test passed
