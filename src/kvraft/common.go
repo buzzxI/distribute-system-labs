@@ -1,12 +1,19 @@
 package kvraft
 
 const (
-	OK             = "OK"
-	ErrNoKey       = "ErrNoKey"
-	ErrWrongLeader = "ErrWrongLeader"
+	OK              = "OK"
+	ErrNoKey        = "ErrNoKey"
+	ErrWrongLeader  = "ErrWrongLeader"
+	ErrNoAgreement  = "ErrNoAgreement"
+	ErrKilledServer = "ErrKilledServer"
 )
 
 type Err string
+
+type MetaAppendInfo struct {
+	ClerkId   int64
+	RequestId bool
+}
 
 // Put or Append
 type PutAppendArgs struct {
@@ -15,6 +22,7 @@ type PutAppendArgs struct {
 	// You'll have to add definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
+	ClerkMeta MetaAppendInfo
 }
 
 type PutAppendReply struct {
