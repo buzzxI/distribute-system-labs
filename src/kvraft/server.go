@@ -62,26 +62,26 @@ type KVServer struct {
 	debug bool
 }
 
-func (rf *KVServer) lock(lock *sync.Mutex, sign ...string) {
+func (kv *KVServer) lock(lock *sync.Mutex, sign ...string) {
 	lock.Lock()
-	if rf.debug {
+	if kv.debug {
 		_, _, line, _ := runtime.Caller(1)
 		if len(sign) > 0 {
-			DPrintf("server %d lock %v at %v\n", rf.me, sign[0], line)
+			DPrintf("server %d lock %v at %v\n", kv.me, sign[0], line)
 		} else {
-			DPrintf("server %d lock mu at %v\n", rf.me, line)
+			DPrintf("server %d lock mu at %v\n", kv.me, line)
 		}
 	}
 }
 
-func (rf *KVServer) unlock(lock *sync.Mutex, sign ...string) {
+func (kv *KVServer) unlock(lock *sync.Mutex, sign ...string) {
 	lock.Unlock()
-	if rf.debug {
+	if kv.debug {
 		_, _, line, _ := runtime.Caller(1)
 		if len(sign) > 0 {
-			DPrintf("server %d unlock %v at %v\n", rf.me, sign[0], line)
+			DPrintf("server %d unlock %v at %v\n", kv.me, sign[0], line)
 		} else {
-			DPrintf("server %d unlock mu at %v\n", rf.me, line)
+			DPrintf("server %d unlock mu at %v\n", kv.me, line)
 		}
 	}
 }
@@ -92,6 +92,7 @@ func (rf *KVServer) unlock(lock *sync.Mutex, sign ...string) {
 
 // lock should be held before invoke handler
 func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func()) Err {
+	fmt.Printf("server %v abstract replication %v logIndex %v\n", kv.me, requestOp, logIndex)
 	for {
 		time.Sleep(10 * time.Millisecond)
 		if kv.killed() {
@@ -107,6 +108,7 @@ func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func
 		kv.lock(&kv.mu)
 		if len(kv.commitedQueue) > 0 {
 			msg := kv.commitedQueue[0]
+			fmt.Printf("server %v get commited %v logIndex %v\n", kv.me, msg, logIndex)
 			if msg.CommandIndex < logIndex {
 				kv.unlock(&kv.mu)
 				continue
@@ -228,19 +230,20 @@ func (kv *KVServer) stateReader() {
 
 func (kv *KVServer) stateApplier() {
 	for {
-		time.Sleep(10 * time.Millisecond)
-		_, isLeader := kv.rf.GetState()
-		if isLeader {
-			continue
-		}
-
+		time.Sleep(5 * time.Millisecond)
 		// terminate go routine, if get killed
 		if kv.killed() {
 			return
 		}
 		kv.lock(&kv.mu)
-		for _, msg := range kv.commitedQueue {
-			operation := msg.Command.(Op)
+		_, isLeader := kv.rf.GetState()
+		if isLeader {
+			kv.unlock(&kv.mu)
+			continue
+		}
+		if len(kv.commitedQueue) > 0 {
+			operation := kv.commitedQueue[0].Command.(Op)
+			fmt.Printf("server %v handle %v as follower\n", kv.me, operation)
 			switch operation.Type {
 			case PUT:
 				kv.kvs[operation.Key] = operation.Value
@@ -257,10 +260,9 @@ func (kv *KVServer) stateApplier() {
 			default:
 				DPrintf("unknown operation %v\n", operation)
 			}
+			kv.commitedQueue = kv.commitedQueue[1:]
 		}
-		if len(kv.commitedQueue) > 0 {
-			kv.commitedQueue = []raft.ApplyMsg{}
-		}
+
 		kv.unlock(&kv.mu)
 	}
 }
