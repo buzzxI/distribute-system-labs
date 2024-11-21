@@ -807,11 +807,11 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 
 		rf.unlock(&rf.mu)
 		resultChan := make(chan bool)
-		go func() {
+		go func(retry int) {
 			DPrintf("leader %v append log to server %v prev index %v entries %v, retry %v\n",
 				rf.me, server, args.PrevLogIndex, args.Entries, retry)
 			resultChan <- rf.sendAppendEntries(server, &args, &reply)
-		}()
+		}(retry)
 
 		// timeout or connection fail triggers retry (not just return!)
 		select {

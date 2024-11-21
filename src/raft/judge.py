@@ -45,12 +45,12 @@ def run_command(command):
 def report_result(flag):
     async def error_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 fail, round {repeat_count}, pattern {pattern}, total time consume {judge_duration}')
+        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 fail, round {repeat_count}, pattern {pattern}, total time consume {judge_duration:.2f} s')
         await bot.send_document(chat_id=telegram_chatid, document='./log.txt')
 
     async def success_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 success, round {repeat_count}, pattern {pattern}, total time consume {judge_duration}')
+        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab3 success, round {repeat_count}, pattern {pattern}, total time consume {judge_duration:.2f} s')
 
     if flag:
         asyncio.run(success_report())
