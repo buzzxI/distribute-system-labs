@@ -12,7 +12,7 @@ type Err string
 
 type MetaAppendInfo struct {
 	ClerkId   int64
-	RequestId bool
+	RequestId int
 }
 
 // Put or Append

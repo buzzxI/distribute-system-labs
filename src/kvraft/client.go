@@ -11,7 +11,7 @@ type Clerk struct {
 	servers []*labrpc.ClientEnd
 	// You will have to modify this struct.
 	id       int64
-	appendId bool
+	appendId int
 	leaderId int
 }
 
@@ -27,7 +27,7 @@ func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 	ck.servers = servers
 	// You'll have to add code here.
 	ck.id = nrand()
-	ck.appendId = false
+	ck.appendId = 0
 	ck.leaderId = 0 // client assumes default leader is 0
 	return ck
 }
@@ -101,6 +101,8 @@ loop:
 			continue
 		}
 
+		DPrintf("Client %v %s key %s value %s to %v reply %v\n", ck.id, op, key, value, i, reply)
+
 		switch reply.Err {
 		case OK:
 			ck.leaderId = i
@@ -115,8 +117,9 @@ loop:
 		}
 	}
 
+	DPrintf("Client %v %s key %s value %s to %v success reply %v\n", ck.id, op, key, value, ck.leaderId, reply)
 	if op == "Append" {
-		ck.appendId = !ck.appendId
+		ck.appendId++
 	}
 }
 

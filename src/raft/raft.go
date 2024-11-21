@@ -20,7 +20,6 @@ package raft
 import (
 	//	"bytes"
 	"bytes"
-	"fmt"
 	"math/rand"
 	"runtime"
 	"sync"
@@ -131,9 +130,9 @@ func (rf *Raft) lock(lock *sync.Mutex, sign ...string) {
 	if rf.debug {
 		_, _, line, _ := runtime.Caller(1)
 		if len(sign) > 0 {
-			fmt.Printf("node %d lock %v at %v\n", rf.me, sign[0], line)
+			DPrintf("node %d lock %v at %v\n", rf.me, sign[0], line)
 		} else {
-			fmt.Printf("node %d lock mu at %v\n", rf.me, line)
+			DPrintf("node %d lock mu at %v\n", rf.me, line)
 		}
 	}
 }
@@ -143,9 +142,9 @@ func (rf *Raft) unlock(lock *sync.Mutex, sign ...string) {
 	if rf.debug {
 		_, _, line, _ := runtime.Caller(1)
 		if len(sign) > 0 {
-			fmt.Printf("node %d unlock %v at %v\n", rf.me, sign[0], line)
+			DPrintf("node %d unlock %v at %v\n", rf.me, sign[0], line)
 		} else {
-			fmt.Printf("node %d unlock mu at %v\n", rf.me, line)
+			DPrintf("node %d unlock mu at %v\n", rf.me, line)
 		}
 	}
 }
@@ -167,8 +166,7 @@ func (rf *Raft) persist(snapshot []byte) {
 	e.Encode(rf.log)
 	e.Encode(rf.lastIncludedIndex)
 	e.Encode(rf.lastIncludedTerm)
-	fmt.Printf("node %v persist current term %v vote for %v last included index %v term %v log %v\n", rf.me, rf.currentTerm, rf.votedFor, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
-	// fmt.Printf()
+	DPrintf("node %v persist current term %v vote for %v last included index %v term %v log %v\n", rf.me, rf.currentTerm, rf.votedFor, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
 	raftstate := w.Bytes()
 	// if snapshot is nil, then current persist is a cascaded persist (raft state only, snapshot should be the same)
 	if snapshot == nil {
@@ -178,7 +176,7 @@ func (rf *Raft) persist(snapshot []byte) {
 }
 
 func (rf *Raft) readRaftState(data []byte) {
-	fmt.Printf("node %v read raft state\n", rf.me)
+	DPrintf("node %v read raft state\n", rf.me)
 	r := bytes.NewBuffer(data)
 	d := labgob.NewDecoder(r)
 	var currentTerm int
@@ -196,11 +194,11 @@ func (rf *Raft) readRaftState(data []byte) {
 		rf.votedFor = votedFor
 		if rf.votedFor == -2 {
 			rf.votedFor = -1
-			fmt.Printf("node %v read candidate state\n", rf.me)
+			DPrintf("node %v read candidate state\n", rf.me)
 		}
 
 		rf.log = log
-		fmt.Printf("node %v read term %v vote %v log %v\n", rf.me, currentTerm, votedFor, log)
+		DPrintf("node %v read term %v vote %v log %v\n", rf.me, currentTerm, votedFor, log)
 		for i := 0; i < len(rf.peers); i++ {
 			if i == rf.me {
 				continue
@@ -218,10 +216,8 @@ func (rf *Raft) readRaftState(data []byte) {
 // restore previously persisted state.
 // no need to hold the lock (initial stage)
 func (rf *Raft) readPersist(state []byte) {
-	fmt.Printf("node %v read persist\n", rf.me)
-
+	DPrintf("node %v read persist\n", rf.me)
 	stateSize := rf.persister.RaftStateSize()
-
 	if stateSize > 0 {
 		rf.readRaftState(state)
 	}
@@ -237,7 +233,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 
 	// judge index start from 1
 	index--
-	fmt.Printf("node %v get Snapshot %v\n", rf.me, index)
+	DPrintf("node %v get Snapshot %v\n", rf.me, index)
 
 	func(index int, snapshot []byte) {
 		rf.lock(&rf.mu)
@@ -251,7 +247,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 		// get index offset in current log
 		logOffset := index - rf.lastIncludedIndex - 1
 
-		fmt.Printf("node %v snapshot %v, rf last include index %v term %v\n", rf.me, index, rf.lastIncludedIndex, rf.lastIncludedTerm)
+		DPrintf("node %v snapshot %v, rf last include index %v term %v\n", rf.me, index, rf.lastIncludedIndex, rf.lastIncludedTerm)
 
 		rf.lastIncludedIndex = index
 		rf.lastIncludedTerm = rf.log[logOffset].Term
@@ -316,7 +312,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	fmt.Printf("node %d get request vote from %d term %v current term %v last log index %v last log term %v\n",
+	DPrintf("node %d get request vote from %d term %v current term %v last log index %v last log term %v\n",
 		rf.me, args.CandidateId, args.Term, rf.currentTerm, args.LastLogIndex, args.LastLogTerm)
 
 	// candidate's term is less than current term
@@ -330,7 +326,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		// candidate/leader has larger term -> transfer to follower
 		rf.currentTerm = args.Term
 		if rf.votedFor == rf.me {
-			fmt.Printf("leader %d transfer to follower\n", rf.me)
+			DPrintf("leader %d transfer to follower\n", rf.me)
 		}
 		rf.votedFor = -1
 		rf.persist(nil)
@@ -347,7 +343,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 
 	if rf.votedFor == -1 {
 		// follower (voteable)
-		fmt.Printf("node %d grant request vote from %d term %d\n", rf.me, args.CandidateId, args.Term)
+		DPrintf("node %d grant request vote from %d term %d\n", rf.me, args.CandidateId, args.Term)
 		reply.Term = args.Term
 		reply.VoteGranted = true
 		rf.votedFor = args.CandidateId
@@ -360,9 +356,9 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		reply.Term = rf.currentTerm
 		reply.VoteGranted = rf.votedFor == args.CandidateId
 		if reply.VoteGranted {
-			fmt.Printf("node %d grant request vote from %d term %d\n", rf.me, args.CandidateId, args.Term)
+			DPrintf("node %d grant request vote from %d term %d\n", rf.me, args.CandidateId, args.Term)
 		} else {
-			fmt.Printf("node %d reject request vote from %d vote for %d\n", rf.me, args.CandidateId, rf.votedFor)
+			DPrintf("node %d reject request vote from %d vote for %d\n", rf.me, args.CandidateId, rf.votedFor)
 		}
 	}
 }
@@ -372,7 +368,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	rf.lock(&rf.mu)
 	defer rf.unlock(&rf.mu)
-	fmt.Printf("node %d get append entry from %d current term %d arg term %d rf commit %v commit index %v prev index %v logs %v\n",
+	DPrintf("node %d get append entry from %d current term %d arg term %d rf commit %v commit index %v prev index %v logs %v\n",
 		rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.commitIndex, args.LeaderCommit, args.PrevLogIndex, args.Entries)
 
 	reply.Index = rf.commitIndex
@@ -398,7 +394,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	// 	return
 	// }
 
-	fmt.Printf("node %d get valid append entry from %d\n", rf.me, args.LeaderId)
+	DPrintf("node %d get valid append entry from %d\n", rf.me, args.LeaderId)
 
 	// get append entry from another leader (with term at least as large as current term)
 	rf.votedFor = args.LeaderId
@@ -413,7 +409,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	// prev log mismatch
 	totalLen := len(rf.log) + rf.lastIncludedIndex + 1
 	if totalLen <= args.PrevLogIndex {
-		fmt.Printf("node %d reject append entry from %d log length %v PrevLogIndex %v\n", rf.me, args.LeaderId, totalLen, args.PrevLogIndex)
+		DPrintf("node %d reject append entry from %d log length %v PrevLogIndex %v\n", rf.me, args.LeaderId, totalLen, args.PrevLogIndex)
 		reply.Term = rf.currentTerm
 		reply.Success = false
 		return
@@ -423,7 +419,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	prevLogIndexOffset := args.PrevLogIndex - rf.lastIncludedIndex - 1
 	// current server has already trim the log, loss info about log
 	if prevLogIndexOffset < -1 {
-		fmt.Printf("node %d get append rpc with trimed prevLogIndex %v\n", rf.me, prevLogIndexOffset)
+		DPrintf("node %d get append rpc with trimed prevLogIndex %v\n", rf.me, prevLogIndexOffset)
 		reply.Term = rf.currentTerm
 		reply.Success = false
 		return
@@ -432,9 +428,9 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	if (prevLogIndexOffset == -1 && rf.lastIncludedTerm != args.PrevLogTerm) ||
 		(prevLogIndexOffset >= 0 && rf.log[prevLogIndexOffset].Term != args.PrevLogTerm) {
 		if prevLogIndexOffset >= 0 {
-			fmt.Printf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.log[prevLogIndexOffset].Term, args.PrevLogTerm)
+			DPrintf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.log[prevLogIndexOffset].Term, args.PrevLogTerm)
 		} else {
-			fmt.Printf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.lastIncludedTerm, args.PrevLogTerm)
+			DPrintf("node %d reject append entry from %d log term %v PrevLogTerm %v\n", rf.me, args.LeaderId, rf.lastIncludedTerm, args.PrevLogTerm)
 		}
 		reply.Term = rf.currentTerm
 		reply.Success = false
@@ -454,7 +450,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			i++
 			j++
 		}
-		fmt.Printf("node %d append log from %v args(i) %v self(j) %v\n", rf.me, args.LeaderId, i, j+rf.lastIncludedIndex+1)
+		DPrintf("node %d append log from %v args(i) %v self(j) %v\n", rf.me, args.LeaderId, i, j+rf.lastIncludedIndex+1)
 		// append remaining log
 		if i < len(args.Entries) {
 			// in case of data race
@@ -467,7 +463,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			// added for 3C
 			rf.persist(nil)
 		}
-		fmt.Printf("node %d append log from %d log %v\n", rf.me, args.LeaderId, rf.log)
+		DPrintf("node %d append log from %d log %v\n", rf.me, args.LeaderId, rf.log)
 	}
 
 	commitIndex := min(args.LeaderCommit, max(rf.lastIncludedIndex+len(rf.log), 0))
@@ -475,7 +471,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		rf.commitIndex = commitIndex
 	}
 
-	fmt.Printf("node %v grant append rpc from %v, args commit index %v, rf commit index %v, rf last included index %v term %v, log %v\n", rf.me, args.LeaderId, args.LeaderCommit, rf.commitIndex, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
+	DPrintf("node %v grant append rpc from %v, args commit index %v, rf commit index %v, rf last included index %v term %v, log %v\n", rf.me, args.LeaderId, args.LeaderCommit, rf.commitIndex, rf.lastIncludedIndex, rf.lastIncludedTerm, rf.log)
 	reply.Term = rf.currentTerm
 	reply.Success = true
 }
@@ -506,7 +502,7 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	fmt.Printf("node %d get valid install snapshot from %d offset %v last included index %v term %v\n", rf.me, args.LeaderId, args.Offset, args.LastIncludedIndex, args.LastIncludedTerm)
+	DPrintf("node %d get valid install snapshot from %d offset %v last included index %v term %v\n", rf.me, args.LeaderId, args.Offset, args.LastIncludedIndex, args.LastIncludedTerm)
 
 	// store state
 	rf.votedFor = args.LeaderId
@@ -553,7 +549,7 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	fmt.Printf("node %v install snapshot from %v, rf last include index %v term %v, args last include index %v term %v\n", rf.me, args.LeaderId, rf.lastIncludedIndex, rf.lastIncludedTerm, args.LastIncludedIndex, args.LastIncludedTerm)
+	DPrintf("node %v install snapshot from %v, rf last include index %v term %v, args last include index %v term %v\n", rf.me, args.LeaderId, rf.lastIncludedIndex, rf.lastIncludedTerm, args.LastIncludedIndex, args.LastIncludedTerm)
 	lastLogIndex := rf.lastIncludedIndex + len(rf.log)
 	if lastLogIndex < args.LastIncludedIndex {
 		rf.log = make([]LogEntry, 0)
@@ -680,7 +676,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		// added for 3D
 		index = len(rf.log) + rf.lastIncludedIndex
 		rf.nextIndex[rf.me] = max(rf.nextIndex[rf.me], index+1)
-		fmt.Printf("leader %v append entry %v command %v\n", rf.me, index, command)
+		DPrintf("leader %v append entry %v command %v\n", rf.me, index, command)
 		go rf.AppendEntriesRPC(index)
 	}
 
@@ -777,7 +773,7 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 		prevLogIndexOffset := args.PrevLogIndex - rf.lastIncludedIndex - 1
 
 		if prevLogIndexOffset < -1 {
-			fmt.Printf("leader %v invoke InstallSnapshotRPCToServer to %v prevLogIndexOffset %v logIndex %v\n", rf.me, server, prevLogIndexOffset, logIndex)
+			DPrintf("leader %v invoke InstallSnapshotRPCToServer to %v prevLogIndexOffset %v logIndex %v\n", rf.me, server, prevLogIndexOffset, logIndex)
 
 			/* server lag behind, invoke InstallSnapshot, not AppendRPC */
 			rf.unlock(&rf.mu)
@@ -812,7 +808,7 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 		rf.unlock(&rf.mu)
 		resultChan := make(chan bool)
 		go func() {
-			fmt.Printf("leader %v append log to server %v prev index %v entries %v, retry %v\n",
+			DPrintf("leader %v append log to server %v prev index %v entries %v, retry %v\n",
 				rf.me, server, args.PrevLogIndex, args.Entries, retry)
 			resultChan <- rf.sendAppendEntries(server, &args, &reply)
 		}()
@@ -820,10 +816,10 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 		// timeout or connection fail triggers retry (not just return!)
 		select {
 		case <-time.After(300 * time.Millisecond):
-			fmt.Printf("leader %v append log index %v to server %v timeout, retry %v\n", rf.me, logIndex, server, retry)
+			DPrintf("leader %v append log index %v to server %v timeout, retry %v\n", rf.me, logIndex, server, retry)
 		case rst := <-resultChan:
 			if !rst {
-				fmt.Printf("leader %v append log index %v to server %v connection fail, retry %v\n", rf.me, logIndex, server, retry)
+				DPrintf("leader %v append log index %v to server %v connection fail, retry %v\n", rf.me, logIndex, server, retry)
 				// connection failure triggers retry
 				break
 			}
@@ -835,13 +831,13 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 			}
 			if reply.Success {
 				rf.nextIndex[server] = max(rf.nextIndex[server], end+1)
-				fmt.Printf("leader %v append log index %v to server %v success, retry %v\n", rf.me, logIndex, server, retry)
+				DPrintf("leader %v append log index %v to server %v success, retry %v\n", rf.me, logIndex, server, retry)
 				rf.unlock(&rf.mu)
 				rf.CheckLogCommitment(end)
 				return true
 			} else {
 				if reply.Term > rf.currentTerm {
-					fmt.Printf("leader %v append log index %v to server %v fail, stale term %v reply term %v, lost leadership, retry %v\n", rf.me, logIndex, server, rf.currentTerm, reply.Term, retry)
+					DPrintf("leader %v append log index %v to server %v fail, stale term %v reply term %v, lost leadership, retry %v\n", rf.me, logIndex, server, rf.currentTerm, reply.Term, retry)
 					rf.currentTerm = reply.Term
 					rf.lostLeadership()
 					// added for 3C
@@ -851,7 +847,7 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 					return false
 				}
 
-				fmt.Printf("leader %v append log index %v to server %v fail, next index fallback to %v, retry %v\n", rf.me, logIndex, server, reply.Index+1, retry)
+				DPrintf("leader %v append log index %v to server %v fail, next index fallback to %v, retry %v\n", rf.me, logIndex, server, reply.Index+1, retry)
 				rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
 				rf.unlock(&rf.mu)
 			}
@@ -907,16 +903,16 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 		rstChan := make(chan bool)
 
 		go func() {
-			fmt.Printf("leader %v install snapshot to server %v last included index %v term %v\n", rf.me, server, args.LastIncludedIndex, args.LastIncludedTerm)
+			DPrintf("leader %v install snapshot to server %v last included index %v term %v\n", rf.me, server, args.LastIncludedIndex, args.LastIncludedTerm)
 			rstChan <- rf.sendInstallSnapshot(server, &args, &reply)
 		}()
 
 		select {
 		case <-time.After(300 * time.Millisecond):
-			fmt.Printf("leader %v install snapshot to server %v timeout, retry %v\n", rf.me, server, retry)
+			DPrintf("leader %v install snapshot to server %v timeout, retry %v\n", rf.me, server, retry)
 		case msg := <-rstChan:
 			if !msg {
-				fmt.Printf("leader %v install snapshot to server %v connection fail, retry %v\n", rf.me, server, retry)
+				DPrintf("leader %v install snapshot to server %v connection fail, retry %v\n", rf.me, server, retry)
 				// connection failure triggers retry
 				break
 			}
@@ -929,7 +925,7 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 
 			// current server is outdated
 			if reply.Term > rf.currentTerm {
-				fmt.Printf("leader %v install snapshot to server %v stale term %v reply term %v, lost leadership, retry %v\n", rf.me, server, rf.currentTerm, reply.Term, retry)
+				DPrintf("leader %v install snapshot to server %v stale term %v reply term %v, lost leadership, retry %v\n", rf.me, server, rf.currentTerm, reply.Term, retry)
 				rf.currentTerm = reply.Term
 				rf.lostLeadership()
 				// added for 3C
@@ -939,7 +935,7 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 				return false
 			}
 
-			fmt.Printf("leader %v install snapshot to server %v success, retry %v\n", rf.me, server, retry)
+			DPrintf("leader %v install snapshot to server %v success, retry %v\n", rf.me, server, retry)
 			// if snapshot has been installed successfully, nextIndex should be lastIncludeIndex + 1
 			rf.nextIndex[server] = args.LastIncludedIndex + 1
 			rf.unlock(&rf.mu)
@@ -954,7 +950,7 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 // thus, raft need to release the lock, before commit entry to applyCh
 func (rf *Raft) CommitEntries(commitedLog []ApplyMsg) {
 	for _, msg := range commitedLog {
-		fmt.Printf("node %v commit index %v log %v\n", rf.me, msg.CommandIndex-1, msg.Command)
+		DPrintf("node %v commit index %v log %v\n", rf.me, msg.CommandIndex-1, msg.Command)
 		rf.applyCh <- msg
 	}
 }
@@ -963,7 +959,7 @@ func (rf *Raft) CommitEntries(commitedLog []ApplyMsg) {
 func (rf *Raft) CheckLogCommitment(logIndex int) {
 	rf.lock(&rf.mu)
 	defer rf.unlock(&rf.mu)
-	fmt.Printf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
+	DPrintf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
 
 	// current server is not leader
 	if rf.votedFor != rf.me {
@@ -1009,7 +1005,7 @@ func (rf *Raft) commitChecker() {
 		rf.lock(&rf.mu)
 		if rf.lastApplied < rf.commitIndex {
 			rf.lastApplied++
-			fmt.Printf("node %v commit %v\n", rf.me, rf.lastApplied)
+			DPrintf("node %v commit %v\n", rf.me, rf.lastApplied)
 			logOffset := rf.lastApplied - rf.lastIncludedIndex - 1
 			msg := ApplyMsg{CommandValid: true, Command: rf.log[logOffset].Command, CommandIndex: rf.lastApplied + 1}
 			rf.unlock(&rf.mu)
@@ -1052,18 +1048,18 @@ func (rf *Raft) RequestVoteRPCToServer(server int, args RequestVoteArgs, voteCha
 	rf.unlock(&rf.mu)
 
 	rstChan := make(chan bool)
-	fmt.Printf("node %d request vote RPC to %d arg term %v last index %v last term %v\n", rf.me, server, args.Term, args.LastLogIndex, args.LastLogTerm)
+	DPrintf("node %d request vote RPC to %d arg term %v last index %v last term %v\n", rf.me, server, args.Term, args.LastLogIndex, args.LastLogTerm)
 	go func() {
 		rstChan <- rf.sendRequestVote(server, &args, &reply)
 	}()
 
 	select {
 	case <-time.After(300 * time.Millisecond):
-		fmt.Printf("node %d request vote RPC to %d timeout\n", rf.me, server)
+		DPrintf("node %d request vote RPC to %d timeout\n", rf.me, server)
 		voteChan <- false
 	case rst := <-rstChan:
 		if !rst {
-			fmt.Printf("node %d request vote RPC to %d connection fail\n", rf.me, server)
+			DPrintf("node %d request vote RPC to %d connection fail\n", rf.me, server)
 			voteChan <- false
 			return
 		}
@@ -1079,16 +1075,16 @@ func (rf *Raft) RequestVoteRPCToServer(server int, args RequestVoteArgs, voteCha
 		// no longer a candidate
 		if args.Term != rf.currentTerm || rf.votedFor != -2 {
 			rf.unlock(&rf.mu)
-			fmt.Printf("node %d get request vote RPC from %d no longer a candidate\n", rf.me, server)
+			DPrintf("node %d get request vote RPC from %d no longer a candidate\n", rf.me, server)
 			rejectChan <- true
 			return
 		}
 
 		if reply.VoteGranted {
-			fmt.Printf("node %d get vote from %d\n", rf.me, server)
+			DPrintf("node %d get vote from %d\n", rf.me, server)
 			voteChan <- true
 		} else {
-			fmt.Printf("node %d get reject vote from %d\n", rf.me, server)
+			DPrintf("node %d get reject vote from %d\n", rf.me, server)
 			voteChan <- false
 			if reply.Term > args.Term {
 				rf.currentTerm = max(rf.currentTerm, reply.Term)
@@ -1096,7 +1092,7 @@ func (rf *Raft) RequestVoteRPCToServer(server int, args RequestVoteArgs, voteCha
 				// added for 3C
 				rf.persist(nil)
 				rejectChan <- true
-				fmt.Printf("node %d get larger term vote from %d\n", rf.me, server)
+				DPrintf("node %d get larger term vote from %d\n", rf.me, server)
 			}
 		}
 		rf.unlock(&rf.mu)
@@ -1146,10 +1142,10 @@ loop:
 		}
 	}
 
-	fmt.Printf("candidate %v get vote %v\n", rf.me, voteCount)
+	DPrintf("candidate %v get vote %v\n", rf.me, voteCount)
 	rf.lock(&rf.mu)
 	rst := rf.votedFor == -2 && rf.currentTerm == args.Term && (voteCount+1)<<1 > len(rf.peers)
-	fmt.Printf("candidate %v voteFor %v current term %v arg term %v\n", rf.me, rf.votedFor, rf.currentTerm, args.Term)
+	DPrintf("candidate %v voteFor %v current term %v arg term %v\n", rf.me, rf.votedFor, rf.currentTerm, args.Term)
 	if rst {
 		rf.votedFor = rf.me
 		// added for 3C
@@ -1161,7 +1157,7 @@ loop:
 			// set nextIndex to the current commit index after leader election
 			rf.nextIndex[i] = rf.commitIndex + 1
 		}
-		fmt.Printf("node %d become leader\n", rf.me)
+		DPrintf("node %d become leader\n", rf.me)
 		// reset broadcast count
 		rf.broadcastCount = 0
 		rf.confirmedBroadcast = 0
@@ -1182,7 +1178,7 @@ func (rf *Raft) broadcastHeartbeat() {
 		return
 	}
 	rf.broadcastCount++
-	fmt.Printf("leader %v term %v broadcast heartbeat %d\n", rf.me, rf.currentTerm, rf.broadcastCount)
+	DPrintf("leader %v term %v broadcast heartbeat %d\n", rf.me, rf.currentTerm, rf.broadcastCount)
 	rf.unlock(&rf.mu)
 	// broadcast in current routine
 	go func() {
@@ -1200,7 +1196,7 @@ func (rf *Raft) attemptForElection() {
 	currentTime := time.Now()
 	duration := currentTime.Sub(rf.lastAppendEntriesTime)
 	if duration > time.Duration(1000)*time.Millisecond {
-		fmt.Printf("node %d wait for %v\n", rf.me, duration)
+		DPrintf("node %d wait for %v\n", rf.me, duration)
 		// process should release lock after break the loop
 		// hold lock within the loop (except for rpc)
 		retry := 0
@@ -1222,7 +1218,7 @@ func (rf *Raft) attemptForElection() {
 				LastLogIndex: lastIndex,
 				LastLogTerm:  lastTerm,
 			}
-			fmt.Printf("node %d start leader election retry: %v\n", rf.me, retry)
+			DPrintf("node %d start leader election retry: %v\n", rf.me, retry)
 			rf.unlock(&rf.mu)
 			rst := rf.RequestVoteRPC(args)
 			if rst {
