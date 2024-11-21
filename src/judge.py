@@ -5,12 +5,18 @@ import re
 import logging
 import asyncio
 import telegram
+from enum import Enum
+
+class Target(Enum):
+    # LAB2 = 'lab2'
+    LAB3 = 'lab3'
+    LAB4 = 'lab4'
 
 def load_testnames(filename):
     with open(filename) as f:
         return [line.strip() for line in f]
     
-def run_command(command):
+def run_command(command, cwd=None):
     flag = True
 
     for i in range(repeat_count):
@@ -19,7 +25,7 @@ def run_command(command):
         round_start = time.time() 
 
         if verbose:
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, cwd=cwd)
 
             for line in process.stdout:
                 logging.info(line.rstrip())
@@ -29,7 +35,7 @@ def run_command(command):
                 flag = False
                 break
         else :
-            result = subprocess.run(command, capture_output=True, text=True)
+            result = subprocess.run(command, capture_output=True, text=True, cwd=cwd)
             if result.returncode != 0:
                 logging.info(result.stdout)
                 logging.info(result.stderr)
@@ -42,40 +48,49 @@ def run_command(command):
 
     return flag
 
-def report_result(flag):
+def report_result(failTest):
     async def error_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab4 fail, round {repeat_count}, pattern {pattern}, total time consume {judge_duration:.2f} s')
+        content = f'judge {target.value} fail, round {repeat_count}, pattern {pattern}, fail test {failTest}, total time consume {judge_duration:.2f} s'
+        await bot.send_message(chat_id=telegram_chatid, text=content)
         await bot.send_document(chat_id=telegram_chatid, document='./log.txt')
 
     async def success_report():
         bot = telegram.Bot(telegram_token)
-        await bot.send_message(chat_id=telegram_chatid, text=f'judge lab4 success, round {repeat_count}, pattern {pattern}, total time consume {judge_duration:.2f} s')
+        content = f'judge {target.value} success, round {repeat_count}, pattern {pattern}, total time consume {judge_duration:.2f} s'
+        await bot.send_message(chat_id=telegram_chatid, text=content)
 
-    if flag:
-        asyncio.run(success_report())
-    else:
+    if failTest:
         asyncio.run(error_report())
-    
+    else:
+        asyncio.run(success_report())
+
 parser = argparse.ArgumentParser(description='Run go test multiple times.')
 parser.add_argument('--count', type=int, required=True, help='Number of times to run the command')
+parser.add_argument('--target', type=Target, choices=list(Target), required=True, help='Lab number')
 parser.add_argument('--pattern', type=str, required=True, help='Pattern to run (regexp)')
 parser.add_argument('--verbose', action='store_true', help='Print verbose output')
-parser.add_argument('--testlist', type=str, default='./testlist.txt', help='File containing the list of tests to run')
 parser.add_argument('--race', action='store_true', help='Run with race detector')
 parser.add_argument('--telegram-token', type=str, required=False, help='telegram token is used to report log to telegram bot')
 parser.add_argument('--telegram-chatid', type=str, required=False, help='telegram chat id is used to report log to user')
 
 args = parser.parse_args()
 repeat_count = args.count
+target = args.target
 pattern = args.pattern
 verbose = args.verbose
-testlistPath = args.testlist
 race = args.race
 telegram_token = args.telegram_token
 telegram_chatid = args.telegram_chatid
 
-testlist = load_testnames(testlistPath)
+working_dir = '.'
+
+if target == Target.LAB3:
+    working_dir = f'{working_dir}/raft'
+elif target == Target.LAB4:
+    working_dir = f'{working_dir}/kvraft'
+
+testlist = load_testnames(f'{working_dir}/testlist.txt')
 
 # Configure logging
 logging.basicConfig(
@@ -94,7 +109,7 @@ logging.getLogger('httpcore').setLevel(logging.ERROR)
 
 testsToRun = [test for test in testlist if re.search(pattern, test)]
 
-flag = True
+failTest = None
 
 judge_start = time.time()
 for test in testsToRun:
@@ -103,12 +118,12 @@ for test in testsToRun:
         command.append("-race")
     start = time.time()
     logging.info(f"Running {test}")
-    rst = run_command(command)
+    rst = run_command(command, working_dir)
     end = time.time()
     logging.info(f"Test {test} consume {end - start:.2f} s")
     if not rst:
         logging.error(f"Test {test} failed\n")
-        flag = False
+        failTest = test
         break
     else:
         logging.info(f"Test {test} passed\n")
@@ -116,8 +131,8 @@ for test in testsToRun:
 judge_end = time.time()
 judge_duration = judge_end - judge_start
 logging.info(f"Total consume: {judge_duration:.2f} s")
-if flag:
+if not failTest:
     logging.info(f"All Test passed")
 
 if telegram_token and telegram_chatid:
-    report_result(flag) 
+    report_result(failTest)

@@ -1,0 +1,8 @@
+2024-11-21 16:16:09 - INFO - Running TestInitialElection3A
+2024-11-21 16:16:09 - INFO - Round 1 start
+2024-11-21 16:16:14 - INFO - Round 1 finished, consume 4.54 s
+2024-11-21 16:16:14 - INFO - Test TestInitialElection3A consume 4.54 s
+2024-11-21 16:16:14 - INFO - Test TestInitialElection3A passed
+
+2024-11-21 16:16:14 - INFO - Total consume: 4.54 s
+2024-11-21 16:16:14 - INFO - All Test passed
