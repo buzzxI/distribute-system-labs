@@ -10,9 +10,9 @@ import (
 type Clerk struct {
 	servers []*labrpc.ClientEnd
 	// You will have to modify this struct.
-	id       int64
-	appendId int
-	leaderId int
+	id        int64
+	requestId int
+	leaderId  int
 }
 
 func nrand() int64 {
@@ -27,7 +27,7 @@ func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 	ck.servers = servers
 	// You'll have to add code here.
 	ck.id = nrand()
-	ck.appendId = 0
+	ck.requestId = 0
 	ck.leaderId = 0 // client assumes default leader is 0
 	return ck
 }
@@ -45,7 +45,7 @@ func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 func (ck *Clerk) Get(key string) string {
 
 	// You will have to modify this function.
-	args := GetArgs{Key: key}
+	args := GetArgs{Key: key, ClerkMeta: MetaAppendInfo{ClerkId: ck.id, RequestId: ck.requestId}}
 	var reply GetReply
 
 loop:
@@ -56,6 +56,7 @@ loop:
 
 		DPrintf("Client %v Get key %s to %v\n", ck.id, key, i)
 		ok := ck.servers[i].Call("KVServer.Get", &args, &reply)
+		DPrintf("Client %v Get key %s to %v ok %v reply %v\n", ck.id, key, ck.leaderId, ok, reply)
 		if !ok {
 			continue
 		}
@@ -73,6 +74,7 @@ loop:
 			break loop
 		}
 	}
+	ck.requestId++
 	return reply.Value
 }
 
@@ -85,7 +87,7 @@ loop:
 // must match the declared types of the RPC handler function's
 // arguments. and reply must be passed as a pointer.
 func (ck *Clerk) PutAppend(key string, value string, op string) {
-	args := PutAppendArgs{Key: key, Value: value, ClerkMeta: MetaAppendInfo{ClerkId: ck.id, RequestId: ck.appendId}}
+	args := PutAppendArgs{Key: key, Value: value, ClerkMeta: MetaAppendInfo{ClerkId: ck.id, RequestId: ck.requestId}}
 	var reply PutAppendReply
 
 loop:
@@ -97,11 +99,10 @@ loop:
 		DPrintf("Client %v %s key %s value %s to %v\n", ck.id, op, key, value, i)
 
 		ok := ck.servers[i].Call("KVServer."+op, &args, &reply)
+		DPrintf("Client %v %s key %s value %s to %v reply ok %v reply %v\n", ck.id, op, key, value, i, ok, reply)
 		if !ok {
 			continue
 		}
-
-		DPrintf("Client %v %s key %s value %s to %v reply %v\n", ck.id, op, key, value, i, reply)
 
 		switch reply.Err {
 		case OK:
@@ -118,9 +119,7 @@ loop:
 	}
 
 	DPrintf("Client %v %s key %s value %s to %v success reply %v\n", ck.id, op, key, value, ck.leaderId, reply)
-	if op == "Append" {
-		ck.appendId++
-	}
+	ck.requestId++
 }
 
 func (ck *Clerk) Put(key string, value string) {

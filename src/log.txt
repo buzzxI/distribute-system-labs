@@ -1,8 +1,198 @@
-2024-11-21 16:16:09 - INFO - Running TestInitialElection3A
-2024-11-21 16:16:09 - INFO - Round 1 start
-2024-11-21 16:16:14 - INFO - Round 1 finished, consume 4.54 s
-2024-11-21 16:16:14 - INFO - Test TestInitialElection3A consume 4.54 s
-2024-11-21 16:16:14 - INFO - Test TestInitialElection3A passed
+2024-11-25 16:16:03 - INFO - Running TestBasic4A
+2024-11-25 16:16:03 - INFO - Round 1 start
+2024-11-25 16:16:18 - INFO - Round 1 finished, consume 15.37 s
+2024-11-25 16:16:18 - INFO - Round 2 start
+2024-11-25 16:16:34 - INFO - Round 2 finished, consume 15.37 s
+2024-11-25 16:16:34 - INFO - Round 3 start
+2024-11-25 16:16:49 - INFO - Round 3 finished, consume 15.39 s
+2024-11-25 16:16:49 - INFO - Round 4 start
+2024-11-25 16:17:04 - INFO - Round 4 finished, consume 15.37 s
+2024-11-25 16:17:04 - INFO - Round 5 start
+2024-11-25 16:17:20 - INFO - Round 5 finished, consume 15.36 s
+2024-11-25 16:17:20 - INFO - Test TestBasic4A consume 76.86 s
+2024-11-25 16:17:20 - INFO - Test TestBasic4A passed
 
-2024-11-21 16:16:14 - INFO - Total consume: 4.54 s
-2024-11-21 16:16:14 - INFO - All Test passed
+2024-11-25 16:17:20 - INFO - Running TestSpeed4A
+2024-11-25 16:17:20 - INFO - Round 1 start
+2024-11-25 16:17:33 - INFO - Round 1 finished, consume 13.31 s
+2024-11-25 16:17:33 - INFO - Round 2 start
+2024-11-25 16:17:47 - INFO - Round 2 finished, consume 13.47 s
+2024-11-25 16:17:47 - INFO - Round 3 start
+2024-11-25 16:18:00 - INFO - Round 3 finished, consume 13.45 s
+2024-11-25 16:18:00 - INFO - Round 4 start
+2024-11-25 16:18:13 - INFO - Round 4 finished, consume 13.39 s
+2024-11-25 16:18:13 - INFO - Round 5 start
+2024-11-25 16:18:27 - INFO - Round 5 finished, consume 13.30 s
+2024-11-25 16:18:27 - INFO - Test TestSpeed4A consume 66.91 s
+2024-11-25 16:18:27 - INFO - Test TestSpeed4A passed
+
+2024-11-25 16:18:27 - INFO - Running TestConcurrent4A
+2024-11-25 16:18:27 - INFO - Round 1 start
+2024-11-25 16:18:42 - INFO - Round 1 finished, consume 15.61 s
+2024-11-25 16:18:42 - INFO - Round 2 start
+2024-11-25 16:18:58 - INFO - Round 2 finished, consume 15.63 s
+2024-11-25 16:18:58 - INFO - Round 3 start
+2024-11-25 16:19:14 - INFO - Round 3 finished, consume 15.66 s
+2024-11-25 16:19:14 - INFO - Round 4 start
+2024-11-25 16:19:29 - INFO - Round 4 finished, consume 15.61 s
+2024-11-25 16:19:29 - INFO - Round 5 start
+2024-11-25 16:19:45 - INFO - Round 5 finished, consume 15.58 s
+2024-11-25 16:19:45 - INFO - Test TestConcurrent4A consume 78.10 s
+2024-11-25 16:19:45 - INFO - Test TestConcurrent4A passed
+
+2024-11-25 16:19:45 - INFO - Running TestUnreliable4A
+2024-11-25 16:19:45 - INFO - Round 1 start
+2024-11-25 16:20:01 - INFO - Round 1 finished, consume 16.37 s
+2024-11-25 16:20:01 - INFO - Round 2 start
+2024-11-25 16:20:18 - INFO - Round 2 finished, consume 16.55 s
+2024-11-25 16:20:18 - INFO - Round 3 start
+2024-11-25 16:20:34 - INFO - Round 3 finished, consume 16.05 s
+2024-11-25 16:20:34 - INFO - Round 4 start
+2024-11-25 16:20:50 - INFO - Round 4 finished, consume 16.28 s
+2024-11-25 16:20:50 - INFO - Round 5 start
+2024-11-25 16:21:07 - INFO - Round 5 finished, consume 16.69 s
+2024-11-25 16:21:07 - INFO - Test TestUnreliable4A consume 81.94 s
+2024-11-25 16:21:07 - INFO - Test TestUnreliable4A passed
+
+2024-11-25 16:21:07 - INFO - Running TestUnreliableOneKey4A
+2024-11-25 16:21:07 - INFO - Round 1 start
+2024-11-25 16:21:09 - INFO - Round 1 finished, consume 2.11 s
+2024-11-25 16:21:09 - INFO - Round 2 start
+2024-11-25 16:21:11 - INFO - Round 2 finished, consume 2.16 s
+2024-11-25 16:21:11 - INFO - Round 3 start
+2024-11-25 16:21:13 - INFO - Round 3 finished, consume 2.14 s
+2024-11-25 16:21:13 - INFO - Round 4 start
+2024-11-25 16:21:15 - INFO - Round 4 finished, consume 2.16 s
+2024-11-25 16:21:15 - INFO - Round 5 start
+2024-11-25 16:21:18 - INFO - Round 5 finished, consume 2.28 s
+2024-11-25 16:21:18 - INFO - Test TestUnreliableOneKey4A consume 10.86 s
+2024-11-25 16:21:18 - INFO - Test TestUnreliableOneKey4A passed
+
+2024-11-25 16:21:18 - INFO - Running TestOnePartition4A
+2024-11-25 16:21:18 - INFO - Round 1 start
+2024-11-25 16:21:22 - INFO - Round 1 finished, consume 4.82 s
+2024-11-25 16:21:22 - INFO - Round 2 start
+2024-11-25 16:21:27 - INFO - Round 2 finished, consume 4.58 s
+2024-11-25 16:21:27 - INFO - Round 3 start
+2024-11-25 16:21:32 - INFO - Round 3 finished, consume 4.64 s
+2024-11-25 16:21:32 - INFO - Round 4 start
+2024-11-25 16:21:36 - INFO - Round 4 finished, consume 4.54 s
+2024-11-25 16:21:36 - INFO - Round 5 start
+2024-11-25 16:21:41 - INFO - Round 5 finished, consume 4.62 s
+2024-11-25 16:21:41 - INFO - Test TestOnePartition4A consume 23.20 s
+2024-11-25 16:21:41 - INFO - Test TestOnePartition4A passed
+
+2024-11-25 16:21:41 - INFO - Running TestManyPartitionsOneClient4A
+2024-11-25 16:21:41 - INFO - Round 1 start
+2024-11-25 16:22:04 - INFO - Round 1 finished, consume 22.99 s
+2024-11-25 16:22:04 - INFO - Round 2 start
+2024-11-25 16:22:27 - INFO - Round 2 finished, consume 22.90 s
+2024-11-25 16:22:27 - INFO - Round 3 start
+2024-11-25 16:22:50 - INFO - Round 3 finished, consume 22.97 s
+2024-11-25 16:22:50 - INFO - Round 4 start
+2024-11-25 16:23:13 - INFO - Round 4 finished, consume 23.30 s
+2024-11-25 16:23:13 - INFO - Round 5 start
+2024-11-25 16:23:36 - INFO - Round 5 finished, consume 22.90 s
+2024-11-25 16:23:36 - INFO - Test TestManyPartitionsOneClient4A consume 115.05 s
+2024-11-25 16:23:36 - INFO - Test TestManyPartitionsOneClient4A passed
+
+2024-11-25 16:23:36 - INFO - Running TestManyPartitionsManyClients4A
+2024-11-25 16:23:36 - INFO - Round 1 start
+2024-11-25 16:23:59 - INFO - Round 1 finished, consume 23.44 s
+2024-11-25 16:23:59 - INFO - Round 2 start
+2024-11-25 16:24:22 - INFO - Round 2 finished, consume 23.19 s
+2024-11-25 16:24:22 - INFO - Round 3 start
+2024-11-25 16:24:46 - INFO - Round 3 finished, consume 23.20 s
+2024-11-25 16:24:46 - INFO - Round 4 start
+2024-11-25 16:25:09 - INFO - Round 4 finished, consume 23.42 s
+2024-11-25 16:25:09 - INFO - Round 5 start
+2024-11-25 16:25:32 - INFO - Round 5 finished, consume 23.33 s
+2024-11-25 16:25:32 - INFO - Test TestManyPartitionsManyClients4A consume 116.57 s
+2024-11-25 16:25:32 - INFO - Test TestManyPartitionsManyClients4A passed
+
+2024-11-25 16:25:32 - INFO - Running TestPersistOneClient4A
+2024-11-25 16:25:32 - INFO - Round 1 start
+2024-11-25 16:26:15 - INFO - Round 1 finished, consume 42.27 s
+2024-11-25 16:26:15 - INFO - Round 2 start
+2024-11-25 16:26:56 - INFO - Round 2 finished, consume 41.58 s
+2024-11-25 16:26:56 - INFO - Round 3 start
+2024-11-25 16:27:38 - INFO - Round 3 finished, consume 42.14 s
+2024-11-25 16:27:38 - INFO - Round 4 start
+2024-11-25 16:28:20 - INFO - Round 4 finished, consume 41.92 s
+2024-11-25 16:28:20 - INFO - Round 5 start
+2024-11-25 16:29:03 - INFO - Round 5 finished, consume 42.23 s
+2024-11-25 16:29:03 - INFO - Test TestPersistOneClient4A consume 210.15 s
+2024-11-25 16:29:03 - INFO - Test TestPersistOneClient4A passed
+
+2024-11-25 16:29:03 - INFO - Running TestPersistConcurrent4A
+2024-11-25 16:29:03 - INFO - Round 1 start
+2024-11-25 16:29:49 - INFO - Round 1 finished, consume 46.55 s
+2024-11-25 16:29:49 - INFO - Round 2 start
+2024-11-25 16:30:36 - INFO - Round 2 finished, consume 46.55 s
+2024-11-25 16:30:36 - INFO - Round 3 start
+2024-11-25 16:31:22 - INFO - Round 3 finished, consume 46.23 s
+2024-11-25 16:31:22 - INFO - Round 4 start
+2024-11-25 16:32:08 - INFO - Round 4 finished, consume 46.46 s
+2024-11-25 16:32:08 - INFO - Round 5 start
+2024-11-25 16:32:55 - INFO - Round 5 finished, consume 46.40 s
+2024-11-25 16:32:55 - INFO - Test TestPersistConcurrent4A consume 232.21 s
+2024-11-25 16:32:55 - INFO - Test TestPersistConcurrent4A passed
+
+2024-11-25 16:32:55 - INFO - Running TestPersistConcurrentUnreliable4A
+2024-11-25 16:32:55 - INFO - Round 1 start
+2024-11-25 16:33:37 - INFO - Round 1 finished, consume 42.48 s
+2024-11-25 16:33:37 - INFO - Round 2 start
+2024-11-25 16:34:20 - INFO - Round 2 finished, consume 43.13 s
+2024-11-25 16:34:20 - INFO - Round 3 start
+2024-11-25 16:35:03 - INFO - Round 3 finished, consume 42.75 s
+2024-11-25 16:35:03 - INFO - Round 4 start
+2024-11-25 16:35:46 - INFO - Round 4 finished, consume 43.23 s
+2024-11-25 16:35:46 - INFO - Round 5 start
+2024-11-25 16:36:29 - INFO - Round 5 finished, consume 42.94 s
+2024-11-25 16:36:29 - INFO - Test TestPersistConcurrentUnreliable4A consume 214.54 s
+2024-11-25 16:36:29 - INFO - Test TestPersistConcurrentUnreliable4A passed
+
+2024-11-25 16:36:29 - INFO - Running TestPersistPartition4A
+2024-11-25 16:36:29 - INFO - Round 1 start
+2024-11-25 16:37:09 - INFO - Round 1 finished, consume 39.42 s
+2024-11-25 16:37:09 - INFO - Round 2 start
+2024-11-25 16:37:53 - INFO - Round 2 finished, consume 44.73 s
+2024-11-25 16:37:53 - INFO - Round 3 start
+2024-11-25 16:38:37 - INFO - Round 3 finished, consume 43.98 s
+2024-11-25 16:38:37 - INFO - Round 4 start
+2024-11-25 16:39:24 - INFO - Round 4 finished, consume 46.98 s
+2024-11-25 16:39:24 - INFO - Round 5 start
+2024-11-25 16:40:11 - INFO - Round 5 finished, consume 46.22 s
+2024-11-25 16:40:11 - INFO - Test TestPersistPartition4A consume 221.34 s
+2024-11-25 16:40:11 - INFO - Test TestPersistPartition4A passed
+
+2024-11-25 16:40:11 - INFO - Running TestPersistPartitionUnreliable4A
+2024-11-25 16:40:11 - INFO - Round 1 start
+2024-11-25 16:40:55 - INFO - Round 1 finished, consume 44.62 s
+2024-11-25 16:40:55 - INFO - Round 2 start
+2024-11-25 16:41:36 - INFO - Round 2 finished, consume 40.47 s
+2024-11-25 16:41:36 - INFO - Round 3 start
+2024-11-25 16:42:15 - INFO - Round 3 finished, consume 39.65 s
+2024-11-25 16:42:15 - INFO - Round 4 start
+2024-11-25 16:43:00 - INFO - Round 4 finished, consume 44.41 s
+2024-11-25 16:43:00 - INFO - Round 5 start
+2024-11-25 16:43:37 - INFO - Round 5 finished, consume 36.80 s
+2024-11-25 16:43:37 - INFO - Test TestPersistPartitionUnreliable4A consume 205.94 s
+2024-11-25 16:43:37 - INFO - Test TestPersistPartitionUnreliable4A passed
+
+2024-11-25 16:43:37 - INFO - Running TestPersistPartitionUnreliableLinearizable4A
+2024-11-25 16:43:37 - INFO - Round 1 start
+2024-11-25 16:44:21 - INFO - Round 1 finished, consume 44.27 s
+2024-11-25 16:44:21 - INFO - Round 2 start
+2024-11-25 16:45:08 - INFO - Round 2 finished, consume 46.86 s
+2024-11-25 16:45:08 - INFO - Round 3 start
+2024-11-25 16:46:03 - INFO - Round 3 finished, consume 55.31 s
+2024-11-25 16:46:03 - INFO - Round 4 start
+2024-11-25 16:46:50 - INFO - Round 4 finished, consume 46.76 s
+2024-11-25 16:46:50 - INFO - Round 5 start
+2024-11-25 16:47:31 - INFO - Round 5 finished, consume 40.82 s
+2024-11-25 16:47:31 - INFO - Test TestPersistPartitionUnreliableLinearizable4A consume 234.02 s
+2024-11-25 16:47:31 - INFO - Test TestPersistPartitionUnreliableLinearizable4A passed
+
+2024-11-25 16:47:31 - INFO - Total consume: 1887.69 s
+2024-11-25 16:47:31 - INFO - All Test passed

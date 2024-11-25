@@ -107,9 +107,45 @@ func formatMessage(message raft.ApplyMsg) string {
 }
 
 // lock should be held before invoke checker
-func (kv *KVServer) appendDuplicationChecker(clerk int64, request int) bool {
+func (kv *KVServer) requestDuplicationChecker(clerk int64, request int) bool {
 	buff, contains := kv.buffer[clerk]
 	return contains && buff.RequestId >= request
+}
+
+// lock should be held before invoke handler
+func (kv *KVServer) putHandler(op Op) {
+	if kv.requestDuplicationChecker(op.ClerkId, op.RequestId) {
+		DPrintf("server %v get duplicated put %v\n", kv.me, formatOp(op))
+		return
+	}
+
+	kv.kvs[op.Key] = op.Value
+	if buff, contains := kv.buffer[op.ClerkId]; contains && buff.RequestId+1 < op.RequestId {
+		DPrintf("server %v buffer %v get a larger put %v \n", kv.me, buff, op.RequestId)
+	}
+
+	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: op.Value}
+	DPrintf("server %v put key %s value %s\n", kv.me, op.Key, op.Value)
+}
+
+func (kv *KVServer) appendHandler(op Op) {
+	if kv.requestDuplicationChecker(op.ClerkId, op.RequestId) {
+		DPrintf("server %v get duplicated append %v\n", kv.me, formatOp(op))
+		return
+	}
+
+	value, contains := kv.kvs[op.Key]
+	if !contains {
+		kv.kvs[op.Key] = op.Value
+	} else {
+		kv.kvs[op.Key] = value + op.Value
+	}
+
+	if buff, contains := kv.buffer[op.ClerkId]; contains && buff.RequestId+1 < op.RequestId {
+		DPrintf("server %v buffer %v get a larger append %v \n", kv.me, buff, op.RequestId)
+	}
+
+	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: kv.kvs[op.Key]}
 }
 
 /**
@@ -117,7 +153,7 @@ func (kv *KVServer) appendDuplicationChecker(clerk int64, request int) bool {
  */
 
 // lock should be held before invoke handler
-func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func()) Err {
+func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func(op Op)) Err {
 	for {
 		time.Sleep(10 * time.Millisecond)
 
@@ -126,6 +162,13 @@ func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func
 			delete(kv.leaderResponse, logIndex)
 			kv.unlock(&kv.mu)
 			return ErrKilledServer
+		}
+
+		if _, leader := kv.rf.GetState(); !leader {
+			// lost leader ship
+			delete(kv.leaderResponse, logIndex)
+			kv.unlock(&kv.mu)
+			return ErrWrongLeader
 		}
 
 		if len(kv.commitedQueue) == 0 {
@@ -148,21 +191,27 @@ func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func
 		if op.Type == requestOp.Type && op.Key == requestOp.Key && op.Value == requestOp.Value {
 			// remove head msg
 			kv.commitedQueue = kv.commitedQueue[1:]
-			handler()
+			handler(op)
 			kv.unlock(&kv.mu)
 			return OK
 		} else {
 			kv.unlock(&kv.mu)
 			return ErrNoAgreement
 		}
-
 	}
 }
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
 	kv.lock(&kv.mu)
-	log := Op{Type: GET, Key: args.Key, Value: ""}
+	log := Op{Type: GET, Key: args.Key, ClerkId: args.ClerkMeta.ClerkId, RequestId: args.ClerkMeta.RequestId}
+	if kv.requestDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
+		reply.Err, reply.Value = OK, kv.buffer[args.ClerkMeta.ClerkId].Value
+		kv.unlock(&kv.mu)
+		DPrintf("server %v get duplicated get %v\n", kv.me, formatOp(log))
+		return
+	}
+
 	index, _, leader := kv.rf.Start(log)
 	if !leader {
 		reply.Err = ErrWrongLeader
@@ -175,17 +224,29 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	kv.unlock(&kv.mu)
 
 	// wait for agreement
-	reply.Err = kv.AbstractReplication(index, log, func() {
-		// do nothing
-		DPrintf("server %v get key %s value %s\n", kv.me, args.Key, kv.kvs[args.Key])
-		reply.Value = kv.kvs[args.Key]
+	reply.Err = kv.AbstractReplication(index, log, func(log Op) {
+		if kv.requestDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
+			reply.Value = kv.buffer[args.ClerkMeta.ClerkId].Value
+			DPrintf("server %v get duplicated get %v\n", kv.me, formatOp(log))
+		} else {
+			reply.Value = kv.kvs[args.Key]
+			kv.buffer[args.ClerkMeta.ClerkId] = ResponseBuffer{RequestId: args.ClerkMeta.RequestId, Value: reply.Value}
+			DPrintf("server %v get key %s value %s\n", kv.me, args.Key, reply.Value)
+		}
 	})
 }
 
 func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
 	kv.lock(&kv.mu)
-	log := Op{Type: PUT, Key: args.Key, Value: args.Value}
+	log := Op{Type: PUT, Key: args.Key, Value: args.Value, ClerkId: args.ClerkMeta.ClerkId, RequestId: args.ClerkMeta.RequestId}
+	if kv.requestDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
+		reply.Err = OK
+		kv.unlock(&kv.mu)
+		DPrintf("server %v get duplicated put %v\n", kv.me, formatOp(log))
+		return
+	}
+
 	index, _, leader := kv.rf.Start(log)
 	if !leader {
 		reply.Err = ErrWrongLeader
@@ -197,10 +258,7 @@ func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 	kv.leaderResponse[index] = true
 	kv.unlock(&kv.mu)
 
-	reply.Err = kv.AbstractReplication(index, log, func() {
-		kv.kvs[args.Key] = args.Value
-		DPrintf("server %v put key %s value %s\n", kv.me, args.Key, args.Value)
-	})
+	reply.Err = kv.AbstractReplication(index, log, kv.putHandler)
 }
 
 func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
@@ -209,7 +267,7 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 	kv.lock(&kv.mu)
 
 	log := Op{Type: APPEND, Key: args.Key, Value: args.Value, ClerkId: args.ClerkMeta.ClerkId, RequestId: args.ClerkMeta.RequestId}
-	if kv.appendDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
+	if kv.requestDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
 		reply.Err = OK
 		kv.unlock(&kv.mu)
 		DPrintf("server %v get duplicated append %v\n", kv.me, formatOp(log))
@@ -228,26 +286,7 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 	kv.leaderResponse[index] = true
 	kv.unlock(&kv.mu)
 
-	reply.Err = kv.AbstractReplication(index, log, func() {
-		if kv.appendDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
-			DPrintf("server %v get duplicated append %v\n", kv.me, formatOp(log))
-			return
-		}
-
-		value, contains := kv.kvs[args.Key]
-		if !contains {
-			kv.kvs[args.Key] = args.Value
-		} else {
-			kv.kvs[args.Key] = value + args.Value
-		}
-		DPrintf("server %v append key %s value %s\n", kv.me, args.Key, kv.kvs[args.Key])
-
-		if buff, contains := kv.buffer[args.ClerkMeta.ClerkId]; contains && buff.RequestId+1 < args.ClerkMeta.RequestId {
-			DPrintf("server %v buffer %v get a larger append %v \n", kv.me, buff, args.ClerkMeta.RequestId)
-		}
-
-		kv.buffer[args.ClerkMeta.ClerkId] = ResponseBuffer{RequestId: args.ClerkMeta.RequestId, Value: kv.kvs[args.Key]}
-	})
+	reply.Err = kv.AbstractReplication(index, log, kv.appendHandler)
 }
 
 // the tester calls Kill() when a KVServer instance won't
@@ -297,25 +336,9 @@ func (kv *KVServer) stateApplier() {
 			operation := msg.Command.(Op)
 			switch operation.Type {
 			case PUT:
-				kv.kvs[operation.Key] = operation.Value
+				kv.putHandler(operation)
 			case APPEND:
-				if kv.appendDuplicationChecker(operation.ClerkId, operation.RequestId) {
-					DPrintf("server %v get duplicated append %v\n", kv.me, formatOp(operation))
-					break
-				}
-
-				value, contains := kv.kvs[operation.Key]
-				if !contains {
-					kv.kvs[operation.Key] = operation.Value
-				} else {
-					kv.kvs[operation.Key] = value + operation.Value
-				}
-
-				if buff, contains := kv.buffer[operation.ClerkId]; contains && buff.RequestId+1 < operation.RequestId {
-					DPrintf("server %v buffer %v get a larger append %v \n", kv.me, buff, operation.RequestId)
-				}
-
-				kv.buffer[operation.ClerkId] = ResponseBuffer{RequestId: operation.RequestId, Value: kv.kvs[operation.Key]}
+				kv.appendHandler(operation)
 			case GET:
 				// do nothing
 			default:
@@ -360,8 +383,8 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.buffer = make(map[int64]ResponseBuffer)
 
 	kv.leaderResponse = make(map[int]bool)
-
 	kv.debug = false
+	// kv.debug = true
 
 	// incase of blocking apply channel, buffer the log first, then apply
 	// read apply channel endlessly
