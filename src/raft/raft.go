@@ -199,17 +199,19 @@ func (rf *Raft) readRaftState(data []byte) {
 
 		rf.log = log
 		DPrintf("node %v read term %v vote %v last included index %v term %v log %v\n", rf.me, currentTerm, votedFor, lastIncludedIndex, lastIncludedTerm, log)
+
+		rf.lastIncludedIndex = lastIncludedIndex
+		rf.lastIncludedTerm = lastIncludedTerm
+		rf.commitIndex = rf.lastIncludedIndex // initialize commit index to lastInclude index
+		rf.lastApplied = rf.lastIncludedIndex
+
+		// suppose next index is current commit index + 1
 		for i := 0; i < len(rf.peers); i++ {
 			if i == rf.me {
 				continue
 			}
 			rf.nextIndex[i] = rf.commitIndex + 1
 		}
-
-		rf.lastIncludedIndex = lastIncludedIndex
-		rf.lastIncludedTerm = lastIncludedTerm
-		rf.commitIndex = rf.lastIncludedIndex // initialize commit index to lastInclude index
-		rf.lastApplied = rf.lastIncludedIndex
 	}
 }
 
