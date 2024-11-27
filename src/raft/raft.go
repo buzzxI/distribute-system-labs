@@ -835,6 +835,7 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 			if reply.Success {
 				rf.nextIndex[server] = max(rf.nextIndex[server], end+1)
 				DPrintf("leader %v append log index %v to server %v success, retry %v\n", rf.me, logIndex, server, retry)
+				rf.CheckLogCommitment(end)
 				rf.unlock(&rf.mu)
 				return true
 			} else {
@@ -850,10 +851,15 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 				}
 
 				// rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
+				DPrintf("leader %v append log index %v to server %v fail, prev index %v, rf commit %v reply %v, retry %v\n", rf.me, logIndex, server, prevLogIndexOffset, rf.commitIndex, reply.Index, retry)
+				preIndex := rf.nextIndex[server]
 				// reply index indicated index of commited log
 				rf.nextIndex[server] = min(rf.commitIndex+1, reply.Index+1)
+				// with snapshot, there may exist cases reply commited index is larger than nextIndex (jump forward rather than backward)
+				if preIndex < rf.nextIndex[server] {
+					rf.CheckLogCommitment(end)
+				}
 
-				DPrintf("leader %v append log index %v to server %v fail, prev index %v, rf commit %v reply %v, retry %v\n", rf.me, logIndex, server, prevLogIndexOffset, rf.commitIndex, reply.Index, retry)
 				rf.unlock(&rf.mu)
 			}
 		}
@@ -951,65 +957,120 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 	}
 }
 
-// leader use checker to commit logs
-func (rf *Raft) commitChecker() {
-	for {
-		time.Sleep(10 * time.Millisecond)
-		rf.lock(&rf.mu)
-		if rf.votedFor != rf.me {
-			rf.unlock(&rf.mu)
-			continue
-		}
+// check if current log can be commited
+// lock should be held by caller !!!
+func (rf *Raft) CheckLogCommitment(logIndex int) {
+	DPrintf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
 
-		i := len(rf.log) + rf.lastIncludedIndex
+	// current server is not leader
+	if rf.votedFor != rf.me {
+		return
+	}
 
-		if rf.commitIndex >= i {
-			rf.unlock(&rf.mu)
-			continue
-		}
+	// current server has commited current log
+	if rf.commitIndex >= logIndex {
+		return
+	}
 
-		for i > rf.commitIndex {
-			vote := 0
-			for j := 0; j < len(rf.peers); j++ {
-				if j == rf.me {
-					continue
-				}
-				if rf.nextIndex[j] > i {
-					vote++
-				}
-			}
-			// get majority
-			if vote<<1 > len(rf.peers) {
-				break
-			}
-			i--
-		}
-
-		logOffset := i - rf.lastIncludedIndex - 1
-
-		if logOffset >= 0 {
-			// raft does not commit previous log (multiple success heartbeat should commit previous log)
-			if rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
-				rf.unlock(&rf.mu)
+	i := logIndex
+	// find the largest log index that can be commited
+	for i > rf.commitIndex {
+		vote := 1
+		for j := 0; j < len(rf.peers); j++ {
+			if j == rf.me {
 				continue
 			}
-			rf.commitIndex = i
-			rf.unlock(&rf.mu)
+			if rf.nextIndex[j] > i {
+				vote++
+			}
 		}
+		// get majority
+		if vote<<1 > len(rf.peers) {
+			break
+		}
+		i--
 	}
+
+	logOffset := i - rf.lastIncludedIndex - 1
+	// raft does not commit previous log (multiple success heartbeat should commit previous log)
+	if logOffset >= 0 && rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
+		return
+	}
+
+	// commit until i
+	rf.commitIndex = i
 }
+
+// leader use checker to commit logs
+// func (rf *Raft) commitChecker() {
+// 	for {
+// 		time.Sleep(10 * time.Millisecond)
+// 		rf.lock(&rf.mu)
+// 		if rf.votedFor != rf.me {
+// 			rf.unlock(&rf.mu)
+// 			continue
+// 		}
+
+// 		i := len(rf.log) + rf.lastIncludedIndex
+
+// 		if rf.commitIndex >= i {
+// 			rf.unlock(&rf.mu)
+// 			continue
+// 		}
+
+// 		for i > rf.commitIndex {
+// 			vote := 0
+// 			for j := 0; j < len(rf.peers); j++ {
+// 				if rf.nextIndex[j] > i {
+// 					vote++
+// 				}
+// 			}
+// 			// get majority
+// 			if vote<<1 > len(rf.peers) {
+// 				break
+// 			}
+// 			i--
+// 		}
+
+// 		logOffset := i - rf.lastIncludedIndex - 1
+
+// 		if logOffset >= 0 {
+// 			// raft does not commit previous log (multiple success heartbeat should commit previous log)
+// 			if rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
+// 				rf.unlock(&rf.mu)
+// 				continue
+// 			}
+// 			rf.commitIndex = i
+// 		}
+// 		rf.unlock(&rf.mu)
+// 	}
+// }
 
 // apply commited log to state machine
 func (rf *Raft) commitApplier() {
 	for {
 		rf.lock(&rf.mu)
 		if rf.lastApplied < rf.commitIndex {
-			rf.lastApplied++
-			DPrintf("node %v commit %v\n", rf.me, rf.lastApplied)
-			logOffset := rf.lastApplied - rf.lastIncludedIndex - 1
-			msg := ApplyMsg{CommandValid: true, Command: rf.log[logOffset].Command, CommandIndex: rf.lastApplied + 1}
+			len := rf.commitIndex - rf.lastApplied
+			logCpy := make([]LogEntry, len)
+
+			lastAppliedOffset := rf.lastApplied - rf.lastIncludedIndex - 1
+			commitIndexOffset := rf.commitIndex - rf.lastIncludedIndex - 1
+
+			copy(logCpy, rf.log[lastAppliedOffset+1:commitIndexOffset+1])
+			logIndex := rf.lastApplied + 1
+			for rf.lastApplied < rf.commitIndex {
+				rf.lastApplied++
+				DPrintf("node %v commit %v\n", rf.me, rf.lastApplied)
+			}
 			rf.unlock(&rf.mu)
-			rf.applyCh <- msg
+
+			// apply logs at a time
+			for _, log := range logCpy {
+				msg := ApplyMsg{CommandValid: true, Command: log.Command, CommandIndex: logIndex + 1}
+				rf.applyCh <- msg
+				logIndex++
+			}
 		} else {
 			rf.unlock(&rf.mu)
 		}
@@ -1331,7 +1392,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// start ticker goroutine to start elections
 	go rf.ticker()
 	// start checker to commit logs (leader only)
-	go rf.commitChecker()
+	// go rf.commitChecker()
 	// start applier to apply commited logs
 	go rf.commitApplier()
 

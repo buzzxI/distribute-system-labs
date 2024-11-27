@@ -1101,7 +1101,9 @@ func internalChurn(t *testing.T, unreliable bool) {
 
 	time.Sleep(RaftElectionTimeout)
 
-	lastIndex := cfg.one(rand.Int(), servers, true)
+	number := rand.Int()
+	fmt.Printf("cfg one(%v)\n", number)
+	lastIndex := cfg.one(number, servers, true)
 
 	really := make([]int, lastIndex+1)
 	for index := 1; index <= lastIndex; index++ {
