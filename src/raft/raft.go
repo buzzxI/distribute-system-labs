@@ -198,7 +198,7 @@ func (rf *Raft) readRaftState(data []byte) {
 		}
 
 		rf.log = log
-		DPrintf("node %v read term %v vote %v log %v\n", rf.me, currentTerm, votedFor, log)
+		DPrintf("node %v read term %v vote %v last included index %v term %v log %v\n", rf.me, currentTerm, votedFor, lastIncludedIndex, lastIncludedTerm, log)
 		for i := 0; i < len(rf.peers); i++ {
 			if i == rf.me {
 				continue
@@ -502,7 +502,8 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	DPrintf("node %d get valid install snapshot from %d offset %v last included index %v term %v\n", rf.me, args.LeaderId, args.Offset, args.LastIncludedIndex, args.LastIncludedTerm)
+	DPrintf("node %d get valid install snapshot from %d offset %v last included index %v term %v rf last included index %v term %v\n",
+		rf.me, args.LeaderId, args.Offset, args.LastIncludedIndex, args.LastIncludedTerm, rf.lastIncludedIndex, rf.lastIncludedTerm)
 
 	// store state
 	rf.votedFor = args.LeaderId
@@ -848,7 +849,11 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 				}
 
 				DPrintf("leader %v append log index %v to server %v fail, next index fallback to %v, retry %v\n", rf.me, logIndex, server, reply.Index+1, retry)
-				rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
+
+				// rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
+				// reply index indicated index of commited log
+				rf.nextIndex[server] = min(rf.commitIndex+1, reply.Index+1)
+
 				rf.unlock(&rf.mu)
 			}
 		}

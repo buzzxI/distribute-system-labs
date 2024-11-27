@@ -1,6 +1,7 @@
 package kvraft
 
 import (
+	"bytes"
 	"fmt"
 	"runtime"
 	"sync"
@@ -52,6 +53,7 @@ type KVServer struct {
 	dead    int32 // set by Kill()
 
 	maxraftstate int // snapshot if log grows this big
+	persister    *raft.Persister
 
 	// Your definitions here.
 	commitedQueue []raft.ApplyMsg
@@ -148,6 +150,59 @@ func (kv *KVServer) appendHandler(op Op) {
 	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: kv.kvs[op.Key]}
 }
 
+// lock should be held before invoke handler
+func (kv *KVServer) snapshotCheck(logIndex int) {
+	// -1 means no snapshot
+	if kv.maxraftstate == -1 {
+		return
+	}
+
+	// log size is less than maxraftstate
+	if kv.persister.RaftStateSize() < kv.maxraftstate {
+		return
+	}
+
+	snapshot := kv.makeSnapshot()
+	kv.rf.Snapshot(logIndex, snapshot)
+	DPrintf("server %v make snapshot at index %v commitedQueue %v kvs %v buffer %v leaderResponse %v\n", kv.me, logIndex, kv.commitedQueue, kv.kvs, kv.buffer, kv.leaderResponse)
+}
+
+func (kv *KVServer) makeSnapshot() []byte {
+	w := new(bytes.Buffer)
+	e := labgob.NewEncoder(w)
+	e.Encode(kv.commitedQueue)
+	e.Encode(kv.kvs)
+	e.Encode(kv.buffer)
+	e.Encode(kv.leaderResponse)
+
+	return w.Bytes()
+}
+
+func (kv *KVServer) readSnapshot(snapshot []byte) {
+	if snapshot == nil || len(snapshot) < 1 {
+		return
+	}
+
+	r := bytes.NewBuffer(snapshot)
+	d := labgob.NewDecoder(r)
+	var commitedQueue []raft.ApplyMsg
+	var kvs map[string]string
+	var buffer map[int64]ResponseBuffer
+	var leaderResponse map[int]bool
+
+	if d.Decode(&commitedQueue) != nil || d.Decode(&kvs) != nil || d.Decode(&buffer) != nil || d.Decode(&leaderResponse) != nil {
+		DPrintf("server %v read snapshot failed\n", kv.me)
+		return
+	}
+
+	kv.commitedQueue = commitedQueue
+	kv.kvs = kvs
+	kv.buffer = buffer
+	kv.leaderResponse = leaderResponse
+
+	DPrintf("server %v read snapshot commitedQueue %v kvs %v buffer %v leaderResponse %v\n", kv.me, kv.commitedQueue, kv.kvs, kv.buffer, kv.leaderResponse)
+}
+
 /**
  * follower need to apply log to state machine
  */
@@ -192,6 +247,7 @@ func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func
 			// remove head msg
 			kv.commitedQueue = kv.commitedQueue[1:]
 			handler(op)
+			kv.snapshotCheck(msg.CommandIndex)
 			kv.unlock(&kv.mu)
 			return OK
 		} else {
@@ -311,8 +367,11 @@ func (kv *KVServer) killed() bool {
 func (kv *KVServer) stateReader() {
 	for msg := range kv.applyCh {
 		kv.lock(&kv.mu)
-		kv.commitedQueue = append(kv.commitedQueue, msg)
-		DPrintf("server %v read %v\n", kv.me, formatMessage(msg))
+		// server read log only
+		if msg.CommandValid {
+			kv.commitedQueue = append(kv.commitedQueue, msg)
+			DPrintf("server %v read %v\n", kv.me, formatMessage(msg))
+		}
 		kv.unlock(&kv.mu)
 	}
 }
@@ -326,13 +385,15 @@ func (kv *KVServer) stateApplier() {
 		}
 		kv.lock(&kv.mu)
 
-		process_cnt := 0
-		for _, msg := range kv.commitedQueue {
+		for len(kv.commitedQueue) > 0 {
+			msg := kv.commitedQueue[0]
 			// msg is marked (should be handled by AbstractReplication)
 			if kv.leaderResponse[msg.CommandIndex] {
 				break
 			}
+
 			DPrintf("server %v synchronize %v\n", kv.me, formatMessage(msg))
+
 			operation := msg.Command.(Op)
 			switch operation.Type {
 			case PUT:
@@ -344,10 +405,10 @@ func (kv *KVServer) stateApplier() {
 			default:
 				DPrintf("unknown operation %v\n", operation)
 			}
-			process_cnt++
+			kv.commitedQueue = kv.commitedQueue[1:]
+			kv.snapshotCheck(msg.CommandIndex)
 		}
 
-		kv.commitedQueue = kv.commitedQueue[process_cnt:]
 		kv.unlock(&kv.mu)
 	}
 }
@@ -372,6 +433,7 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv := new(KVServer)
 	kv.me = me
 	kv.maxraftstate = maxraftstate
+	kv.persister = persister
 
 	// You may need initialization code here.
 
@@ -386,6 +448,7 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.debug = false
 	// kv.debug = true
 
+	kv.readSnapshot(persister.ReadSnapshot())
 	// incase of blocking apply channel, buffer the log first, then apply
 	// read apply channel endlessly
 	go kv.stateReader()
