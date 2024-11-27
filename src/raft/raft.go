@@ -836,7 +836,6 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 				rf.nextIndex[server] = max(rf.nextIndex[server], end+1)
 				DPrintf("leader %v append log index %v to server %v success, retry %v\n", rf.me, logIndex, server, retry)
 				rf.unlock(&rf.mu)
-				rf.CheckLogCommitment(end)
 				return true
 			} else {
 				if reply.Term > rf.currentTerm {
@@ -850,12 +849,11 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 					return false
 				}
 
-				DPrintf("leader %v append log index %v to server %v fail, next index fallback to %v, retry %v\n", rf.me, logIndex, server, reply.Index+1, retry)
-
 				// rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
 				// reply index indicated index of commited log
 				rf.nextIndex[server] = min(rf.commitIndex+1, reply.Index+1)
 
+				DPrintf("leader %v append log index %v to server %v fail, prev index %v, rf commit %v reply %v, retry %v\n", rf.me, logIndex, server, prevLogIndexOffset, rf.commitIndex, reply.Index, retry)
 				rf.unlock(&rf.mu)
 			}
 		}
@@ -953,61 +951,56 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 	}
 }
 
-// judge will block the applyCh, until snapshot finish
-// thus, raft need to release the lock, before commit entry to applyCh
-func (rf *Raft) CommitEntries(commitedLog []ApplyMsg) {
-	for _, msg := range commitedLog {
-		DPrintf("node %v commit index %v log %v\n", rf.me, msg.CommandIndex-1, msg.Command)
-		rf.applyCh <- msg
-	}
-}
+// leader use checker to commit logs
+func (rf *Raft) commitChecker() {
+	for {
+		time.Sleep(10 * time.Millisecond)
+		rf.lock(&rf.mu)
+		if rf.votedFor != rf.me {
+			rf.unlock(&rf.mu)
+			continue
+		}
 
-// check if current log can be commited
-func (rf *Raft) CheckLogCommitment(logIndex int) {
-	rf.lock(&rf.mu)
-	defer rf.unlock(&rf.mu)
-	DPrintf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
+		i := len(rf.log) + rf.lastIncludedIndex
 
-	// current server is not leader
-	if rf.votedFor != rf.me {
-		return
-	}
+		if rf.commitIndex >= i {
+			rf.unlock(&rf.mu)
+			continue
+		}
 
-	// current server has commited current log
-	if rf.commitIndex >= logIndex {
-		return
-	}
+		for i > rf.commitIndex {
+			vote := 0
+			for j := 0; j < len(rf.peers); j++ {
+				if j == rf.me {
+					continue
+				}
+				if rf.nextIndex[j] > i {
+					vote++
+				}
+			}
+			// get majority
+			if vote<<1 > len(rf.peers) {
+				break
+			}
+			i--
+		}
 
-	i := logIndex
-	// find the largest log index that can be commited
-	for i > rf.commitIndex {
-		vote := 1
-		for j := 0; j < len(rf.peers); j++ {
-			if j == rf.me {
+		logOffset := i - rf.lastIncludedIndex - 1
+
+		if logOffset >= 0 {
+			// raft does not commit previous log (multiple success heartbeat should commit previous log)
+			if rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
+				rf.unlock(&rf.mu)
 				continue
 			}
-			if rf.nextIndex[j] > logIndex {
-				vote++
-			}
+			rf.commitIndex = i
+			rf.unlock(&rf.mu)
 		}
-		// get majority
-		if vote<<1 > len(rf.peers) {
-			break
-		}
-		i--
 	}
-
-	logOffset := i - rf.lastIncludedIndex - 1
-	// raft does not commit previous log (multiple success heartbeat should commit previous log)
-	if logOffset >= 0 && rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
-		return
-	}
-
-	// commit until i
-	rf.commitIndex = i
 }
 
-func (rf *Raft) commitChecker() {
+// apply commited log to state machine
+func (rf *Raft) commitApplier() {
 	for {
 		rf.lock(&rf.mu)
 		if rf.lastApplied < rf.commitIndex {
@@ -1337,7 +1330,10 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	// start ticker goroutine to start elections
 	go rf.ticker()
+	// start checker to commit logs (leader only)
 	go rf.commitChecker()
+	// start applier to apply commited logs
+	go rf.commitApplier()
 
 	return rf
 }
