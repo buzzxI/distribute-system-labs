@@ -1,5 +1,0 @@
-{
-    "makefile.configureOnOpen": false,
-    "go.goroot": "/usr/local/lib/go/go1.23.1",
-    "go.gopath": "/root/go",
-}
