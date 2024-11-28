@@ -801,8 +801,8 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 		end := rf.replicaProcess[server]
 
 		// make a copy to avoid data race
-		len := end - rf.nextIndex[server] + 1
-		logCpy := make([]LogEntry, len)
+		logLen := end - rf.nextIndex[server] + 1
+		logCpy := make([]LogEntry, logLen)
 
 		// added for 3D
 		nextIndexOffset := rf.nextIndex[server] - rf.lastIncludedIndex - 1
@@ -853,13 +853,23 @@ func (rf *Raft) AppendEntriesRPCToServer(server int, logIndex int) bool {
 					return false
 				}
 
-				// rf.nextIndex[server] = min(rf.nextIndex[server], reply.Index+1)
 				DPrintf("leader %v append log index %v to server %v fail, prev index %v, rf commit %v reply %v, retry %v\n", rf.me, logIndex, server, prevLogIndexOffset, rf.commitIndex, reply.Index, retry)
 				preIndex := rf.nextIndex[server]
-				// reply index indicated index of commited log
-				rf.nextIndex[server] = min(rf.commitIndex+1, reply.Index+1)
-				// with snapshot, there may exist cases reply commited index is larger than nextIndex (jump forward rather than backward)
-				if preIndex < rf.nextIndex[server] {
+
+				// reply index indicates the last commited log index of server: set next to index + 1
+				rf.nextIndex[server] = reply.Index + 1
+				if rf.nextIndex[server] < preIndex {
+					DPrintf("leader %v nextIndex[%v] jump backward from %v to %v\n", rf.me, server, preIndex, rf.nextIndex[server])
+				}
+
+				if rf.nextIndex[server] == preIndex {
+					DPrintf("leader %v nextIndex[%v] stay at %v\n", rf.me, server, preIndex)
+				}
+
+				if rf.nextIndex[server] > preIndex {
+					logOffset := len(rf.log) + rf.lastIncludedIndex
+					rf.nextIndex[server] = min(rf.nextIndex[server], logOffset+1)
+					DPrintf("leader %v nextIndex[%v] jump forward from %v to %v, log offset %v\n", rf.me, server, preIndex, rf.nextIndex[server], logOffset)
 					rf.CheckLogCommitment(end)
 				}
 
@@ -963,8 +973,6 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 // check if current log can be commited
 // lock should be held by caller !!!
 func (rf *Raft) CheckLogCommitment(logIndex int) {
-	DPrintf("node %v try to commit %v raft commit index %v\n", rf.me, logIndex, rf.commitIndex)
-
 	// current server is not leader
 	if rf.votedFor != rf.me {
 		return
@@ -1000,54 +1008,10 @@ func (rf *Raft) CheckLogCommitment(logIndex int) {
 		return
 	}
 
+	DPrintf("node %v update commit index from %v to %v\n", rf.me, rf.commitIndex, i)
 	// commit until i
 	rf.commitIndex = i
 }
-
-// leader use checker to commit logs
-// func (rf *Raft) commitChecker() {
-// 	for {
-// 		time.Sleep(10 * time.Millisecond)
-// 		rf.lock(&rf.mu)
-// 		if rf.votedFor != rf.me {
-// 			rf.unlock(&rf.mu)
-// 			continue
-// 		}
-
-// 		i := len(rf.log) + rf.lastIncludedIndex
-
-// 		if rf.commitIndex >= i {
-// 			rf.unlock(&rf.mu)
-// 			continue
-// 		}
-
-// 		for i > rf.commitIndex {
-// 			vote := 0
-// 			for j := 0; j < len(rf.peers); j++ {
-// 				if rf.nextIndex[j] > i {
-// 					vote++
-// 				}
-// 			}
-// 			// get majority
-// 			if vote<<1 > len(rf.peers) {
-// 				break
-// 			}
-// 			i--
-// 		}
-
-// 		logOffset := i - rf.lastIncludedIndex - 1
-
-// 		if logOffset >= 0 {
-// 			// raft does not commit previous log (multiple success heartbeat should commit previous log)
-// 			if rf.log[logOffset].Term < rf.currentTerm && rf.confirmedBroadcast == 0 {
-// 				rf.unlock(&rf.mu)
-// 				continue
-// 			}
-// 			rf.commitIndex = i
-// 		}
-// 		rf.unlock(&rf.mu)
-// 	}
-// }
 
 // apply commited log to state machine
 func (rf *Raft) commitApplier() {

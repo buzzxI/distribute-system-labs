@@ -275,7 +275,7 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 		return
 	}
 
-	DPrintf("server %v get %v\n", kv.me, formatOp(log))
+	DPrintf("server %v get index %v log %v\n", kv.me, index, formatOp(log))
 	kv.leaderResponse[index] = true
 	kv.unlock(&kv.mu)
 
@@ -310,7 +310,7 @@ func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 		return
 	}
 
-	DPrintf("server %v put %v\n", kv.me, formatOp(log))
+	DPrintf("server %v put index %v log %v\n", kv.me, index, formatOp(log))
 	kv.leaderResponse[index] = true
 	kv.unlock(&kv.mu)
 
@@ -337,7 +337,7 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 		return
 	}
 
-	DPrintf("server %v start append %v\n", kv.me, formatOp(log))
+	DPrintf("server %v append index %v log %v\n", kv.me, index, formatOp(log))
 
 	kv.leaderResponse[index] = true
 	kv.unlock(&kv.mu)
@@ -371,6 +371,8 @@ func (kv *KVServer) stateReader() {
 		if msg.CommandValid {
 			kv.commitedQueue = append(kv.commitedQueue, msg)
 			DPrintf("server %v read %v\n", kv.me, formatMessage(msg))
+		} else if msg.SnapshotValid {
+			// update state by snapshot !!!
 		}
 		kv.unlock(&kv.mu)
 	}

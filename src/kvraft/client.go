@@ -56,7 +56,7 @@ loop:
 
 		DPrintf("Client %v Get key %s to %v\n", ck.id, key, i)
 		ok := ck.servers[i].Call("KVServer.Get", &args, &reply)
-		DPrintf("Client %v Get key %s to %v ok %v reply %v\n", ck.id, key, ck.leaderId, ok, reply)
+		DPrintf("Client %v Get key %s to %v ok %v reply %v\n", ck.id, key, i, ok, reply)
 		if !ok {
 			continue
 		}
