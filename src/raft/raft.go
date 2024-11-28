@@ -552,7 +552,8 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	DPrintf("node %v install snapshot from %v, rf last include index %v term %v, args last include index %v term %v\n", rf.me, args.LeaderId, rf.lastIncludedIndex, rf.lastIncludedTerm, args.LastIncludedIndex, args.LastIncludedTerm)
+	DPrintf("node %v install snapshot from %v, rf last include index %v term %v, args last include index %v term %v\n",
+		rf.me, args.LeaderId, rf.lastIncludedIndex, rf.lastIncludedTerm, args.LastIncludedIndex, args.LastIncludedTerm)
 	lastLogIndex := rf.lastIncludedIndex + len(rf.log)
 	if lastLogIndex < args.LastIncludedIndex {
 		rf.log = make([]LogEntry, 0)
@@ -565,8 +566,10 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 	rf.lastIncludedIndex = args.LastIncludedIndex
 	rf.lastIncludedTerm = args.LastIncludedTerm
 	// trimed log also trim commit index and last applied
-	rf.commitIndex = max(args.LastIncludedIndex, rf.commitIndex)
-	rf.lastApplied = rf.commitIndex
+	rf.commitIndex = max(rf.lastIncludedIndex, rf.commitIndex)
+	rf.lastApplied = max(rf.lastIncludedIndex, rf.lastApplied)
+
+	DPrintf("node %v update commit index %v last applied %v by install snapshot\n", rf.me, rf.commitIndex, rf.lastApplied)
 
 	rf.persist(snapshot)
 	// commit lock is used to order ApplyMsg to apply channel
