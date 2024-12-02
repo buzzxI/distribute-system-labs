@@ -30,8 +30,8 @@ jobs:
 
     - name: Run test
       run: |
-        cd ./src/raft
-        python3 judge.py --count 20 --pattern '3[ABCD]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram-chatid ${{ secrets.TELEGRAM_CHATID }}
+        cd ./raft
+        python3 judge.py --target lab3 --count 20 --pattern '3[ABCD]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram-chatid ${{ secrets.TELEGRAM_CHATID }}
   
   lab4:
     name: judge for lab4
@@ -55,4 +55,4 @@ jobs:
     - name: Run test
       run: |
         cd ./src/kvraft
-        python3 judge.py --count 20 --pattern '4[AB]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram-chatid ${{ secrets.TELEGRAM_CHATID }}
+        python3 judge.py --target lab4 --count 20 --pattern '4[AB]$' --race --telegram-token ${{ secrets.TELEGRAM_TOKEN }} --telegram-chatid ${{ secrets.TELEGRAM_CHATID }}
