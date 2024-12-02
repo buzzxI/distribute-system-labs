@@ -45,6 +45,12 @@ type ResponseBuffer struct {
 	Value     string
 }
 
+type LeaderLog struct {
+	Operation Op
+	Err       Err
+	Value     string
+}
+
 type KVServer struct {
 	mu      sync.Mutex
 	me      int
@@ -61,7 +67,10 @@ type KVServer struct {
 	kvs    map[string]string        // key-value store
 	buffer map[int64]ResponseBuffer // clerk id -> response buffer
 
-	leaderResponse map[int]bool
+	leaderLog map[int]LeaderLog
+	// leaderResponse map[int]Response
+	// record the last log index of state
+	stateIndex int
 
 	debug bool
 }
@@ -127,7 +136,7 @@ func (kv *KVServer) putHandler(op Op) {
 	}
 
 	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: op.Value}
-	DPrintf("server %v put key %s value %s\n", kv.me, op.Key, op.Value)
+	DPrintf("server %v put key %s value to %s\n", kv.me, op.Key, op.Value)
 }
 
 func (kv *KVServer) appendHandler(op Op) {
@@ -148,10 +157,11 @@ func (kv *KVServer) appendHandler(op Op) {
 	}
 
 	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: kv.kvs[op.Key]}
+	DPrintf("server %v append key %s value to %s\n", kv.me, op.Key, kv.kvs[op.Key])
 }
 
 // lock should be held before invoke handler
-func (kv *KVServer) snapshotCheck(logIndex int) {
+func (kv *KVServer) snapshotCheck() {
 	// -1 means no snapshot
 	if kv.maxraftstate == -1 {
 		return
@@ -163,17 +173,17 @@ func (kv *KVServer) snapshotCheck(logIndex int) {
 	}
 
 	snapshot := kv.makeSnapshot()
-	kv.rf.Snapshot(logIndex, snapshot)
-	DPrintf("server %v make snapshot at index %v commitedQueue %v kvs %v buffer %v leaderResponse %v\n", kv.me, logIndex, kv.commitedQueue, kv.kvs, kv.buffer, kv.leaderResponse)
+	kv.rf.Snapshot(kv.stateIndex, snapshot)
+	DPrintf("server %v make snapshot at index %v commitedQueue %v kvs %v buffer %v\n", kv.me, kv.stateIndex, kv.commitedQueue, kv.kvs, kv.buffer)
 }
 
 func (kv *KVServer) makeSnapshot() []byte {
 	w := new(bytes.Buffer)
 	e := labgob.NewEncoder(w)
+	e.Encode(kv.stateIndex)
 	e.Encode(kv.commitedQueue)
 	e.Encode(kv.kvs)
 	e.Encode(kv.buffer)
-	e.Encode(kv.leaderResponse)
 
 	return w.Bytes()
 }
@@ -185,75 +195,41 @@ func (kv *KVServer) readSnapshot(snapshot []byte) {
 
 	r := bytes.NewBuffer(snapshot)
 	d := labgob.NewDecoder(r)
+	var logIndex int
 	var commitedQueue []raft.ApplyMsg
 	var kvs map[string]string
 	var buffer map[int64]ResponseBuffer
-	var leaderResponse map[int]bool
+	// var leaderResponse map[int]Response
 
-	if d.Decode(&commitedQueue) != nil || d.Decode(&kvs) != nil || d.Decode(&buffer) != nil || d.Decode(&leaderResponse) != nil {
+	if d.Decode(&logIndex) != nil || d.Decode(&commitedQueue) != nil || d.Decode(&kvs) != nil || d.Decode(&buffer) != nil {
 		DPrintf("server %v read snapshot failed\n", kv.me)
 		return
 	}
-
+	kv.stateIndex = logIndex
 	kv.commitedQueue = commitedQueue
 	kv.kvs = kvs
 	kv.buffer = buffer
-	kv.leaderResponse = leaderResponse
 
-	DPrintf("server %v read snapshot commitedQueue %v kvs %v buffer %v leaderResponse %v\n", kv.me, kv.commitedQueue, kv.kvs, kv.buffer, kv.leaderResponse)
+	DPrintf("server %v read snapshot commitedQueue %v kvs %v buffer %v\n", kv.me, kv.commitedQueue, kv.kvs, kv.buffer)
 }
 
-/**
- * follower need to apply log to state machine
- */
-
-// lock should be held before invoke handler
-func (kv *KVServer) AbstractReplication(logIndex int, requestOp Op, handler func(op Op)) Err {
+// FakeLogHandler just check response, do not handle log
+func (kv *KVServer) FakeLogHandler(logIndex int) (Err, string) {
+	defer kv.unlock(&kv.mu)
+	defer delete(kv.leaderLog, logIndex)
 	for {
 		time.Sleep(10 * time.Millisecond)
-
 		kv.lock(&kv.mu)
 		if kv.killed() {
-			delete(kv.leaderResponse, logIndex)
-			kv.unlock(&kv.mu)
-			return ErrKilledServer
+			return ErrKilledServer, ""
 		}
-
 		if _, leader := kv.rf.GetState(); !leader {
-			// lost leader ship
-			delete(kv.leaderResponse, logIndex)
-			kv.unlock(&kv.mu)
-			return ErrWrongLeader
+			return ErrWrongLeader, ""
 		}
-
-		if len(kv.commitedQueue) == 0 {
-			kv.unlock(&kv.mu)
-			continue
+		if leaderLog := kv.leaderLog[logIndex]; leaderLog.Err != ErrPending {
+			return leaderLog.Err, leaderLog.Value
 		}
-
-		msg := kv.commitedQueue[0]
-		// generally should be command index < index only
-		// if command index > index -> something must be wrong
-		if msg.CommandIndex != logIndex {
-			kv.unlock(&kv.mu)
-			continue
-		}
-
-		DPrintf("server %v process %v\n", kv.me, formatMessage(msg))
-
-		delete(kv.leaderResponse, logIndex)
-		op := msg.Command.(Op)
-		if op.Type == requestOp.Type && op.Key == requestOp.Key && op.Value == requestOp.Value {
-			// remove head msg
-			kv.commitedQueue = kv.commitedQueue[1:]
-			handler(op)
-			kv.snapshotCheck(msg.CommandIndex)
-			kv.unlock(&kv.mu)
-			return OK
-		} else {
-			kv.unlock(&kv.mu)
-			return ErrNoAgreement
-		}
+		kv.unlock(&kv.mu)
 	}
 }
 
@@ -275,21 +251,13 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 		return
 	}
 
-	DPrintf("server %v get index %v log %v\n", kv.me, index, formatOp(log))
-	kv.leaderResponse[index] = true
+	DPrintf("server %v mark get index %v log %v\n", kv.me, index, formatOp(log))
+
+	kv.leaderLog[index] = LeaderLog{Err: ErrPending, Value: "", Operation: log}
 	kv.unlock(&kv.mu)
 
 	// wait for agreement
-	reply.Err = kv.AbstractReplication(index, log, func(log Op) {
-		if kv.requestDuplicationChecker(args.ClerkMeta.ClerkId, args.ClerkMeta.RequestId) {
-			reply.Value = kv.buffer[args.ClerkMeta.ClerkId].Value
-			DPrintf("server %v get duplicated get %v\n", kv.me, formatOp(log))
-		} else {
-			reply.Value = kv.kvs[args.Key]
-			kv.buffer[args.ClerkMeta.ClerkId] = ResponseBuffer{RequestId: args.ClerkMeta.RequestId, Value: reply.Value}
-			DPrintf("server %v get key %s value %s\n", kv.me, args.Key, reply.Value)
-		}
-	})
+	reply.Err, reply.Value = kv.FakeLogHandler(index)
 }
 
 func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
@@ -310,11 +278,12 @@ func (kv *KVServer) Put(args *PutAppendArgs, reply *PutAppendReply) {
 		return
 	}
 
-	DPrintf("server %v put index %v log %v\n", kv.me, index, formatOp(log))
-	kv.leaderResponse[index] = true
+	DPrintf("server %v mark put index %v log %v\n", kv.me, index, formatOp(log))
+	kv.leaderLog[index] = LeaderLog{Err: ErrPending, Value: "", Operation: log}
 	kv.unlock(&kv.mu)
 
-	reply.Err = kv.AbstractReplication(index, log, kv.putHandler)
+	// wait for agreement
+	reply.Err, _ = kv.FakeLogHandler(index)
 }
 
 func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
@@ -337,12 +306,12 @@ func (kv *KVServer) Append(args *PutAppendArgs, reply *PutAppendReply) {
 		return
 	}
 
-	DPrintf("server %v append index %v log %v\n", kv.me, index, formatOp(log))
-
-	kv.leaderResponse[index] = true
+	DPrintf("server %v mark append index %v log %v\n", kv.me, index, formatOp(log))
+	kv.leaderLog[index] = LeaderLog{Err: ErrPending, Value: "", Operation: log}
 	kv.unlock(&kv.mu)
 
-	reply.Err = kv.AbstractReplication(index, log, kv.appendHandler)
+	// wait for agreement
+	reply.Err, _ = kv.FakeLogHandler(index)
 }
 
 // the tester calls Kill() when a KVServer instance won't
@@ -373,6 +342,11 @@ func (kv *KVServer) stateReader() {
 			DPrintf("server %v read %v\n", kv.me, formatMessage(msg))
 		} else if msg.SnapshotValid {
 			// update state by snapshot !!!
+			if msg.SnapshotIndex > kv.stateIndex {
+				DPrintf("server %v read snapshot jump from %v to %v\n", kv.me, kv.stateIndex, msg.SnapshotIndex)
+				kv.readSnapshot(msg.Snapshot)
+				kv.stateIndex = msg.SnapshotIndex
+			}
 		}
 		kv.unlock(&kv.mu)
 	}
@@ -389,26 +363,41 @@ func (kv *KVServer) stateApplier() {
 
 		for len(kv.commitedQueue) > 0 {
 			msg := kv.commitedQueue[0]
-			// msg is marked (should be handled by AbstractReplication)
-			if kv.leaderResponse[msg.CommandIndex] {
-				break
-			}
-
-			DPrintf("server %v synchronize %v\n", kv.me, formatMessage(msg))
-
 			operation := msg.Command.(Op)
-			switch operation.Type {
-			case PUT:
-				kv.putHandler(operation)
-			case APPEND:
-				kv.appendHandler(operation)
-			case GET:
-				// do nothing
-			default:
-				DPrintf("unknown operation %v\n", operation)
+
+			flag := false
+			// applier only handle unprocessed logs
+			if msg.CommandIndex > kv.stateIndex {
+				kv.stateIndex = msg.CommandIndex
+				flag = true
+				DPrintf("server %v process %v\n", kv.me, formatMessage(msg))
+
+				switch operation.Type {
+				case PUT:
+					kv.putHandler(operation)
+				case APPEND:
+					kv.appendHandler(operation)
+				case GET:
+					// do nothing
+				default:
+					DPrintf("unknown operation %v\n", operation)
+				}
+				kv.snapshotCheck()
 			}
+
 			kv.commitedQueue = kv.commitedQueue[1:]
-			kv.snapshotCheck(msg.CommandIndex)
+
+			if leaderLog, contains := kv.leaderLog[msg.CommandIndex]; contains {
+				if leaderLog.Operation.Type == operation.Type && leaderLog.Operation.Key == operation.Key && flag {
+					leaderLog.Err = OK
+					leaderLog.Value = kv.kvs[operation.Key]
+				} else {
+					leaderLog.Err = ErrNoAgreement
+				}
+				kv.leaderLog[msg.CommandIndex] = leaderLog
+				// incase of memory leak
+				DPrintf("server %v process waiting message %v log value %v\n", kv.me, formatMessage(msg), leaderLog.Value)
+			}
 		}
 
 		kv.unlock(&kv.mu)
@@ -446,11 +435,14 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.kvs = make(map[string]string)
 	kv.buffer = make(map[int64]ResponseBuffer)
 
-	kv.leaderResponse = make(map[int]bool)
+	// kv.leaderResponse = make(map[int]Response)
+	kv.leaderLog = make(map[int]LeaderLog)
 	kv.debug = false
 	// kv.debug = true
 
+	kv.stateIndex = 0
 	kv.readSnapshot(persister.ReadSnapshot())
+
 	// incase of blocking apply channel, buffer the log first, then apply
 	// read apply channel endlessly
 	go kv.stateReader()

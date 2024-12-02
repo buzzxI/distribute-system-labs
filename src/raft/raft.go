@@ -237,7 +237,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	index--
 	DPrintf("node %v get Snapshot %v\n", rf.me, index)
 
-	func(index int, snapshot []byte) {
+	go func(index int, snapshot []byte) {
 		rf.lock(&rf.mu)
 		defer rf.unlock(&rf.mu)
 
@@ -253,11 +253,13 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 
 		rf.lastIncludedIndex = index
 		rf.lastIncludedTerm = rf.log[logOffset].Term
+		// update commit index and last applied after trimed
+		rf.commitIndex = max(rf.commitIndex, rf.lastIncludedIndex)
+		rf.lastApplied = max(rf.lastApplied, rf.lastIncludedIndex)
 		rf.log = rf.log[logOffset+1:]
 
 		rf.persist(snapshot)
 	}(index, snapshot)
-
 }
 
 // example RequestVote RPC arguments structure.
@@ -385,7 +387,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		// get AppendRPC from larger term -> transfer to follower
 		rf.currentTerm = args.Term
 		rf.votedFor = -1
-		rf.persist(nil)
+		// rf.persist(nil)
 	}
 
 	// maybe different leader is just ok...
@@ -485,7 +487,6 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 	// reply immediately if leader get stale term
 	if args.Term < rf.currentTerm {
 		reply.Term = args.Term
-		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -500,7 +501,6 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 
 	// get AppendRPC from current term with different leader -> reject
 	if args.Term == rf.currentTerm && rf.votedFor >= 0 && rf.votedFor != args.LeaderId {
-		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -542,13 +542,11 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 
 	if !flag {
 		// snapshot data has not finished
-		// rf.unlock(&rf.mu)
 		return
 	}
 
 	// stale index (if args'last included index is equals to raft'last included index -> stale snapshot)
 	if rf.lastIncludedIndex >= args.LastIncludedIndex {
-		// rf.unlock(&rf.mu)
 		return
 	}
 
@@ -886,9 +884,9 @@ func (rf *Raft) InstallSnapshotRPCToServer(server int) bool {
 	retry := 0
 	for {
 		retry++
+
 		// retry until the server has been killed
 		if rf.killed() {
-			rf.unlock(&rf.mu)
 			return false
 		}
 

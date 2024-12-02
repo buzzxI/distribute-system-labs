@@ -6,6 +6,7 @@ const (
 	ErrWrongLeader  = "ErrWrongLeader"
 	ErrNoAgreement  = "ErrNoAgreement"
 	ErrKilledServer = "ErrKilledServer"
+	ErrPending      = "ErrPending" // server still processing
 )
 
 type Err string

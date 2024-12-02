@@ -114,7 +114,11 @@ failTest = None
 judge_start = time.time()
 for test in testsToRun:
     command = ['go', 'test', '-run', test, '-v']
-    if race:
+    speedtest = False
+    if "Speed" in test:
+        speedtest = True
+    # speed test should not run with race flag
+    if race and not speedtest:
         command.append("-race")
     start = time.time()
     logging.info(f"Running {test}")
