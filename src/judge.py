@@ -2,6 +2,7 @@ import subprocess
 import argparse
 import time
 import re
+import os
 import logging
 import asyncio
 import telegram
@@ -51,9 +52,13 @@ def run_command(command, cwd=None):
 def report_result(failTest):
     async def error_report():
         bot = telegram.Bot(telegram_token)
+        temp_dir = '/tmp'
+        temp_files = [f for f in os.listdir(temp_dir) if f.startswith("go-test-") and f.endswith(".html")] 
         content = f'judge {target.value} fail, round {repeat_count}, pattern {pattern}, fail test {failTest}, total time consume {judge_duration:.2f} s'
         await bot.send_message(chat_id=telegram_chatid, text=content)
         await bot.send_document(chat_id=telegram_chatid, document='./log.txt')
+        for file in temp_files:
+            await bot.send_document(chat_id=telegram_chatid, document=f'{temp_dir}/{file}')
 
     async def success_report():
         bot = telegram.Bot(telegram_token)

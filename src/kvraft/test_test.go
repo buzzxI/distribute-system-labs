@@ -2,9 +2,9 @@ package kvraft
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math/rand"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -378,7 +378,8 @@ func GenericTest(t *testing.T, part string, nclients int, nservers int, unreliab
 
 	res, info := porcupine.CheckOperationsVerbose(models.KvModel, opLog.Read(), linearizabilityCheckTimeout)
 	if res == porcupine.Illegal {
-		file, err := ioutil.TempFile("", "*.html")
+		file, err := os.CreateTemp("", "go-test-*.html")
+		// file, err := ioutil.TempFile("", "*.html")
 		if err != nil {
 			fmt.Printf("info: failed to create temp file for visualization")
 		} else {
