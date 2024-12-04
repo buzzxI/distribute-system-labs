@@ -54,7 +54,7 @@ loop:
 			i = 0
 		}
 
-		DPrintf("Client %v Get key %s to %v\n", ck.id, key, i)
+		DPrintf("Client %v Get key %s to %v, request id %v\n", ck.id, key, i, ck.requestId)
 		ok := ck.servers[i].Call("KVServer.Get", &args, &reply)
 		DPrintf("Client %v Get key %s to %v ok %v reply %v\n", ck.id, key, i, ok, reply)
 		if !ok {
@@ -96,8 +96,7 @@ loop:
 			i = 0
 		}
 
-		DPrintf("Client %v %s key %s value %s to %v\n", ck.id, op, key, value, i)
-
+		DPrintf("Client %v %s key %s value %s to %v, request id %v\n", ck.id, op, key, value, i, ck.requestId)
 		ok := ck.servers[i].Call("KVServer."+op, &args, &reply)
 		DPrintf("Client %v %s key %s value %s to %v reply ok %v reply %v\n", ck.id, op, key, value, i, ok, reply)
 		if !ok {

@@ -62,13 +62,11 @@ type KVServer struct {
 	persister    *raft.Persister
 
 	// Your definitions here.
-	// commitedQueue []raft.ApplyMsg
 
 	kvs    map[string]string        // key-value store
 	buffer map[int64]ResponseBuffer // clerk id -> response buffer
 
 	leaderLog map[int]LeaderLog
-	// leaderResponse map[int]Response
 	// record the last log index of state
 	stateIndex int
 
@@ -121,6 +119,23 @@ func formatMessage(message raft.ApplyMsg) string {
 func (kv *KVServer) requestDuplicationChecker(clerk int64, request int) bool {
 	buff, contains := kv.buffer[clerk]
 	return contains && buff.RequestId >= request
+}
+
+// lock should be held before invoke handler
+// get handler does not update kv, just update buffer
+func (kv *KVServer) getHandler(op Op) {
+	if kv.requestDuplicationChecker(op.ClerkId, op.RequestId) {
+		DPrintf("server %v get duplicated get %v\n", kv.me, formatOp(op))
+		return
+	}
+
+	if buff, contains := kv.buffer[op.ClerkId]; contains && buff.RequestId+1 < op.RequestId {
+		DPrintf("server %v buffer %v get a larger get %v \n", kv.me, buff, op.RequestId)
+	}
+
+	value := kv.kvs[op.Key]
+	kv.buffer[op.ClerkId] = ResponseBuffer{RequestId: op.RequestId, Value: value}
+	DPrintf("server %v get key %s value %s\n", kv.me, op.Key, value)
 }
 
 // lock should be held before invoke handler
@@ -195,12 +210,10 @@ func (kv *KVServer) readSnapshot(snapshot []byte) {
 	r := bytes.NewBuffer(snapshot)
 	d := labgob.NewDecoder(r)
 	var logIndex int
-	var commitedQueue []raft.ApplyMsg
 	var kvs map[string]string
 	var buffer map[int64]ResponseBuffer
-	// var leaderResponse map[int]Response
 
-	if d.Decode(&logIndex) != nil || d.Decode(&commitedQueue) != nil || d.Decode(&kvs) != nil || d.Decode(&buffer) != nil {
+	if d.Decode(&logIndex) != nil || d.Decode(&kvs) != nil || d.Decode(&buffer) != nil {
 		DPrintf("server %v read snapshot failed\n", kv.me)
 		return
 	}
@@ -366,7 +379,7 @@ func (kv *KVServer) commandApplier(msg raft.ApplyMsg) {
 		case APPEND:
 			kv.appendHandler(operation)
 		case GET:
-			// do nothing
+			kv.getHandler(operation)
 		default:
 			DPrintf("unknown operation %v\n", operation)
 		}

@@ -1,12 +1,23 @@
 package shardctrler
 
 import (
+	"fmt"
+	"runtime"
 	"sync"
 
 	"6.5840/labgob"
 	"6.5840/labrpc"
 	"6.5840/raft"
 )
+
+const Debug = true
+
+func DPrintf(format string, a ...interface{}) (n int, err error) {
+	if Debug {
+		fmt.Printf(format, a...)
+	}
+	return
+}
 
 type ShardCtrler struct {
 	mu      sync.Mutex
@@ -17,16 +28,42 @@ type ShardCtrler struct {
 	// Your data here.
 
 	configs []Config // indexed by config num
+
+	debug bool
 }
 
 type Op struct {
 	// Your data here.
 }
 
+func (sc *ShardCtrler) lock(lock *sync.Mutex, sign ...string) {
+	lock.Lock()
+	if sc.debug {
+		_, _, line, _ := runtime.Caller(1)
+		if len(sign) > 0 {
+			DPrintf("server %d lock %v at %v\n", sc.me, sign[0], line)
+		} else {
+			DPrintf("server %d lock mu at %v\n", sc.me, line)
+		}
+	}
+}
+
+func (sc *ShardCtrler) unlock(lock *sync.Mutex, sign ...string) {
+	lock.Unlock()
+	if sc.debug {
+		_, _, line, _ := runtime.Caller(1)
+		if len(sign) > 0 {
+			DPrintf("server %d unlock %v at %v\n", sc.me, sign[0], line)
+		} else {
+			DPrintf("server %d unlock mu at %v\n", sc.me, line)
+		}
+	}
+}
+
 func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 	// Your code here.
-	sc.mu.Lock()
-	defer sc.mu.Unlock()
+	sc.lock(&sc.mu)
+	defer sc.unlock(&sc.mu)
 
 	originalConfig := &sc.configs[len(sc.configs)-1]
 
@@ -34,7 +71,7 @@ func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 	newConfig.Num = len(sc.configs)
 	newConfig.Groups = make(map[int][]string)
 
-	totalGroups := len(originalConfig.Groups) + len(args.Servers)
+	// union original groups and new groups
 	for gid, servers := range originalConfig.Groups {
 		newConfig.Groups[gid] = servers
 	}
@@ -43,38 +80,54 @@ func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 	}
 
 	// cal shard count for each group
+	totalGroups := len(originalConfig.Groups) + len(args.Servers)
 	div := NShards / totalGroups
 	mod := NShards % totalGroups
 
+	// cal how many shards need to be trimmed for original group
 	gids := make(map[int]int, 0)
 	for _, gid := range originalConfig.Shards {
 		gids[gid]++
 	}
 
-	// cal how many shards need to be trimmed for original group
-	trimCount := make(map[int]int, 0)
+	// trimmmed[i] > 0 means how many shards need to be trimmed for group i
+	// trimmed[i] < 0 means how many shards need to be assigned to group i
+	trimmed := make(map[int]int, 0)
 	for gid, count := range gids {
-		if count > div {
-			if mod > 0 {
-				trimCount[gid] = count - (div + 1)
-				mod--
-			} else {
-				trimCount[gid] = count - div
-			}
+		if count > div && mod > 0 {
+			trimmed[gid] = count - (div + 1)
+			gids[gid] = div + 1
+			mod--
+		} else {
+			trimmed[gid] = count - div
+			gids[gid] = div
 		}
 	}
 
+	for gid, count := range gids {
+		if mod == 0 {
+			break
+		}
+		if count == div {
+			gids[gid]++
+			trimmed[gid]--
+			mod--
+		}
+	}
+
+	// rebalance shards for groups
+
+	// assign trimmed shards to new groups
 	newGids := make([]int, 0)
 	for gid := range args.Servers {
 		newGids = append(newGids, gid)
 	}
 
-	// assign trimmed shards to new groups
 	groupCount := len(newGids)
 	for i, j := 0, 0; i < NShards; i++ {
 		gid := originalConfig.Shards[i]
-		if trimCount[gid] > 0 {
-			trimCount[gid]--
+		if gids[gid] > 0 {
+			gids[gid]--
 			newConfig.Shards[i] = newGids[j]
 			j++
 			if j == groupCount {
@@ -83,7 +136,6 @@ func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 		} else {
 			newConfig.Shards[i] = gid
 		}
-
 	}
 
 	sc.configs = append(sc.configs, newConfig)
@@ -91,13 +143,14 @@ func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 
 func (sc *ShardCtrler) Leave(args *LeaveArgs, reply *LeaveReply) {
 	// Your code here.
-	sc.mu.Lock()
-	defer sc.mu.Unlock()
+	sc.lock(&sc.mu)
+	defer sc.unlock(&sc.mu)
 
 	originalConfig := &sc.configs[len(sc.configs)-1]
 
 	newConfig := Config{}
 	newConfig.Num = len(sc.configs)
+	newConfig.Groups = make(map[int][]string)
 
 	// fliter out leaved groups
 	leavedGroups := make(map[int]bool)
@@ -142,10 +195,36 @@ func (sc *ShardCtrler) Leave(args *LeaveArgs, reply *LeaveReply) {
 
 func (sc *ShardCtrler) Move(args *MoveArgs, reply *MoveReply) {
 	// Your code here.
+	sc.lock(&sc.mu)
+	defer sc.unlock(&sc.mu)
+
+	originalConfig := &sc.configs[len(sc.configs)-1]
+	newConfig := Config{}
+
+	newConfig.Num = len(sc.configs)
+	newConfig.Groups = make(map[int][]string)
+	for key, value := range originalConfig.Groups {
+		newConfig.Groups[key] = value
+	}
+
+	// copy shards from original config
+	newConfig.Shards = originalConfig.Shards
+
+	// move shard to new group
+	newConfig.Shards[args.Shard] = args.GID
+	sc.configs = append(sc.configs, newConfig)
 }
 
 func (sc *ShardCtrler) Query(args *QueryArgs, reply *QueryReply) {
 	// Your code here.
+	sc.lock(&sc.mu)
+	defer sc.unlock(&sc.mu)
+
+	if args.Num >= len(sc.configs) || args.Num < 0 {
+		reply.Config = sc.configs[len(sc.configs)-1]
+	} else {
+		reply.Config = sc.configs[args.Num]
+	}
 }
 
 // the tester calls Kill() when a ShardCtrler instance won't
@@ -178,6 +257,7 @@ func StartServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persister)
 	sc.rf = raft.Make(servers, me, persister, sc.applyCh)
 
 	// Your code here.
+	sc.debug = false
 
 	return sc
 }
